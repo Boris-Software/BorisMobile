@@ -1,0 +1,709 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BorisMobile</name>
+    </assembly>
+    <members>
+        <member name="T:BorisMobile.ViewModels.AboutPageViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.AboutPageViewModel.CompanyDetails">
+            <inheritdoc cref="F:BorisMobile.ViewModels.AboutPageViewModel.companyDetails"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.AboutPageViewModel.UserName">
+            <inheritdoc cref="F:BorisMobile.ViewModels.AboutPageViewModel.userName"/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.AboutPageViewModel.logoutButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.AboutPageViewModel.LogoutButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.AboutPageViewModel.LogoutButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.AboutPageViewModel.LogoutButtonClick"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.AboutPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.AboutPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.AboutPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.AboutPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.AssetsPageViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.AssetsPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.AssetsPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.AssetsPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.AssetsPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.AssetsPageViewModel.userSupportClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.AssetsPageViewModel.UserSupportClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.AssetsPageViewModel.UserSupportClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.AssetsPageViewModel.UserSupportClick"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.AssetsPageViewModel.scanAssetClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.AssetsPageViewModel.ScanAssetClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.AssetsPageViewModel.ScanAssetClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.AssetsPageViewModel.ScanAssetClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.BaseViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.BaseViewModel.IsLoading">
+            <inheritdoc cref="F:BorisMobile.ViewModels.BaseViewModel.isLoading"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.BaseViewModel.MainLayoutOpacity">
+            <inheritdoc cref="F:BorisMobile.ViewModels.BaseViewModel.mainLayoutOpacity"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.BaseViewModel.IsSyncVisible">
+            <inheritdoc cref="F:BorisMobile.ViewModels.BaseViewModel.isSyncVisible"/>
+        </member>
+        <member name="T:BorisMobile.ViewModels.BulletinsPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.BulletinsPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.BulletinsPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.BulletinsPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.BulletinsPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.CreateNewFormPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.CreateNewFormPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.CreateNewFormPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CreateNewFormPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.CreateNewFormPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.CustomerCodePageViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodeone">
+            <inheritdoc cref="F:BorisMobile.ViewModels.CustomerCodePageViewModel.cuscodeone"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodetwo">
+            <inheritdoc cref="F:BorisMobile.ViewModels.CustomerCodePageViewModel.cuscodetwo"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodethree">
+            <inheritdoc cref="F:BorisMobile.ViewModels.CustomerCodePageViewModel.cuscodethree"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodefour">
+            <inheritdoc cref="F:BorisMobile.ViewModels.CustomerCodePageViewModel.cuscodefour"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodefive">
+            <inheritdoc cref="F:BorisMobile.ViewModels.CustomerCodePageViewModel.cuscodefive"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodesix">
+            <inheritdoc cref="F:BorisMobile.ViewModels.CustomerCodePageViewModel.cuscodesix"/>
+        </member>
+        <member name="M:BorisMobile.ViewModels.CustomerCodePageViewModel.OnCuscodeoneChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodeone"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodeone"/> is changed.</remarks>
+        </member>
+        <member name="M:BorisMobile.ViewModels.CustomerCodePageViewModel.OnCuscodetwoChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodetwo"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodetwo"/> is changed.</remarks>
+        </member>
+        <member name="M:BorisMobile.ViewModels.CustomerCodePageViewModel.OnCuscodethreeChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodethree"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodethree"/> is changed.</remarks>
+        </member>
+        <member name="M:BorisMobile.ViewModels.CustomerCodePageViewModel.OnCuscodefourChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodefour"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodefour"/> is changed.</remarks>
+        </member>
+        <member name="M:BorisMobile.ViewModels.CustomerCodePageViewModel.OnCuscodefiveChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodefive"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodefive"/> is changed.</remarks>
+        </member>
+        <member name="M:BorisMobile.ViewModels.CustomerCodePageViewModel.OnCuscodesixChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodesix"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.Cuscodesix"/> is changed.</remarks>
+        </member>
+        <member name="F:BorisMobile.ViewModels.CustomerCodePageViewModel.clearCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.ClearCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CustomerCodePageViewModel.ClearCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.CustomerCodePageViewModel.Clear"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.CustomerCodePageViewModel.continueCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.CustomerCodePageViewModel.ContinueCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.CustomerCodePageViewModel.ContinueCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.CustomerCodePageViewModel.Continue"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.DocumentsPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.DocumentsPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.DocumentsPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.DocumentsPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.DocumentsPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.DocumentStorePageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.DocumentStorePageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.DocumentStorePageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.DocumentStorePageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.DocumentStorePageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.HomePageViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.HomePageViewModel.MenuItems">
+            <inheritdoc cref="F:BorisMobile.ViewModels.HomePageViewModel.menuItems"/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.HomePageViewModel.moreIconClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.HomePageViewModel.MoreIconClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.HomePageViewModel.MoreIconClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.HomePageViewModel.MoreIconClicked"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.HomePageViewModel.syncCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.HomePageViewModel.SyncCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.HomePageViewModel.SyncCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.HomePageViewModel.Sync"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.HomePageViewModel.menuItemClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.HomePageViewModel.MenuItemClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.HomePageViewModel.MenuItemClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:BorisMobile.ViewModels.HomePageViewModel.MenuItemClicked(BorisMobile.XML.ParseXML.Item)"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.InformationPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.InformationPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.InformationPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.InformationPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.InformationPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.InProgressPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.InProgressPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.InProgressPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.InProgressPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.InProgressPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.JobDetailsPageViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.JobDetailsPageViewModel.SelectedItem">
+            <inheritdoc cref="F:BorisMobile.ViewModels.JobDetailsPageViewModel.selectedItem"/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.JobDetailsPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.JobDetailsPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.JobDetailsPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.JobDetailsPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.JobDetailsPageViewModel.wFDrawingsClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.JobDetailsPageViewModel.WFDrawingsClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.JobDetailsPageViewModel.WFDrawingsClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.JobDetailsPageViewModel.WFDrawingsClicked"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.JobDetailsPageViewModel.inProgressClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.JobDetailsPageViewModel.InProgressClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.JobDetailsPageViewModel.InProgressClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.JobDetailsPageViewModel.InProgressClicked"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.JobDetailsPageViewModel.createFormClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.JobDetailsPageViewModel.CreateFormClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.JobDetailsPageViewModel.CreateFormClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.JobDetailsPageViewModel.CreateFormClicked"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.JobDetailsPageViewModel.workFromAssetsClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.JobDetailsPageViewModel.WorkFromAssetsClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.JobDetailsPageViewModel.WorkFromAssetsClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.JobDetailsPageViewModel.WorkFromAssetsClicked"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.JobDetailsPageViewModel.documentsClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.JobDetailsPageViewModel.DocumentsClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.JobDetailsPageViewModel.DocumentsClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.JobDetailsPageViewModel.DocumentsClicked"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.JobDetailsPageViewModel.keyClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.JobDetailsPageViewModel.KeyClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.JobDetailsPageViewModel.KeyClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.JobDetailsPageViewModel.KeyClicked"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.KeyPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.KeyPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.KeyPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.KeyPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.KeyPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.MyDiaryPageViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.MyDiaryPageViewModel.MenuItems">
+            <inheritdoc cref="F:BorisMobile.ViewModels.MyDiaryPageViewModel.menuItems"/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.MyDiaryPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.MyDiaryPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.MyDiaryPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.MyDiaryPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.MyDiaryPageViewModel.menuItemClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.MyDiaryPageViewModel.MenuItemClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.MyDiaryPageViewModel.MenuItemClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:BorisMobile.ViewModels.MyDiaryPageViewModel.MenuItemClicked(BorisMobile.XML.ParseXML.Item)"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.ScheduledWorkViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.ScheduledWorkViewModel.IsVisibelCalenderPicker">
+            <inheritdoc cref="F:BorisMobile.ViewModels.ScheduledWorkViewModel.isVisibelCalenderPicker"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.ScheduledWorkViewModel.WorkOrderGroups">
+            <inheritdoc cref="F:BorisMobile.ViewModels.ScheduledWorkViewModel.workOrderGroups"/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.ScheduledWorkViewModel.toggleGroupCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.ScheduledWorkViewModel.ToggleGroupCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.ScheduledWorkViewModel.ToggleGroupCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:BorisMobile.ViewModels.ScheduledWorkViewModel.ToggleGroup(BorisMobile.Models.WorkOrderGroup)"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.ScheduledWorkViewModel.groupByCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.ScheduledWorkViewModel.GroupByCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.ScheduledWorkViewModel.GroupByCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:BorisMobile.ViewModels.ScheduledWorkViewModel.GroupBy(System.String)"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.ScheduledWorkViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.ScheduledWorkViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.ScheduledWorkViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.ScheduledWorkViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.ScheduledWorkViewModel.minimizeCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.ScheduledWorkViewModel.MinimizeCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.ScheduledWorkViewModel.MinimizeCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.ScheduledWorkViewModel.Minimize"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.ScheduledWorkViewModel.calendarIconClickedCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.ScheduledWorkViewModel.CalendarIconClickedCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.ScheduledWorkViewModel.CalendarIconClickedCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.ScheduledWorkViewModel.CalendarIconClicked"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.ScheduledWorkViewModel.jobClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.ScheduledWorkViewModel.JobClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.ScheduledWorkViewModel.JobClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:BorisMobile.ViewModels.ScheduledWorkViewModel.JobClick(BorisMobile.Models.WorkOrderList)"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.SigninPageViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.SigninPageViewModel.Email">
+            <inheritdoc cref="F:BorisMobile.ViewModels.SigninPageViewModel.email"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.SigninPageViewModel.Password">
+            <inheritdoc cref="F:BorisMobile.ViewModels.SigninPageViewModel.password"/>
+        </member>
+        <member name="M:BorisMobile.ViewModels.SigninPageViewModel.OnEmailChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:BorisMobile.ViewModels.SigninPageViewModel.Email"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:BorisMobile.ViewModels.SigninPageViewModel.Email"/> is changed.</remarks>
+        </member>
+        <member name="M:BorisMobile.ViewModels.SigninPageViewModel.OnPasswordChanged(System.String)">
+            <summary>Executes the logic for when <see cref="P:BorisMobile.ViewModels.SigninPageViewModel.Password"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:BorisMobile.ViewModels.SigninPageViewModel.Password"/> is changed.</remarks>
+        </member>
+        <member name="F:BorisMobile.ViewModels.SigninPageViewModel.submitCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.SigninPageViewModel.SubmitCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.SigninPageViewModel.SubmitCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.SigninPageViewModel.Submit"/>.</summary>
+        </member>
+        <member name="F:BorisMobile.ViewModels.SigninPageViewModel.clearCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.SigninPageViewModel.ClearCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.SigninPageViewModel.ClearCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.SigninPageViewModel.Clear"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.SupportPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.SupportPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.SupportPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.SupportPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.SupportPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.SyncPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.SyncPageViewModel.IsFinished">
+            <inheritdoc cref="F:BorisMobile.ViewModels.SyncPageViewModel.isFinished"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.SyncPageViewModel.IsTransferred">
+            <inheritdoc cref="F:BorisMobile.ViewModels.SyncPageViewModel.isTransferred"/>
+        </member>
+        <member name="P:BorisMobile.ViewModels.SyncPageViewModel.TransferMessage">
+            <inheritdoc cref="F:BorisMobile.ViewModels.SyncPageViewModel.transferMessage"/>
+        </member>
+        <member name="T:BorisMobile.ViewModels.UserSupportPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.UserSupportPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.UserSupportPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.UserSupportPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.UserSupportPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.WorkFromAssetsPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.WorkFromAssetsPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.WorkFromAssetsPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.WorkFromAssetsPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.WorkFromAssetsPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:BorisMobile.ViewModels.WorkFromDrawingPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="F:BorisMobile.ViewModels.WorkFromDrawingPageViewModel.backButtonClickCommand">
+            <summary>The backing field for <see cref="P:BorisMobile.ViewModels.WorkFromDrawingPageViewModel.BackButtonClickCommand"/>.</summary>
+        </member>
+        <member name="P:BorisMobile.ViewModels.WorkFromDrawingPageViewModel.BackButtonClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:BorisMobile.ViewModels.WorkFromDrawingPageViewModel.BackButtonClick"/>.</summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CompanyDetails">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CompanyDetails" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.UserName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "UserName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsLoading">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsLoading" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.MainLayoutOpacity">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "MainLayoutOpacity" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsSyncVisible">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsSyncVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Cuscodeone">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Cuscodeone" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Cuscodetwo">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Cuscodetwo" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Cuscodethree">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Cuscodethree" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Cuscodefour">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Cuscodefour" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Cuscodefive">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Cuscodefive" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Cuscodesix">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Cuscodesix" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.MenuItems">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "MenuItems" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedItem">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedItem" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsVisibelCalenderPicker">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsVisibelCalenderPicker" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.WorkOrderGroups">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "WorkOrderGroups" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Password">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Password" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsFinished">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsFinished" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsTransferred">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsTransferred" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TransferMessage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TransferMessage" generated properties.</summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CompanyDetails">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CompanyDetails" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.UserName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "UserName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsLoading">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsLoading" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.MainLayoutOpacity">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "MainLayoutOpacity" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsSyncVisible">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsSyncVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Cuscodeone">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Cuscodeone" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Cuscodetwo">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Cuscodetwo" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Cuscodethree">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Cuscodethree" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Cuscodefour">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Cuscodefour" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Cuscodefive">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Cuscodefive" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Cuscodesix">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Cuscodesix" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.MenuItems">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "MenuItems" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedItem">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedItem" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsVisibelCalenderPicker">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsVisibelCalenderPicker" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.WorkOrderGroups">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "WorkOrderGroups" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Password">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Password" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsFinished">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsFinished" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsTransferred">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsTransferred" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TransferMessage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TransferMessage" generated properties.</summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions">
+            <summary>
+            A helper type with generated validation stubs for types deriving from <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservableValidator"/>.
+            </summary>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.AboutPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.AboutPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.AboutPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.AssetsPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.AssetsPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.AssetsPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.BaseViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.BaseViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.BaseViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.BulletinsPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.BulletinsPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.BulletinsPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.CustomerCodePageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.CustomerCodePageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.CustomerCodePageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.DocumentStorePageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.DocumentStorePageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.DocumentStorePageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.HomePageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.HomePageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.HomePageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.InformationPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.InformationPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.InformationPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.InProgressPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.InProgressPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.InProgressPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.JobDetailsPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.JobDetailsPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.JobDetailsPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.MyDiaryPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.MyDiaryPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.MyDiaryPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.ScanNFCPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.ScanNFCPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.ScanNFCPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.ScheduledWorkViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.ScheduledWorkViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.ScheduledWorkViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.SigninPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.SigninPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.SigninPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.SyncPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.SyncPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.SyncPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.UserSupportPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.UserSupportPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.UserSupportPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.WorkFromAssetsPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.WorkFromAssetsPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.WorkFromAssetsPageViewModel"/> objects.</returns>
+        </member>
+        <member name="M:CommunityToolkit.Mvvm.ComponentModel.__Internals.__ObservableValidatorExtensions.CreateAllPropertiesValidator(BorisMobile.ViewModels.WorkFromDrawingPageViewModel)">
+            <summary>
+            Creates a validation stub for <see cref="T:BorisMobile.ViewModels.WorkFromDrawingPageViewModel"/> objects.
+            </summary>
+            <param name="_">Dummy parameter, only used to disambiguate the method signature.</param>
+            <returns>A validation stub for <see cref="T:BorisMobile.ViewModels.WorkFromDrawingPageViewModel"/> objects.</returns>
+        </member>
+    </members>
+</doc>

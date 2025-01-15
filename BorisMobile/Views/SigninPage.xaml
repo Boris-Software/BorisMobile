@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.SigninPage"
+             Title="SigninPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:controls="clr-namespace:BorisMobile.Controls"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Resources>
+        <Style x:Key="InvalidButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#ADBCCC" />
+        </Style>
+        <Style x:Key="ValidButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#00B1E3" />
+        </Style>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout Padding="15" Opacity="{Binding MainLayoutOpacity}">
+            <Label Margin="0,20,0,0" Text="Log in" FontSize="20"></Label>
+
+            <StackLayout Margin="0,30,0,0">
+            <Label Text="Email" FontAttributes="Bold" />
+                <Border  
+                     HeightRequest="50"
+                     Stroke="#CAD3D7"
+                     StrokeShape="RoundRectangle 5"
+                     Background="white">
+                    <controls:NoBorderEntry Margin="0" Text="{Binding Email,Mode=TwoWay}"
+                           TextColor="Black" Placeholder="Please enter email" />
+                </Border>
+
+            <Label Text="Password" FontAttributes="Bold" Margin="0,20,0,0"/>
+                <Border  
+                     HeightRequest="50"
+                     Stroke="#CAD3D7"
+                     StrokeShape="RoundRectangle 5"
+                     Background="white">
+                    <controls:NoBorderEntry Margin="0" Text="{Binding Password,Mode=TwoWay}"
+                            TextColor="Black" Placeholder="Please enter password" IsPassword="True" />
+                </Border>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Forgot your Password?"></Span>
+                            <Span Text=" Contact Admin" TextDecorations="Underline" TextColor="#007BAB"></Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Button BackgroundColor="#ADBCCC" Margin="0,40,0,0"
+                        x:Name="btnContinue"
+                        HeightRequest="50"
+                        Text="Continue"
+                        TextColor="White"
+                        FontSize="15"
+                        IsEnabled="False"
+                        CornerRadius="25"
+                        Command="{Binding SubmitCommand}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                Binding="{Binding HasErrors,Mode=TwoWay}" Value="false">
+                            <Setter Property="IsEnabled" Value="True" />
+                            <Setter Property="BackgroundColor" Value="#00B1E3" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <Label FontSize="15" Text="Clear" HorizontalTextAlignment="Center" Margin="0,15,0,0" Padding="10">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ClearCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </StackLayout>
+        </StackLayout>
+            <ActivityIndicator IsRunning="True" IsVisible="{Binding IsLoading}" Scale="0.2"></ActivityIndicator>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

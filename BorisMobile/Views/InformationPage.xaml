@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.InformationPage"
+             Title="InformationPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid ColumnDefinitions="0.5*,3*,0.5*" 
+                  RowDefinitions="50" 
+                  Padding="0,15,0,30">
+                <Label Grid.Column="0" 
+                       Padding="10"  
+                       FontFamily="FaSolid" 
+                       TextColor="Black" 
+                       Text="{StaticResource backarrow}" 
+                       VerticalTextAlignment="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Grid.Column="1"
+                       HorizontalOptions="CenterAndExpand" 
+                       VerticalOptions="CenterAndExpand"
+                       FontAttributes="Bold" 
+                       Text="Information" 
+                       TextColor="Black" 
+                       FontSize="20"/>
+            </Grid>
+            <Label Text="Initial Value"
+                   Margin="20,5,0,0"
+                   FontAttributes="Bold"/>
+            <Border Margin="20,10,20,0"
+                    Padding="15"
+                    Stroke="#E3E5E5"
+                    HeightRequest="62"
+                    StrokeShape="RoundRectangle 5"
+                    Background="white">
+                <Label VerticalTextAlignment="Center"  
+                               Text="1" />
+            </Border>
+            <Button CornerRadius="20"
+                    Margin="20,40,20,40"
+                    Text="OK"
+                    BackgroundColor="#00B1E3"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

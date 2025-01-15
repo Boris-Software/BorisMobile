@@ -1,0 +1,13 @@
+<Config version="2.0.0.0">
+  <Header>
+    <Icon desc="Application.ico" />
+    <Name desc="magic5" />
+  </Header>
+  <IPAddresses>
+    <BaseURL url="http://app.magic5software.com/" desc="Default connection" />
+  </IPAddresses>
+  <DataTransfer suppressProtocolValidation="no"/>
+  <SyncPrompt intervalSecs="300" initialDelaySecs="300" repeatOnMaxSecs="3600" alertTitle="Unsent items">
+	<Delay id="1" numSecs="3600" messageText="Unsent items are still on the device, please try Send Reports"/>
+  </SyncPrompt>
+</Config>

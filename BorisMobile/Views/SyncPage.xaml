@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.SyncPage"
+             Title="Data Transfer"
+             NavigationPage.HasBackButton="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <StackLayout Padding="15">
+            <Label Text="Retrieving updates from server..." TextColor="Black"/>
+            <StackLayout Orientation="Horizontal" Margin="0,15,0,0">
+                <Border  Grid.Column="5" HorizontalOptions="Start"
+                 HeightRequest="50"
+                 WidthRequest="50"
+                 Stroke="#CAD3D7"
+                 StrokeShape="RoundRectangle 25">
+                    <Image Source="ok.png" Aspect="AspectFill"/>
+                </Border>
+                <Label Margin="15,0,0,0" FontAttributes="Bold" VerticalTextAlignment="Center" Text="Connected to server" TextColor="#00B1E3"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Margin="0,15,0,0">
+                <Border  Grid.Column="5" HorizontalOptions="Start"
+                     HeightRequest="50"
+                     WidthRequest="50"
+                     Stroke="#CAD3D7"
+                     StrokeShape="RoundRectangle 25">
+                    <Image Source="ok.png" Aspect="AspectFill"/>
+                </Border>
+                <Label Text="Authenticated" FontAttributes="Bold" TextColor="#00B1E3" Margin="15,0,0,0" VerticalTextAlignment="Center"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Margin="0,15,0,0">
+                <Border  Grid.Column="5" HorizontalOptions="Start"
+                 HeightRequest="50"
+                 WidthRequest="50"
+                 Stroke="#CAD3D7"
+                 StrokeShape="RoundRectangle 25">
+                    <Image Source="wait_transparent.png" Aspect="AspectFill">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image"
+                                    Binding="{Binding IsTransferred,Mode=TwoWay}" Value="true">
+                                <Setter Property="Source" Value="ok.png" />
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </Border>
+                <Label Text="Transferring data" FontAttributes="Bold" TextColor="#00B1E3" Margin="15,0,0,0" VerticalTextAlignment="Center"></Label>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Margin="0,15,0,0" IsVisible="{Binding IsFinished}">
+                <Border  Grid.Column="5" HorizontalOptions="Start"
+                 HeightRequest="50"
+                 WidthRequest="50"
+                 Stroke="#CAD3D7"
+                 StrokeShape="RoundRectangle 25">
+                    <Image Source="nok.png" Aspect="AspectFill"/>
+                </Border>
+                <Label Text="Fininshed" FontAttributes="Bold" TextColor="#00B1E3" Margin="15,0,0,0" VerticalTextAlignment="Center"></Label>
+            </StackLayout>
+
+            <Label Text="{Binding TransferMessage,Mode=TwoWay}" TextColor="Black"></Label>
+
+            <Button Text="OK" BackgroundColor="#00B1E3" HorizontalOptions="Center" WidthRequest="200" Padding="15"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <x:String x:Key="user">&#xf141;</x:String>
+    <x:String x:Key="rightarrow">&#xf105;</x:String>
+    <x:String x:Key="pause">&#xf04c;</x:String>
+    <x:String x:Key="backarrow">&#xf060;</x:String>
+    <x:String x:Key="logout">&#xf2f5;</x:String>
+    <x:String x:Key="chevronup">&#xf077;</x:String>
+    <x:String x:Key="chevrondown">&#xf078;</x:String>
+
+</ResourceDictionary>

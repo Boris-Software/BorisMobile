@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.JobDetailsPage"
+             Title="JobDetailsPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" 
+                  RowDefinitions="50" Padding="0,15,0,30">
+                <Label Grid.Column="0" 
+                       Padding="10"  
+                       FontFamily="FaSolid" 
+                       TextColor="Black" 
+                       Text="{StaticResource backarrow}" 
+                       VerticalTextAlignment="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Grid.Column="1"
+                       HorizontalOptions="CenterAndExpand" 
+                       VerticalOptions="CenterAndExpand"
+                       FontAttributes="Bold" 
+                       Text="Job Details" 
+                       TextColor="Black" 
+                       FontSize="20"></Label>
+                <Grid Grid.Column="2">
+                    <Image Source="cloud.png" 
+                           WidthRequest="20" 
+                           HeightRequest="20"></Image>
+                    <Image Source="syncavailable.png" 
+                           WidthRequest="10" 
+                           HeightRequest="10" 
+                           Margin="10,10,0,0"></Image>
+                </Grid>
+                <Label VerticalTextAlignment="Center" 
+                       Grid.Column="3" 
+                       FontFamily="FaSolid" 
+                       TextColor="Black" 
+                       Text="{StaticResource user}" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </Grid>
+            <StackLayout HorizontalOptions="FillAndExpand" 
+                         BackgroundColor="#EFFAFF" 
+                         HeightRequest="260"
+                         Padding="10">
+                <StackLayout >
+                    <Label Text="Client" 
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           Margin="0,0,0,2"/>
+                    <Label Text="{Binding SelectedItem.customer.Desc}" TextColor="Black"
+                           Margin="0,0,0,10"/>
+                    <BoxView
+                        HorizontalOptions="FillAndExpand"
+                        HeightRequest="1"
+                        BackgroundColor="#E3E9EA"
+                        Margin="0,0,0,20"/>
+                </StackLayout>
+                <StackLayout >
+                    <Label Text="Job no" TextColor="Black"
+                           FontAttributes="Bold"
+                           Margin="0,0,0,2"/>
+                    <Label Text="{Binding SelectedItem.workOrder.JobNo}" TextColor="Black"
+                           Margin="0,0,0,10"/>
+                    <BoxView
+                        HorizontalOptions="FillAndExpand"
+                        HeightRequest="1"
+                        BackgroundColor="#E3E9EA"
+                        Margin="0,0,0,20"/>
+                </StackLayout>
+                <StackLayout >
+                    <Label Text="Notes" TextColor="Black"
+                           FontAttributes="Bold"
+                           Margin="0,0,0,2"/>
+                    <Label Text="{Binding SelectedItem.workOrder.Notes}"
+                          TextColor="Black" Margin="0,0,0,20"/>
+                </StackLayout>
+
+            </StackLayout>
+            <StackLayout>
+                <Border Margin="0,50,0,0" 
+                        Padding="0"
+                        HorizontalOptions="FillAndExpand"
+                        Stroke="White"
+                        HeightRequest="56">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding WFDrawingsClickedCommand}" 
+                                               />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="2.5*,1*" 
+                          RowDefinitions="56" 
+                          Padding="0">
+                        <Label VerticalTextAlignment="Center" 
+                               Grid.Column="0" 
+                               TextColor="Black" 
+                               Text="Work from Drawings" 
+                               Padding="20,0,0,0"/>
+                        <Label Padding="0,0,20,0" 
+                               VerticalTextAlignment="Center" 
+                               HorizontalOptions="End" 
+                               Grid.Column="1" 
+                               FontFamily="FaSolid" 
+                               TextColor="Black" 
+                               Text="{StaticResource rightarrow}" />
+
+                    </Grid>
+                </Border>
+                <BoxView
+                        HorizontalOptions="FillAndExpand"
+                        HeightRequest="1"
+                        BackgroundColor="#E3E9EA"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Border Margin="0,0,0,0" 
+                        Padding="0"
+                        HorizontalOptions="FillAndExpand"
+                        Stroke="White"
+                        HeightRequest="56">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding InProgressClickedCommand}" 
+                                               />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="2.5*,1*" 
+                          RowDefinitions="56" 
+                          Padding="0">
+                        <Label VerticalTextAlignment="Center" 
+                               Grid.Column="0" 
+                               TextColor="Black" 
+                               Text="In progress" 
+                               Padding="20,0,0,0"/>
+                        <Label Padding="0,0,20,0" 
+                               VerticalTextAlignment="Center" 
+                               HorizontalOptions="End" 
+                               Grid.Column="1" 
+                               FontFamily="FaSolid" 
+                               TextColor="Black" 
+                               Text="{StaticResource rightarrow}" />
+
+                    </Grid>
+                </Border>
+                <BoxView
+                        HorizontalOptions="FillAndExpand"
+                        HeightRequest="1"
+                        BackgroundColor="#E3E9EA"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Border Margin="0,0,0,0" 
+                        Padding="0"
+                        HorizontalOptions="FillAndExpand"
+                        Stroke="White"
+                        HeightRequest="56">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CreateFormClickedCommand}" 
+                                               />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="2.5*,1*" 
+                          RowDefinitions="56" 
+                          Padding="0">
+                        <Label VerticalTextAlignment="Center" 
+                               Grid.Column="0" 
+                               TextColor="Black" 
+                               Text="Create a new form" 
+                               Padding="20,0,0,0"/>
+                        <Label Padding="0,0,20,0" 
+                               VerticalTextAlignment="Center" 
+                               HorizontalOptions="End" 
+                               Grid.Column="1" 
+                               FontFamily="FaSolid" 
+                               TextColor="Black" 
+                               Text="{StaticResource rightarrow}" />
+
+                    </Grid>
+                </Border>
+                <BoxView
+                        HorizontalOptions="FillAndExpand"
+                        HeightRequest="1"
+                        BackgroundColor="#E3E9EA"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Border Margin="0,0,0,0" 
+                        Padding="0"
+                        HorizontalOptions="FillAndExpand"
+                        Stroke="White"
+                        HeightRequest="56">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding WorkFromAssetsClickedCommand}" 
+                                              />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="2.5*,1*" 
+                          RowDefinitions="56" 
+                          Padding="0">
+                        <Label VerticalTextAlignment="Center" 
+                               Grid.Column="0" 
+                               TextColor="Black" 
+                               Text="Work from assets" 
+                               Padding="20,0,0,0"/>
+                        <Label Padding="0,0,20,0" 
+                               VerticalTextAlignment="Center" 
+                               HorizontalOptions="End" 
+                               Grid.Column="1" 
+                               FontFamily="FaSolid" 
+                               TextColor="Black" 
+                               Text="{StaticResource rightarrow}" />
+
+                    </Grid>
+                </Border>
+                <BoxView
+                        HorizontalOptions="FillAndExpand"
+                        HeightRequest="1"
+                        BackgroundColor="#E3E9EA"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Border Margin="0,0,0,0" 
+                        Padding="0"
+                        HorizontalOptions="FillAndExpand"
+                        Stroke="White"
+                        HeightRequest="56">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding DocumentsClickedCommand}" 
+                                               />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="2.5*,1*" 
+                          RowDefinitions="56" 
+                          Padding="0">
+                        <Label VerticalTextAlignment="Center" 
+                               Grid.Column="0" 
+                               TextColor="Black" 
+                               Text="Documents" 
+                               Padding="20,0,0,0"/>
+                        <Label Padding="0,0,20,0" 
+                               VerticalTextAlignment="Center" 
+                               HorizontalOptions="End" 
+                               Grid.Column="1" 
+                               FontFamily="FaSolid" 
+                               TextColor="Black" 
+                               Text="{StaticResource rightarrow}" />
+
+                    </Grid>
+                </Border>
+                <BoxView
+                        HorizontalOptions="FillAndExpand"
+                        HeightRequest="1"
+                        BackgroundColor="#E3E9EA"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Border Margin="0,0,0,0" 
+                        Padding="0"
+                        HorizontalOptions="FillAndExpand"
+                        Stroke="White"
+                        HeightRequest="56">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding KeyClickedCommand}" 
+                                               />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="2.5*,1*" 
+                          RowDefinitions="56" 
+                          Padding="0">
+                        <Label VerticalTextAlignment="Center" 
+                               Grid.Column="0" 
+                               TextColor="Black" 
+                               Text="Key" 
+                               Padding="20,0,0,0"/>
+                        <Label Padding="0,0,20,0" 
+                               VerticalTextAlignment="Center" 
+                               HorizontalOptions="End" 
+                               Grid.Column="1" 
+                               FontFamily="FaSolid" 
+                               TextColor="Black" 
+                               Text="{StaticResource rightarrow}" />
+
+                    </Grid>
+                </Border>
+            </StackLayout>
+
+        
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

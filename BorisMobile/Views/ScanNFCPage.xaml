@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.ScanNFCPage"
+             Title="ScanNFCPage"
+             xmlns:controls="clr-namespace:BorisMobile.Controls"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Grid ColumnDefinitions="0.8*,3*,0.5*" 
+                    RowDefinitions="50" Margin="10" >
+                <Label Grid.Column="0" 
+                   TextColor="#00B1E3" 
+                   Text="Cancel" FontSize="16" FontAttributes="Bold"
+                   VerticalTextAlignment="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Grid.Column="1"
+                       HorizontalOptions="CenterAndExpand" 
+                       VerticalOptions="CenterAndExpand"
+                       FontAttributes="Bold" 
+                       Text="Scan NFC" 
+                       TextColor="Black" 
+                       FontSize="20"></Label>
+                
+                <Label VerticalTextAlignment="Center" 
+                       Grid.Column="2"  FontSize="16" FontAttributes="Bold"
+                       TextColor="Black" 
+                       Text="Save" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+            <Label Text="General Information" Margin="10,10,0,0" TextColor="#00B1E3"/>
+
+            <StackLayout Orientation="Horizontal" Margin="15,20,15,0">
+                <Label Text="Door Asset" TextColor="Black"  HorizontalOptions="Start"/>
+                <Image HorizontalOptions="EndAndExpand" Source="scan.png" HeightRequest="24" WidthRequest="24" />
+
+            </StackLayout>
+            <StackLayout Margin="10">
+                <Border StrokeShape="RoundRectangle 10"
+                    Stroke="LightGray" BackgroundColor="White" HeightRequest="50">
+                    <controls:NoBorderEntry VerticalOptions="CenterAndExpand" Grid.Column="0" 
+                             Placeholder="Type.." Margin="10,0,0,0"
+                             PlaceholderColor="Gray"/>
+                </Border>
+            </StackLayout>
+
+            <Border Margin="10,20,10,0"
+                    Stroke="#00B1E3"
+                    HeightRequest="40" HorizontalOptions="FillAndExpand"
+                    StrokeShape="RoundRectangle 20"
+                    Background="#00B1E3">
+                <Label Text="Scan NFC" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="White"></Label>
+            </Border>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

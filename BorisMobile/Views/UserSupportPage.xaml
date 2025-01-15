@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.UserSupportPage"
+             Title="UserSupportPage"
+             xmlns:controls="clr-namespace:BorisMobile.Controls"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" 
+      RowDefinitions="50" >
+                <Label Grid.Column="0" 
+           Padding="10"  
+           FontFamily="FaSolid" 
+           TextColor="Black" 
+           Text="{StaticResource backarrow}" 
+           VerticalTextAlignment="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Grid.Column="1"
+           HorizontalOptions="CenterAndExpand" 
+           VerticalOptions="CenterAndExpand"
+           FontAttributes="Bold" 
+           Text="User Support" 
+           TextColor="Black" 
+           FontSize="20"></Label>
+                <Grid Grid.Column="2">
+                    <Image Source="cloud.png" 
+               WidthRequest="20" 
+               HeightRequest="20"></Image>
+                    <Image Source="syncavailable.png" 
+               WidthRequest="10" 
+               HeightRequest="10" 
+               Margin="10,10,0,0"></Image>
+                </Grid>
+                <Label VerticalTextAlignment="Center" 
+           Grid.Column="3" 
+           FontFamily="FaSolid" 
+           TextColor="Black" 
+           Text="{StaticResource user}" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+            <StackLayout Orientation="Horizontal">
+                <Border Margin="10,0,0,0"
+                Stroke="#00B1E3"
+                HeightRequest="40"
+                        WidthRequest="100"
+                StrokeShape="RoundRectangle 20"
+                Background="#00B1E3">
+                    <Label Text="Register" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="White"></Label>
+                </Border>
+
+                <Border Margin="10,0,0,0"
+                    Stroke="#DEF5FF"
+                    HeightRequest="40"
+                            WidthRequest="120"
+                    StrokeShape="RoundRectangle 20"
+                    Background="#DEF5FF">
+                    <Label Text="Installation" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="#00B1E3"></Label>
+                </Border>
+
+                <Border Margin="10,0,0,0"
+                    Stroke="#DEF5FF"
+                    HeightRequest="40"
+                            WidthRequest="120"
+                    StrokeShape="RoundRectangle 20"
+                    Background="#DEF5FF">
+                    <Label Text="Maintenance" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="#00B1E3"></Label>
+                </Border>
+            </StackLayout>
+
+            <Label Text="Select Form" TextColor="Black" Margin="15,20,0,0"></Label>
+            <StackLayout Margin="10">
+                <Border StrokeShape="RoundRectangle 15"
+                        Stroke="white"
+                        BackgroundColor="#F4F6F7">
+                    <Grid ColumnDefinitions="4*,0.5*"
+                        RowDefinitions="50" >
+                        <controls:NoBorderSearchBar  Grid.Column="0" 
+                                         Placeholder="Search" 
+                                         PlaceholderColor="Gray"/>
+                        <StackLayout Grid.Column="1"
+                         Padding="5"
+                         VerticalOptions="Center">
+                            <Image Source="dictation.png"/>
+                        </StackLayout>
+                    </Grid>
+                </Border>
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Customer" TextColor="Black" Margin="10,10,0,0"></Label>
+                <StackLayout Margin="10">
+                    <Border StrokeShape="RoundRectangle 10"
+            Stroke="#CAD3D7">
+                        <Grid ColumnDefinitions="4*,0.5*" 
+              Padding="10,0,0,0">
+                            <controls:NoBorderPicker TextColor="Black" Grid.Column="0" x:Name="picker"
+                Title="Level 0">
+                                <controls:NoBorderPicker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Boris Software</x:String>
+                                        <x:String>Boris Software</x:String>
+                                    </x:Array>
+                                </controls:NoBorderPicker.ItemsSource>
+                            </controls:NoBorderPicker>
+                            <Label Grid.Column="1" 
+                Margin="10,0,0,0" 
+                FontFamily="FaSolid" 
+                TextColor="Gray" 
+                Text="{StaticResource chevrondown}" 
+                VerticalTextAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </StackLayout>
+
+
+                <Label Text="Location" TextColor="Black" Margin="10,10,0,0"></Label>
+                <StackLayout Margin="10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Stroke="#CAD3D7">
+                        <Grid ColumnDefinitions="4*,0.5*" 
+                                Padding="10,0,0,0">
+                            <controls:NoBorderPicker TextColor="Black" Grid.Column="0" 
+                                    Title="Level 0">
+                                <controls:NoBorderPicker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>06</x:String>
+                                        <x:String>07</x:String>
+                                    </x:Array>
+                                </controls:NoBorderPicker.ItemsSource>
+                            </controls:NoBorderPicker>
+                            <Label Grid.Column="1" 
+                                Margin="10,0,0,0" 
+                                FontFamily="FaSolid" 
+                                TextColor="Gray" 
+                                Text="{StaticResource chevrondown}" 
+                                VerticalTextAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </StackLayout>
+
+                <Label Text="Date" TextColor="Black" Margin="10,10,0,0"></Label>
+                <StackLayout Margin="10">
+                    <Border StrokeShape="RoundRectangle 10"
+            Stroke="#CAD3D7">
+                        <Grid ColumnDefinitions="4*,0.5*" 
+                Padding="10,0,0,0">
+                            <controls:NoBorderPicker TextColor="Black" Grid.Column="0" 
+                    Title="Level 0">
+                                <controls:NoBorderPicker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Boris Software</x:String>
+                                        <x:String>Boris Software</x:String>
+                                    </x:Array>
+                                </controls:NoBorderPicker.ItemsSource>
+                            </controls:NoBorderPicker>
+
+                            <Image Grid.Column="1" 
+                                Margin="0,0,10,0"
+                                Source="calendar.png"/>
+                        </Grid>
+                    </Border>
+                </StackLayout>
+            </StackLayout>
+
+            <Border Margin="10,20,10,0"
+                Stroke="#00B1E3"
+                HeightRequest="40" HorizontalOptions="FillAndExpand"
+                StrokeShape="RoundRectangle 20"
+                Background="#00B1E3">
+                <Label Text="New Form" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="White"></Label>
+            </Border>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

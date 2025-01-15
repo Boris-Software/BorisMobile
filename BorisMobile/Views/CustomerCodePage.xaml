@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.CustomerCodePage"
+             Title="CustomerCodePage"
+             xmlns:controls="clr-namespace:BorisMobile.Controls"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid>
+        <StackLayout Margin="20,20,20,0" Opacity="{Binding MainLayoutOpacity}">
+            <Label Text="Log in"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   Margin="0,0,0,50"/>
+            <Label Text="Enter Customer Code"
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   Margin="0,10,0,15"/>
+            <Label Text="Please enter 6 digit code before the login"/>
+
+            <Grid ColumnDefinitions="*,*,*,*,*,*"
+                  Margin="0,45,0,60">
+                <Border  Grid.Column="0"
+                         HeightRequest="50"
+                         WidthRequest="50"
+                         Stroke="#CAD3D7"
+                         StrokeShape="RoundRectangle 25"
+                         Background="white">
+                        <controls:NoBorderEntry Text="{Binding Cuscodeone}" 
+                           x:Name="cusone"
+                           Keyboard="Numeric"
+                           TextColor="Black"
+                           MaxLength="1"
+                           TextChanged="cusone_TextChanged"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                <Border  Grid.Column="1"
+                         HeightRequest="50"
+                         WidthRequest="50"
+                         Stroke="#CAD3D7"
+                         StrokeShape="RoundRectangle 25"
+                         Background="white">
+                        <controls:NoBorderEntry Text="{Binding Cuscodetwo}" 
+                           x:Name="custwo"
+                           TextColor="Black"
+                           TextChanged="custwo_TextChanged"
+                           Keyboard="Numeric"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                <Border  Grid.Column="2"
+                         HeightRequest="50"
+                         WidthRequest="50"
+                         Stroke="#CAD3D7"
+                         StrokeShape="RoundRectangle 25"
+                         Background="white">
+                        <controls:NoBorderEntry Text="{Binding Cuscodethree}" 
+                           x:Name="custhree"
+                           TextColor="Black"
+                           TextChanged="custhree_TextChanged"
+                           Keyboard="Numeric"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                <Border  Grid.Column="3"
+                         HeightRequest="50"
+                         WidthRequest="50"
+                         Stroke="#CAD3D7"
+                         StrokeShape="RoundRectangle 25"
+                         Background="white">
+                        <controls:NoBorderEntry Text="{Binding Cuscodefour}" 
+                           x:Name="cusfour"
+                           TextColor="Black"
+                           TextChanged="cusfour_TextChanged"
+                           Keyboard="Numeric"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                <Border  Grid.Column="4"
+                         HeightRequest="50"
+                         WidthRequest="50"
+                         Stroke="#CAD3D7"
+                         StrokeShape="RoundRectangle 25"
+                         Background="white">
+                        <controls:NoBorderEntry Text="{Binding Cuscodefive}" 
+                           x:Name="cusfive"
+                           TextColor="Black"
+                           TextChanged="cusfive_TextChanged"
+                           Keyboard="Numeric"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+                <Border  Grid.Column="5"
+                         HeightRequest="50"
+                         WidthRequest="50"
+                         Stroke="#CAD3D7"
+                         StrokeShape="RoundRectangle 25"
+                         Background="white">
+                        <controls:NoBorderEntry Text="{Binding Cuscodesix}" 
+                           x:Name="cussix"
+                           TextColor="Black"
+                           TextChanged="cussix_TextChanged"
+                           Keyboard="Numeric"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
+                </Border>
+            </Grid>
+                <Button BackgroundColor="#ADBCCC"
+                    x:Name="btnContinue"
+                    IsEnabled="False"
+                    Text="Continue"
+                    CornerRadius="25"
+                    Command="{Binding ContinueCommand}"/>
+            <Label Text="Clear" Margin="0,15,0,0"  Padding="5"
+                   HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ClearCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+        </StackLayout>
+            <ActivityIndicator IsRunning="True" IsVisible="{Binding IsLoading}" Scale="0.2"></ActivityIndicator>
+        </Grid>
+    </ContentPage.Content>
+
+</ContentPage>

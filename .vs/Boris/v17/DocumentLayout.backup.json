@@ -1,0 +1,411 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Boris\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\utilities\\chrono.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\utilities\\chrono.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\utilities\\datetimerangecollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\utilities\\datetimerangecollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\utilities\\datetimerange.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\utilities\\datetimerange.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\datatransfercontroller\\datatransferparameters.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\datatransfercontroller\\datatransferparameters.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\xml\\xmlutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\xml\\xmlutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\xml\\xmlconfigattachmentdoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\xml\\xmlconfigattachmentdoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\utilities\\misc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\utilities\\misc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\utilities\\utilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\utilities\\utilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\services\\syncservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\services\\syncservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\datahandler\\syncdatahandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\datahandler\\syncdatahandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\utilities\\io.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\utilities\\io.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\helper\\fileshelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\helper\\fileshelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\helper\\xmlhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\helper\\xmlhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\datatransfercontroller\\webapiservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\datatransfercontroller\\webapiservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\services\\customercodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\services\\customercodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\helper\\syncupdatemessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\helper\\syncupdatemessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\borismobile.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\borismobile.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\controls\\nobordersearchbar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\controls\\nobordersearchbar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\controls\\noborderpicker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\controls\\noborderpicker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|c:\\boris\\borismobile\\controls\\noborderentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C28D8-5460-4B18-8234-4D3F98B92AB9}|BorisMobile\\BorisMobile.csproj|solutionrelative:borismobile\\controls\\noborderentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DateTimeRange.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Utilities\\DateTimeRange.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Utilities\\DateTimeRange.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Utilities\\DateTimeRange.cs",
+              "RelativeToolTip": "BorisMobile\\Utilities\\DateTimeRange.cs",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAAAH4AAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:42:03.665Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DateTimeRangeCollection.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Utilities\\DateTimeRangeCollection.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Utilities\\DateTimeRangeCollection.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Utilities\\DateTimeRangeCollection.cs",
+              "RelativeToolTip": "BorisMobile\\Utilities\\DateTimeRangeCollection.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACkAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:41:24.282Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DataTransferParameters.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\DataTransferController\\DataTransferParameters.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\DataTransferController\\DataTransferParameters.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\DataTransferController\\DataTransferParameters.cs",
+              "RelativeToolTip": "BorisMobile\\DataTransferController\\DataTransferParameters.cs",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAhwG4AAACLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:40:25.544Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Utilities.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Utilities\\Utilities.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Utilities\\Utilities.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Utilities\\Utilities.cs",
+              "RelativeToolTip": "BorisMobile\\Utilities\\Utilities.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:35:17.164Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\App.xaml",
+              "RelativeDocumentMoniker": "BorisMobile\\App.xaml",
+              "ToolTip": "C:\\Boris\\BorisMobile\\App.xaml",
+              "RelativeToolTip": "BorisMobile\\App.xaml",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAhwAoAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-01-14T14:13:07.591Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "XmlConfigAttachmentDoc.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\XML\\XmlConfigAttachmentDoc.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\XML\\XmlConfigAttachmentDoc.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\XML\\XmlConfigAttachmentDoc.cs",
+              "RelativeToolTip": "BorisMobile\\XML\\XmlConfigAttachmentDoc.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwA4AAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:33:43.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Chrono.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Utilities\\Chrono.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Utilities\\Chrono.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Utilities\\Chrono.cs",
+              "RelativeToolTip": "BorisMobile\\Utilities\\Chrono.cs",
+              "ViewState": "AgIAAH8BAAAAAAAAAAAAwIgBAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:30:44.014Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "SyncService.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Services\\SyncService.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Services\\SyncService.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Services\\SyncService.cs",
+              "RelativeToolTip": "BorisMobile\\Services\\SyncService.cs",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAhwLQAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:27:03.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "XMLHelper.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Helper\\XMLHelper.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Helper\\XMLHelper.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Helper\\XMLHelper.cs",
+              "RelativeToolTip": "BorisMobile\\Helper\\XMLHelper.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:21:33.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "FilesHelper.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Helper\\FilesHelper.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Helper\\FilesHelper.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Helper\\FilesHelper.cs",
+              "RelativeToolTip": "BorisMobile\\Helper\\FilesHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:21:32.141Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IO.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Utilities\\IO.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Utilities\\IO.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Utilities\\IO.cs",
+              "RelativeToolTip": "BorisMobile\\Utilities\\IO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:18:35.737Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Misc.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Utilities\\Misc.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Utilities\\Misc.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Utilities\\Misc.cs",
+              "RelativeToolTip": "BorisMobile\\Utilities\\Misc.cs",
+              "ViewState": "AgIAAIwBAAAAAAAAAAAAAJMBAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:17:15.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "XmlUtils.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\XML\\XmlUtils.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\XML\\XmlUtils.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\XML\\XmlUtils.cs",
+              "RelativeToolTip": "BorisMobile\\XML\\XmlUtils.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAuwBAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T14:21:48.335Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "WebApiServices.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\DataTransferController\\WebApiServices.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\DataTransferController\\WebApiServices.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\DataTransferController\\WebApiServices.cs",
+              "RelativeToolTip": "BorisMobile\\DataTransferController\\WebApiServices.cs",
+              "ViewState": "AgIAAHwAAAAAAAAAAAAAAIMAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:24:23.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "CustomerCodeService.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Services\\CustomerCodeService.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Services\\CustomerCodeService.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Services\\CustomerCodeService.cs",
+              "RelativeToolTip": "BorisMobile\\Services\\CustomerCodeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:26:48.258Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SyncDataHandler.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\DataHandler\\SyncDataHandler.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\DataHandler\\SyncDataHandler.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\DataHandler\\SyncDataHandler.cs",
+              "RelativeToolTip": "BorisMobile\\DataHandler\\SyncDataHandler.cs",
+              "ViewState": "AgIAAG4BAAAAAAAAAAAuwG4BAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:15:24.786Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "SyncUpdateMessage.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Helper\\SyncUpdateMessage.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Helper\\SyncUpdateMessage.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Helper\\SyncUpdateMessage.cs",
+              "RelativeToolTip": "BorisMobile\\Helper\\SyncUpdateMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T20:21:40.466Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "MauiProgram.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\MauiProgram.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\MauiProgram.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\MauiProgram.cs",
+              "RelativeToolTip": "BorisMobile\\MauiProgram.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAIA1wA8AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T14:15:03.875Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\App.xaml.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\App.xaml.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\App.xaml.cs",
+              "RelativeToolTip": "BorisMobile\\App.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T14:13:50.059Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "BorisMobile.csproj",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\BorisMobile.csproj",
+              "RelativeDocumentMoniker": "BorisMobile\\BorisMobile.csproj",
+              "ToolTip": "C:\\Boris\\BorisMobile\\BorisMobile.csproj",
+              "RelativeToolTip": "BorisMobile\\BorisMobile.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-01-14T14:11:29.039Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "NoBorderSearchBar.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Controls\\NoBorderSearchBar.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Controls\\NoBorderSearchBar.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Controls\\NoBorderSearchBar.cs",
+              "RelativeToolTip": "BorisMobile\\Controls\\NoBorderSearchBar.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T14:11:18.491Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "NoBorderPicker.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Controls\\NoBorderPicker.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Controls\\NoBorderPicker.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Controls\\NoBorderPicker.cs",
+              "RelativeToolTip": "BorisMobile\\Controls\\NoBorderPicker.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T14:11:17.448Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "NoBorderEntry.cs",
+              "DocumentMoniker": "C:\\Boris\\BorisMobile\\Controls\\NoBorderEntry.cs",
+              "RelativeDocumentMoniker": "BorisMobile\\Controls\\NoBorderEntry.cs",
+              "ToolTip": "C:\\Boris\\BorisMobile\\Controls\\NoBorderEntry.cs",
+              "RelativeToolTip": "BorisMobile\\Controls\\NoBorderEntry.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T14:11:08.563Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

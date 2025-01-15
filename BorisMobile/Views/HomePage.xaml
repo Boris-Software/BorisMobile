@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.HomePage"
+             Title="HomePage"
+             x:Name="MyHomePage"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
+    <StackLayout Padding="10">
+        <Grid ColumnDefinitions="3*,0.5*,0.2*" RowDefinitions="50" >
+            <Label Grid.Column="0" VerticalTextAlignment="Center" Text="Overview" FontAttributes="Bold" TextColor="Black" FontSize="20"></Label>
+            <Grid Grid.Column="1">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SyncCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+                <Image Source="cloud.png" WidthRequest="20" HeightRequest="20"></Image>
+                <Image Source="syncavailable.png" WidthRequest="10" HeightRequest="10" Margin="10,10,0,0"></Image>
+            </Grid>
+            <Label VerticalTextAlignment="Center" Grid.Column="2" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource user}" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <Grid VerticalOptions="FillAndExpand">
+            <StackLayout VerticalOptions="FillAndExpand">
+                <Label Text="Please select your option" Margin="0,20,0,0" TextColor="#878787"></Label>
+
+                <CollectionView ItemsSource="{Binding MenuItems}" SelectionMode="Single" Margin="0" >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <!--<StackLayout VerticalOptions="FillAndExpand" HeightRequest="150">-->
+                            <Border Margin="0,5,0,0" Padding="0"
+                                        VerticalOptions="FillAndExpand"
+                                        HorizontalOptions="FillAndExpand"
+                                        Stroke="#EFFAFF"
+                                        HeightRequest="56"
+                                        StrokeShape="RoundRectangle 5"
+                                        Background="#EFFAFF">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.MenuItemClickedCommand, Source={x:Reference MyHomePage}}" CommandParameter="{Binding .}" ></TapGestureRecognizer>
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="0.5*,2*,1*" RowDefinitions="56" Padding="0">
+                                    <Image Grid.Column="0" Source="{Binding NewImage}" HeightRequest="24" WidthRequest="24" />
+                                            <Label VerticalTextAlignment="Center" Grid.Column="1" TextColor="Black" Text="{Binding Name}" />
+                                            <Label Padding="0,0,20,0" VerticalTextAlignment="Center" HorizontalOptions="End" Grid.Column="2" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource rightarrow}" />
+
+                                        </Grid>
+                                    </Border>
+                                <!--</StackLayout>-->
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+
+            <Border Margin="0,0,0,0" IsVisible="{Binding IsSyncVisible}" 
+                HeightRequest="120"
+                    VerticalOptions="Start"
+                HorizontalOptions="FillAndExpand"
+                Stroke="WhiteSmoke"
+                StrokeShape="RoundRectangle 5"
+                Background="White">
+                <StackLayout Padding="15">
+                    <Label Text="40%" TextColor="#00B1E3"/>
+                    <ProgressBar Progress="0.5" ProgressColor="#00B1E3" />
+                    <Label Text="Uploading" TextColor="#5D727D" Margin="0,0,0,0"/>
+                    <StackLayout Orientation="Horizontal" Margin="0,5,0,0">
+                        <Label HorizontalOptions="Start" Text="Data Syncing" TextColor="#5D727D"></Label>
+                        <Border  
+                HeightRequest="30" WidthRequest="30"
+                HorizontalOptions="EndAndExpand"
+                Stroke="Red"
+                StrokeShape="RoundRectangle 20"
+                Background="Red">
+                            <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Text="{StaticResource pause}" FontFamily="FaSolid"/>
+                        </Border>
+                    </StackLayout>
+                </StackLayout>
+            </Border>
+            
+        </Grid>
+        
+    </StackLayout>
+</ContentPage>

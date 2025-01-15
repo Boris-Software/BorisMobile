@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.ScheduledWorkPage"
+             xmlns:controls="clr-namespace:BorisMobile.Controls"
+             Title="ScheduledWorkPage" 
+             x:Name="ScheduledWork"
+             xmlns:toolkit="http://schemas.syncfusion.com/maui/toolkit"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <Grid>
+        <StackLayout Padding="10">
+            <Grid ColumnDefinitions="0.5*,3*,0.7*" RowDefinitions="50" >
+                <Label Grid.Column="0" Padding="10"  FontFamily="FaSolid" TextColor="Black" Text="{StaticResource backarrow}" VerticalTextAlignment="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Grid.Column="1" VerticalTextAlignment="Center" FontAttributes="Bold" Text="Scheduled Works" TextColor="Black" FontSize="20"></Label>
+                <Grid Grid.Column="2">
+                    <Image Source="cloud.png" WidthRequest="20" HeightRequest="20"></Image>
+                    <Image Source="syncavailable.png" WidthRequest="10" HeightRequest="10" Margin="10,10,0,0"></Image>
+                </Grid>
+                
+            </Grid>
+
+            <StackLayout>
+                <Grid ColumnDefinitions="0.5*,0.5*" Padding="10" >
+                    <StackLayout Orientation="Horizontal" Grid.Column="0">
+                            <controls:NoBorderPicker TextColor="Black" x:Name="groupByPicker"
+                                ItemsSource="{Binding GroupOptions}" SelectedItem="{Binding SelectedGroupBy}"
+                                Margin="10,0" ItemDisplayBinding="{Binding}">
+                            </controls:NoBorderPicker>
+                            <Label Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Grid.Column="1" HorizontalOptions="EndAndExpand">
+                        <Image Source="filter_lines.png"/>
+                            <Image Source="calendar.png" Margin="15,0,0,0">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CalendarIconClickedCommand}"></TapGestureRecognizer>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Image Source="minimize.png" Margin="15,0,0,0">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding MinimizeCommand}"></TapGestureRecognizer>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+                </Grid>
+            </StackLayout>
+
+                <CollectionView ItemsSource="{Binding WorkOrderGroups}">
+                    <CollectionView.Triggers>
+                        <DataTrigger TargetType="CollectionView"
+                            Binding="{Binding WorkOrderGroups.Count}" Value="0">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </CollectionView.Triggers>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <!-- Month Header (Collapsible Section) -->
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.ToggleGroupCommand, Source={x:Reference ScheduledWork}}" CommandParameter="{Binding .}" />
+                                </StackLayout.GestureRecognizers>
+
+                                <Border Margin="0,20,0,0" 
+                                    HeightRequest="50"
+                                    HorizontalOptions="FillAndExpand"
+                                    Stroke="#EFFAFF"
+                                    StrokeShape="RoundRectangle 5"
+                                    Background="#EFFAFF">
+                                <StackLayout BackgroundColor="#EFFAFF" Padding="15">
+                                    <Grid ColumnDefinitions="0.5*,0.5*">
+                                        <StackLayout Grid.Column="0" Orientation="Horizontal">
+                                                <Label Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label"
+                                                             Binding="{Binding IsExpanded}" Value="true">
+                                                            <Setter Property="Text" Value="{StaticResource chevronup}" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                                <Label Margin="10,0,0,0" Text="{Binding MonthName}" TextColor="Black" VerticalTextAlignment="Center"/>
+                                        </StackLayout>
+
+                                            <Label Grid.Column="1" HorizontalOptions="EndAndExpand" TextColor="Black" Text="{Binding WorkOrders.Count}"></Label>
+                                    </Grid>
+                                </StackLayout>
+                                </Border>
+
+                                <CollectionView ItemsSource="{Binding WorkOrders}" SelectionMode="Single" Margin="0" IsVisible="{Binding IsExpanded}" >
+                                    
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding BindingContext.JobClickCommand, Source={x:Reference ScheduledWork}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                                <!--<Border Margin="0,20,0,0" 
+                                                    HeightRequest="50"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Stroke="#EFFAFF"
+                                                    StrokeShape="RoundRectangle 5"
+                                                    Background="#EFFAFF">-->
+                                                    <!--<StackLayout BackgroundColor="#EFFAFF" Padding="15">
+                                                        <Grid ColumnDefinitions="0.5*,0.5*">
+                                                            <StackLayout Grid.Column="0" Orientation="Horizontal">
+                                                                <Label Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center"/>
+                                                                <Label Margin="10,0,0,0" Text="January" TextColor="Black" VerticalTextAlignment="Center"/>
+                                                            </StackLayout>
+
+                                                            <Label Grid.Column="1" HorizontalOptions="EndAndExpand" TextColor="Black" Text="01"></Label>
+                                                        </Grid>
+                                                    </StackLayout>-->
+                                                <!--</Border>-->
+
+                                                <StackLayout Orientation="Horizontal" Padding="15">
+                                                    <Label FontAttributes="Bold"  >
+                                                        <Label.FormattedText>
+                                                            <FormattedString>
+                                                                <Span  TextColor="Black" Text="{Binding customer.Desc}"></Span>
+                                                                <Span  TextColor="Black" Text="/"></Span>
+                                                                <Span  TextColor="Black" Text="{Binding location.Desc}"></Span>
+                                                            </FormattedString>
+                                                        </Label.FormattedText>
+                                                    </Label>
+                                                    <Image Source="file_blue.png" HorizontalOptions="EndAndExpand" />
+                                                </StackLayout>
+
+                                                <StackLayout Padding="15,0,15,0">
+                                                    <Label Text="{Binding audit.Desc}" TextColor="Black"/>
+                                                    <Label  TextColor="Black" Text="{Binding workOrder.Notes,StringFormat='Job Notes : {0}'}">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label"
+                                                                    Binding="{Binding workOrder.Notes.Length}" Value="0">
+                                                                <Setter Property="IsVisible" Value="false" />
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+
+                                                    <StackLayout Orientation="Horizontal" Margin="0,8,0,0">
+                                                        <Label Text="{Binding workOrder.WorkOrderDate, StringFormat='{0:dd/MM/yyyy}'}" TextColor="#979797"></Label>
+                                                        <Label Text="{Binding workOrder.WorkOrderDate, StringFormat='{0:hh:mm tt}'}" HorizontalOptions="EndAndExpand" TextColor="#979797"></Label>
+                                                    </StackLayout>
+                                                </StackLayout>
+                                                <BoxView HeightRequest="1" BackgroundColor="#979797" HorizontalOptions="FillAndExpand" Margin="10,5,10,5"/>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Label Text="No results found" IsVisible="False" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                            Binding="{Binding WorkOrderGroups.Count}" Value="0">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <!--<StackLayout>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding JobClickCommand}"></TapGestureRecognizer>
+                    </StackLayout.GestureRecognizers>
+                <Border Margin="0,30,0,0" 
+                    HeightRequest="50"
+                    HorizontalOptions="FillAndExpand"
+                    Stroke="#EFFAFF"
+                    StrokeShape="RoundRectangle 5"
+                    Background="#EFFAFF">
+                    <StackLayout BackgroundColor="#B6EEFF" Padding="15">
+                        <Grid ColumnDefinitions="0.5*,0.5*">
+                            <StackLayout Grid.Column="0" Orientation="Horizontal">
+                                <Label Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center"/>
+                                <Label Margin="10,0,0,0" Text="December" TextColor="Black" VerticalTextAlignment="Center"/>
+                            </StackLayout>
+
+                            <Label Grid.Column="1" HorizontalOptions="EndAndExpand" TextColor="Black" Text="01"></Label>
+                        </Grid>
+                    </StackLayout>
+                </Border>
+
+                <StackLayout Orientation="Horizontal" Padding="15">
+                        <Label FontAttributes="Bold" Text="Firestopping Customer / FS Site" TextColor="Black" />
+                    <Image Source="folder.png" HorizontalOptions="EndAndExpand" />
+                </StackLayout>
+
+                <StackLayout Padding="15,0,15,0">
+                        <Label Text="Fire Stopping - LD Contract Work /n Job Notes: Assigned to Jack" TextColor="Black"/>
+
+                    <StackLayout Orientation="Horizontal" Margin="0,8,0,0">
+                        <Label Text="01/23/2023" TextColor="#979797"></Label>
+                        <Label Text="08:00:AM" HorizontalOptions="EndAndExpand" TextColor="#979797"></Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>-->
+
+        </StackLayout>
+
+            <StackLayout Padding="0" Margin="0,120,0,0"  IsVisible="{Binding IsVisibelCalenderPicker}">
+                <!--<controls:Calendar
+                    Day="14"
+                    Month="5"
+                    Year="2019"/>-->
+                <toolkit:SfCalendar BackgroundColor="White" SelectedDate="{Binding SelectedWorkflowDate,Mode=TwoWay}"></toolkit:SfCalendar>
+            </StackLayout>
+        </Grid>
+
+    </ContentPage.Content>
+</ContentPage>

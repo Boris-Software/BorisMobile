@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.WorkFromDrawingPage"
+             Title="WorkFromDrawingPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" 
+                  RowDefinitions="50" 
+                  Padding="0,15,0,30">
+                <Label Grid.Column="0" 
+               Padding="10"  
+               FontFamily="FaSolid" 
+               TextColor="Black" 
+               Text="{StaticResource backarrow}" 
+               VerticalTextAlignment="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Grid.Column="1"
+               HorizontalOptions="CenterAndExpand" 
+               VerticalOptions="CenterAndExpand"
+               FontAttributes="Bold" 
+               Text="Work From Drawings" 
+               TextColor="Black" 
+               FontSize="20"></Label>
+                <Grid Grid.Column="2">
+                    <Image Source="cloud.png" 
+                   WidthRequest="20" 
+                   HeightRequest="20"></Image>
+                    <Image Source="syncavailable.png" 
+                   WidthRequest="10" 
+                   HeightRequest="10" 
+                   Margin="10,10,0,0"></Image>
+                </Grid>
+                <Label VerticalTextAlignment="Center" 
+               Grid.Column="3" 
+               FontFamily="FaSolid" 
+               TextColor="Black" 
+               Text="{StaticResource user}" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </Grid>
+            <StackLayout HorizontalOptions="FillAndExpand" 
+                         BackgroundColor="#EFFAFF"
+                         Padding="10" >
+                <Label Text="Firestopping Customer JJL" TextColor="Black"
+                       Margin="0,0,0,2"/>
+                <Label Text="06" TextColor="Black"
+                       Margin="0,0,0,10"/>
+            </StackLayout>
+
+            <Border Margin="20,50,20,0"
+                    StrokeShape="RoundRectangle 7"
+                    Stroke="#EFFAFF">
+                <StackLayout BackgroundColor="#DEF5FF" 
+                             Padding="20">
+                    <Label Text="Level 0" TextColor="Black"
+                           HorizontalTextAlignment="Center"/>
+                </StackLayout>
+            </Border>
+            <Border Margin="20,40,20,0"
+                    StrokeShape="RoundRectangle 7"
+                    Stroke="#EFFAFF">
+                <StackLayout BackgroundColor="#EFFAFF" 
+                             Padding="20">
+                    <Label Text="Level 1" TextColor="Black"
+                           HorizontalTextAlignment="Center"/>
+                </StackLayout>
+            </Border>
+
+
+        </StackLayout>
+
+        
+    </ContentPage.Content>
+</ContentPage>

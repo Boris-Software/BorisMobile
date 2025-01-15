@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.MyDiaryPage"
+             Title="MyDiaryPage"
+             x:Name="DiaryPage"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" RowDefinitions="50" >
+                <Label Grid.Column="0" Padding="10"  FontFamily="FaSolid" TextColor="Black" Text="{StaticResource backarrow}" VerticalTextAlignment="Center" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                
+                <Label Grid.Column="1" VerticalTextAlignment="Center" FontAttributes="Bold" Text="My Diary" TextColor="Black" FontSize="20"></Label>
+                <Grid Grid.Column="2">
+                    <Image Source="cloud.png" WidthRequest="20" HeightRequest="20"></Image>
+                    <Image Source="syncavailable.png" WidthRequest="10" HeightRequest="10" Margin="10,10,0,0"></Image>
+                </Grid>
+                <Label VerticalTextAlignment="Center" Grid.Column="3" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource user}" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+            <Label Text="Please select your option" Margin="0,20,0,0" TextColor="#878787"></Label>
+
+            <CollectionView ItemsSource="{Binding MenuItems}" SelectionMode="None" Margin="0" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,20,0,0" 
+                                HeightRequest="50"
+                                HorizontalOptions="FillAndExpand"
+                                Stroke="#EFFAFF"
+                                StrokeShape="RoundRectangle 5"
+                                Background="#EFFAFF">
+                                <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.MenuItemClickedCommand, Source={x:Reference DiaryPage}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="0.5*,2*,1*" Padding="10">
+                                        <Image Grid.Column="0" Source="{Binding Image}" HeightRequest="24" WidthRequest="24" />
+                                        <Label VerticalTextAlignment="Center" Grid.Column="1" TextColor="Black" Text="{Binding Name}" />
+                                <Label Padding="0,0,20,0" VerticalTextAlignment="Center" HorizontalOptions="End" Grid.Column="2" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource rightarrow}" />
+                            </Grid>
+                                </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!--<Border Margin="0,20,0,0" 
+                HeightRequest="50"
+                HorizontalOptions="FillAndExpand"
+                Stroke="#EFFAFF"
+                StrokeShape="RoundRectangle 5"
+                Background="#EFFAFF">
+                <Grid ColumnDefinitions="0.5*,2*,1*" Padding="10">
+                    <Image Grid.Column="0" Source="clockcard.png" HeightRequest="24" WidthRequest="24" />
+                    <Label VerticalTextAlignment="Center" Grid.Column="1" TextColor="Black" Text="Clock Card" />
+                    <Label Padding="0,0,20,0" VerticalTextAlignment="Center" HorizontalOptions="End" Grid.Column="2" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource rightarrow}" />
+
+                </Grid>
+            </Border>-->
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
