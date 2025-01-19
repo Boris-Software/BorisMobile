@@ -51,22 +51,42 @@
             <StackLayout HorizontalOptions="FillAndExpand" 
                          BackgroundColor="#EFFAFF"
                          Padding="10" >
-                <Label Text="Firestopping Customer JJL" TextColor="Black"
+                <Label Text="{Binding SelectedWorkOrder.customer.Desc}" TextColor="Black"
                        Margin="0,0,0,2"/>
-                <Label Text="06" TextColor="Black"
+                <Label Text="{Binding SelectedWorkOrder.workOrder.JobNo}" TextColor="Black"
                        Margin="0,0,0,10"/>
             </StackLayout>
 
-            <Border Margin="20,50,20,0"
-                    StrokeShape="RoundRectangle 7"
-                    Stroke="#EFFAFF">
-                <StackLayout BackgroundColor="#DEF5FF" 
-                             Padding="20">
-                    <Label Text="Level 0" TextColor="Black"
-                           HorizontalTextAlignment="Center"/>
-                </StackLayout>
-            </Border>
-            <Border Margin="20,40,20,0"
+            <CollectionView ItemsSource="{Binding WorkFrowDrawings}" Margin="20,50,20,0">
+                <CollectionView.Triggers>
+                    <DataTrigger TargetType="CollectionView"
+            Binding="{Binding WorkFrowDrawings.Count}" Value="0">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </CollectionView.Triggers>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,10,0,0"
+                            StrokeShape="RoundRectangle 7"
+                            Stroke="#EFFAFF">
+                            <StackLayout BackgroundColor="#DEF5FF" Padding="20">
+                                <Label Text="{Binding Description}" TextColor="Black" HorizontalTextAlignment="Center"/>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="No results found" IsVisible="False" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+            Binding="{Binding WorkFrowDrawings.Count}" Value="0">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+
+            <!--<Border Margin="20,40,20,0"
                     StrokeShape="RoundRectangle 7"
                     Stroke="#EFFAFF">
                 <StackLayout BackgroundColor="#EFFAFF" 
@@ -74,7 +94,7 @@
                     <Label Text="Level 1" TextColor="Black"
                            HorizontalTextAlignment="Center"/>
                 </StackLayout>
-            </Border>
+            </Border>-->
 
 
         </StackLayout>

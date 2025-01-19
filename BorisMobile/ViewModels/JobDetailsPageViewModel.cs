@@ -23,7 +23,7 @@ namespace BorisMobile.ViewModels
         [RelayCommand]
         public async void WFDrawingsClicked()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new WorkFromDrawingPage(new WorkFromDrawingPageViewModel()));
+            await App.Current.MainPage.Navigation.PushAsync(new WorkFromDrawingPage(new WorkFromDrawingPageViewModel(SelectedItem)));
         }
         [RelayCommand]
         public async void InProgressClicked()
@@ -33,22 +33,22 @@ namespace BorisMobile.ViewModels
         [RelayCommand]
         public async void CreateFormClicked()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new CreateNewFormPage(new CreateNewFormPageViewModel()));
+            await App.Current.MainPage.Navigation.PushAsync(new CreateNewFormPage(new CreateNewFormPageViewModel(SelectedItem)));
         }
         [RelayCommand]
         public async void WorkFromAssetsClicked()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new WorkFromAssetsPage(new WorkFromAssetsPageViewModel()));
+            await App.Current.MainPage.Navigation.PushAsync(new WorkFromAssetsPage(new WorkFromAssetsPageViewModel(SelectedItem)));
         }
         [RelayCommand]
         public async void DocumentsClicked()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new DocumentsPage(new DocumentsPageViewModel()));
+            await App.Current.MainPage.Navigation.PushAsync(new DocumentsPage(new DocumentsPageViewModel(SelectedItem)));
         }
         [RelayCommand]
         public async void KeyClicked()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new KeyPage(new KeyPageViewModel()));
+            await App.Current.MainPage.Navigation.PushAsync(new KeyPage(new KeyPageViewModel(SelectedItem)));
         }
     }
 }

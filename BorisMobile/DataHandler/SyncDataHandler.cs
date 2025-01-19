@@ -11,10 +11,17 @@ namespace BorisMobile.DataHandler
 {
     public class SyncDataHandler
     {
+        CommonDataHandler commonDataHandler;
+
+        public SyncDataHandler()
+        {
+            commonDataHandler = new CommonDataHandler();
+
+        }
         public List<int> ListIdsForJobs(WOFilter woFilter)
         {
             List<int> listIds = new List<int>();
-            using (SqlCeCommand command = GetCommandObject(string.Format("SELECT XmlDoc FROM Locations WHERE Id IN (SELECT DISTINCT LocationId FROM WorkOrders {0} UNION SELECT DISTINCT LocationId FROM AuditsInProgress) AND XmlDoc IS NOT NULL UNION SELECT XmlDoc FROM Customers WHERE Id IN (SELECT DISTINCT CustomerId FROM WorkOrders {0} UNION SELECT DISTINCT CustomerId FROM AuditsInProgress) AND XmlDoc IS NOT NULL ", woFilter.FilterText)))
+            using (SqlCeCommand command = commonDataHandler.GetCommandObject(string.Format("SELECT XmlDoc FROM Locations WHERE Id IN (SELECT DISTINCT LocationId FROM WorkOrders {0} UNION SELECT DISTINCT LocationId FROM AuditsInProgress) AND XmlDoc IS NOT NULL UNION SELECT XmlDoc FROM Customers WHERE Id IN (SELECT DISTINCT CustomerId FROM WorkOrders {0} UNION SELECT DISTINCT CustomerId FROM AuditsInProgress) AND XmlDoc IS NOT NULL ", woFilter.FilterText)))
             {
                 if (woFilter.StartDateBefore != DateTime.MaxValue)
                 {
@@ -62,7 +69,7 @@ namespace BorisMobile.DataHandler
         public async Task SetAttachmentDownloadStatus(Guid idGuid, bool genericAttachments, int needToDownload)
         {
             string tableType = genericAttachments ? "Generic" : "WorkOrder";
-            using (SqlCeCommand attachmentsCommand = GetCommandObject(
+            using (SqlCeCommand attachmentsCommand = commonDataHandler.GetCommandObject(
                             string.Format(@"UPDATE {0}Attachments
                                 SET NeedToDownload = {1} WHERE IdGuid = '{2}'", tableType, needToDownload,idGuid)))
             {
@@ -73,7 +80,7 @@ namespace BorisMobile.DataHandler
         }
         public Models.Attachments GetNextAttachmentToDownloadForEntity(XmlElement signInPayload, string entityType, int entityId)
         {
-            using (SqlCeCommand command = GetCommandObject(string.Format("SELECT IdGuid, ShortFileName FROM tblGenericAttachments WHERE NeedToDownload = 1 AND EntityType = '{0}' AND EntityId = {1} ORDER BY IdGuid", entityType, entityId)))
+            using (SqlCeCommand command = commonDataHandler.GetCommandObject(string.Format("SELECT IdGuid, ShortFileName FROM tblGenericAttachments WHERE NeedToDownload = 1 AND EntityType = '{0}' AND EntityId = {1} ORDER BY IdGuid", entityType, entityId)))
             {
                 using (SqlCeDataReader reader = command.ExecuteReader())
                 {
@@ -100,10 +107,7 @@ namespace BorisMobile.DataHandler
             }
             return null;
         }
-        public SqlCeCommand GetCommandObject(string strSql)
-        {
-            return new SqlCeCommand(strSql, App.DatabaseConnection);
-        }
+        
         public void AddGuidParam(SqlCeCommand command, string name, Guid value)
         {
 
@@ -119,7 +123,7 @@ namespace BorisMobile.DataHandler
                                                                     OR ( EntityType = 'LO' AND ((EntityId IN (SELECT LocationId FROM WorkOrders {0})) OR (EntityId IN (SELECT LocationId FROM AuditsInProgress))))
                                                                     OR ( EntityType = 'CF') OR ( EntityType = 'IM') OR ( EntityType = 'MD') OR ( EntityType = 'US')
                                                                     " + additionalSql + ")", woFilter.FilterText) : "";
-                using (SqlCeCommand command = GetCommandObject(string.Format("SELECT IdGuid, ShortFileName{2} FROM {0}Attachments WHERE NeedToDownload = 1 {1}  ORDER BY IdGuid", tableType, subClause,
+                using (SqlCeCommand command = commonDataHandler.GetCommandObject(string.Format("SELECT IdGuid, ShortFileName{2} FROM {0}Attachments WHERE NeedToDownload = 1 {1}  ORDER BY IdGuid", tableType, subClause,
                     genericAttachments ? ", EntityType, EntityId" : ""
                     )))
                 {
@@ -230,7 +234,7 @@ namespace BorisMobile.DataHandler
         }
         private void AddListIdAttributes(List<int> listIds, List<int> newListIds, string sql)
         {
-            using (SqlCeCommand command = GetCommandObject(sql))
+            using (SqlCeCommand command = commonDataHandler.GetCommandObject(sql))
             {
                 using (SqlCeDataReader reader = command.ExecuteReader())
                 {
@@ -288,7 +292,7 @@ namespace BorisMobile.DataHandler
         }
         private void DeleteAttachment(string attachmentsDir, Guid idGuid, string tableName)
         {
-            SqlCeCommand command = GetCommandObject(string.Format("SELECT ShortFileName FROM {0} WHERE IdGuid = @idGuid", tableName, idGuid));
+            SqlCeCommand command = commonDataHandler.GetCommandObject(string.Format("SELECT ShortFileName FROM {0} WHERE IdGuid = @idGuid", tableName, idGuid));
             AddGuidParam(command, "idGuid", idGuid);
             string fileName = GetStringFromDataSqlCommand(command); // !!!!!! MD - does this have { } surrounding it? May well be failing DOC001. Actually, should be OK because it is a guid rather than a string representation with a { }
             if (!string.IsNullOrEmpty(fileName))
@@ -296,6 +300,7 @@ namespace BorisMobile.DataHandler
                 IO.SafeFileDelete(attachmentsDir + Path.DirectorySeparatorChar + fileName);
             }
         }
+
         public string GetStringFromDataSqlCommand(SqlCeCommand command)
         {
             object sqlResult = GetScalarResultFromCommand(command);
@@ -319,52 +324,19 @@ namespace BorisMobile.DataHandler
         }
         public async Task<string> GetAttributeForUser(int userId, string attName)
         {
-            return await GetAttributeFromDataSql("SELECT XmlDoc FROM Users WHERE Id = " + userId, attName);
+            return await commonDataHandler.GetAttributeFromDataSql("SELECT XmlDoc FROM Users WHERE Id = " + userId, attName);
         }
-        public object GetScalarResult(string strSql)
-        {
-            //Android.Util.Log.Info("DB", "GetScalarResult SQL: " + strSql);
-            using (SqlCeCommand command = new SqlCeCommand(strSql, App.DatabaseConnection))
-            {
-                object result = command.ExecuteScalar();
-                //if (result != null)
-                //{
-                //    Android.Util.Log.Info("DB", "GetScalarResult returns: " + result.ToString());
-                //}
-                //else
-                //{
-                //    Android.Util.Log.Info("DB", "GetScalarResult returns NULL");
-                //}
-                return result;
-            }
-        }
+        
         public string GetStringFromDataSql(string strSql)
         {
-            object sqlResult = GetScalarResult(strSql);
+            object sqlResult = commonDataHandler.GetScalarResult(strSql);
             if (sqlResult == System.DBNull.Value || (sqlResult == null))
             {
                 return "";
             }
             return sqlResult.ToString();
         }
-        public async Task<string> GetAttributeFromDataSql(string sqlString, string attName)
-        {
-            string xmlText = GetStringFromDataSql(sqlString);
-            if (!string.IsNullOrEmpty(xmlText))
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(xmlText);
-                if (XmlUtils.VerifyName(attName)) // otherwise we get a crash below in SelectSingleNode
-                {
-                    XmlNode node = xmlDoc.SelectSingleNode("//@" + attName);
-                    if (node != null)
-                    {
-                        return node.Value;
-                    }
-                }
-            }
-            return null;
-        }
+        
         public Collection<Attachments> GetUnwantedGenericAttachmentsBasic(bool downloadAllCustomerAttachments, bool downloadAllLocationAttachments)
         {
             string sql = @"SELECT IdGuid, ShortFileName FROM GenericAttachments WHERE NeedToDownload = 0 ";
@@ -400,7 +372,7 @@ namespace BorisMobile.DataHandler
         {
             //InfoLog("GetAtts: " + sql);
             Collection<Attachments> attachments = new Collection<Attachments>();
-            using (SqlCeCommand command = GetCommandObject(sql))
+            using (SqlCeCommand command = commonDataHandler.GetCommandObject(sql))
             {
                 using (SqlCeDataReader reader = command.ExecuteReader())
                 {

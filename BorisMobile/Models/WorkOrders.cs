@@ -4,7 +4,12 @@ namespace BorisMobile.Models
 {
     public class WorkOrders
     {
-        
+        public WorkOrders() { }
+
+        public WorkOrders(int id) {
+            Id = id;
+        }
+
         [PrimaryKey]
         public int Id { get; set; }
         public int CustomerId { get; set; }
@@ -24,5 +29,6 @@ namespace BorisMobile.Models
 
         public string? Notes { get; set; }
         public string? JobNo { get; set; }
+        public string? DefinitionId { get; set; }
     }
 }

@@ -24,12 +24,24 @@ namespace BorisMobile.Models
 
         public int Status {  get; set; }
         public int Repeat {  get; set; }
-        public string FileName {  get; set; }
+
+        private string fileName;
+        public string FileName
+        {
+            get { return fileName; }
+
+            set
+            {
+                fileName = value;
+                DisplayName = fileName.Replace("_" + IdGuid, "");
+            }
+        }
         public Guid SubFormIdGuid {  get; set; }
 
         public int IsCopiedFromWorkOrder {  get; set; }
         public int PageRepeatListItemId { get; set; }
         public Guid PKGuid {  get; set; }
+        public String DisplayName { get; set; }
                                                                                 
     }
 }

@@ -4,8 +4,10 @@ using BorisMobile.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Xml;
+using System.Xml.Linq;
 using static BorisMobile.XML.ParseXML;
 
 namespace BorisMobile.ViewModels
@@ -180,6 +182,9 @@ namespace BorisMobile.ViewModels
 
                         var jobNo = GetData(subItem.workOrder.XmlDoc, "jobno");
                         subItem.workOrder.JobNo = jobNo;
+
+                        var defId = GetData(subItem.workOrder.XmlDoc, "definitionId");
+                        subItem.workOrder.DefinitionId= defId;
                     }
                 }
 
@@ -207,6 +212,16 @@ namespace BorisMobile.ViewModels
                 {
                     commonNode = xmlDoc.SelectSingleNode("//WorkOrderItems/jobNo");
                 }
+                else if (type.Equals("definitionId"))
+                {
+                    XmlNode rootNode = xmlDoc.DocumentElement;
+                    XmlAttribute definitionIdAttr = rootNode.Attributes["definitionId"];
+                    if (definitionIdAttr != null)
+                    {
+                        return definitionIdAttr.Value;
+                    }
+                    else { return string.Empty; }
+                }
 
                 string data = null;
                 if (commonNode != null && commonNode.Attributes["text"] != null)
@@ -214,6 +229,7 @@ namespace BorisMobile.ViewModels
                     data = commonNode.Attributes["text"].Value;
                     return !string.IsNullOrEmpty(data) ? data : string.Empty; // Return value or default message
                 }
+                
 
                 return data; // Return default message if 'notes' element is missing
             }

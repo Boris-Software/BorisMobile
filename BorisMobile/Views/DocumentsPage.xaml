@@ -43,7 +43,7 @@
                TextColor="Black" 
                Text="{StaticResource user}" >
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"/>
+                        <TapGestureRecognizer />
                     </Label.GestureRecognizers>
                 </Label>
 
@@ -51,21 +51,40 @@
             <StackLayout HorizontalOptions="FillAndExpand" 
                          BackgroundColor="#EFFAFF"
                          Padding="10" >
-                <Label Text="Firestopping Customer JJL" TextColor="Black"
+                <Label Text="{Binding WorkOrderList.customer.Desc}" TextColor="Black"
                        Margin="0,0,0,2"/>
-                <Label Text="06" TextColor="Black"
+                <Label Text="{Binding WorkOrderList.workOrder.JobNo}" TextColor="Black"
                        Margin="0,0,0,10"/>
             </StackLayout>
 
-            <Border Margin="20,50,20,0"
-                    StrokeShape="RoundRectangle 7"
-                    Stroke="#C1ECF8">
-                <StackLayout BackgroundColor="#C1ECF8" 
-                             Padding="20">
-                    <Label Text="RAMS Document.docx" TextColor="Black"
-                           HorizontalTextAlignment="Center"/>
-                </StackLayout>
-            </Border>
+            <CollectionView ItemsSource="{Binding AttachmentList}"  Margin="20,50,20,0">
+                <CollectionView.Triggers>
+                    <DataTrigger TargetType="CollectionView"
+                        Binding="{Binding AttachmentList.Count}" Value="0">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </CollectionView.Triggers>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,10,0,0"
+                                StrokeShape="RoundRectangle 7"
+                                Stroke="#C1ECF8">
+                            <StackLayout BackgroundColor="#C1ECF8" Padding="20">
+                                <Label Text="{Binding DisplayName}" TextColor="Black" HorizontalTextAlignment="Center"/>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="No results found" IsVisible="False" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                Binding="{Binding AttachmentList.Count}" Value="0">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
         </StackLayout>
 
 

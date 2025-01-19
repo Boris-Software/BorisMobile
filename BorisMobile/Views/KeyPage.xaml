@@ -50,27 +50,50 @@
             <StackLayout HorizontalOptions="FillAndExpand" 
                          BackgroundColor="#EFFAFF"
                          Padding="10" >
-                <Label Text="Firestopping Customer JJL" TextColor="Black"
+                <Label Text="{Binding WorkOrder.customer.Desc}" TextColor="Black"
                        Margin="0,0,0,2"/>
-                <Label Text="06" TextColor="Black"
+                <Label Text="{Binding WorkOrder.workOrder.JobNo}" TextColor="Black"
                        Margin="0,0,0,10"/>
             </StackLayout>
             <StackLayout Margin="15"
                          HeightRequest="75">
-                <Border StrokeShape="RoundRectangle 10"
-                        Stroke="#E3E5E5"
-                        Padding="10"
-                        Margin="5"
-                        HeightRequest="50">
-                    <Grid ColumnDefinitions="0.5*,4*">
-                        <Image Grid.Column="0" 
+
+                <CollectionView ItemsSource="{Binding KeysList}" >
+                    <CollectionView.Triggers>
+                        <DataTrigger TargetType="CollectionView"
+                                Binding="{Binding KeysList.Count}" Value="0">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </CollectionView.Triggers>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border StrokeShape="RoundRectangle 10"
+                                Stroke="#E3E5E5"
+                                Padding="10"
+                                Margin="5"
+                                HeightRequest="50">
+                                <Grid ColumnDefinitions="0.5*,4*">
+                                    <Image Grid.Column="0" 
                                Source="location_black.png"/>
-                        <Label Grid.Column="1" TextColor="#999999"
+                                    <Label Grid.Column="1" TextColor="#999999"
                                VerticalTextAlignment="Center"
-                               Text="QA"/>
-                    </Grid>
-                </Border>
-                <Border StrokeShape="RoundRectangle 10"
+                               Text="{Binding Description}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+
+                <Label Text="No results found" IsVisible="False" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                Binding="{Binding KeysList.Count}" Value="0">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <!--<Border StrokeShape="RoundRectangle 10"
                         Stroke="#E3E5E5"
                         Padding="10" Margin="5"
                         HeightRequest="50">
@@ -119,7 +142,7 @@
                                VerticalTextAlignment="Center"
                                Text="Current User"/>
                     </Grid>
-                </Border>
+                </Border>-->
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
