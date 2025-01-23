@@ -4,6 +4,7 @@
              x:Class="BorisMobile.Views.WorkFromAssetsPage"
              xmlns:controls="clr-namespace:BorisMobile.Controls"
              Title="WorkFromAssetsPage"
+             x:Name="WorkFromAssets"
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="White">
     <ContentPage.Content>
@@ -61,7 +62,11 @@
                         Stroke="#CAD3D7">
                     <Grid ColumnDefinitions="4*,0.5*" 
                           Padding="10,0,0,0">
-                        <controls:NoBorderPicker TextColor="Black" Grid.Column="0" x:Name="picker"
+                        <controls:NoBorderPicker TextColor="Black" x:Name="drawingsPicker"
+                             SelectedItem="{Binding SelectedDrawing,Mode=TwoWay}" ItemsSource="{Binding WorkFrowDrawings,Mode=TwoWay}" 
+                             Margin="10,0" ItemDisplayBinding="{Binding Description}">
+                        </controls:NoBorderPicker>
+                        <!--<controls:NoBorderPicker TextColor="Black" Grid.Column="0" x:Name="picker"
                             Title="Level 0">
                             <controls:NoBorderPicker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
@@ -69,32 +74,53 @@
                                     <x:String>Capuchin Monkey</x:String>
                                 </x:Array>
                             </controls:NoBorderPicker.ItemsSource>
-                        </controls:NoBorderPicker>
-                        <Label Grid.Column="1" 
-                            Margin="10,0,0,0" 
-                            FontFamily="FaSolid" 
-                            TextColor="Gray" 
-                            Text="{StaticResource chevrondown}" 
-                            VerticalTextAlignment="Center"/>
+                        </controls:NoBorderPicker>-->
+                        <Label Grid.Column="1"  Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Gray" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </Grid>
                 </Border>
             </StackLayout>
             <StackLayout Margin="15"
                          HeightRequest="75">
-                <Border StrokeShape="RoundRectangle 10"
+
+                <CollectionView ItemsSource="{Binding AssetsList}" >
+                    <CollectionView.Triggers>
+                        <DataTrigger TargetType="CollectionView"
+                            Binding="{Binding AssetsList.Count}" Value="0">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </CollectionView.Triggers>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border StrokeShape="RoundRectangle 10"
                         Stroke="#E3E5E5"
                         Padding="10"
                         Margin="5"
                         HeightRequest="50">
-                    <Grid ColumnDefinitions="0.5*,4*">
-                        <Image Grid.Column="0" 
+                                <Grid ColumnDefinitions="0.5*,4*">
+                                    <Image Grid.Column="0" 
                                Source="location_yellow.png"/>
-                        <Label Grid.Column="1" TextColor="#999999"
+                                    <Label Grid.Column="1" TextColor="#999999"
                                VerticalTextAlignment="Center"
-                               Text="1"/>
-                    </Grid>
-                </Border>
-                <Border StrokeShape="RoundRectangle 10"
+                               Text="{Binding Description}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Label Text="No results found" IsVisible="False" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                Binding="{Binding AssetsList.Count}" Value="0">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <!--<Border StrokeShape="RoundRectangle 10"
                         Stroke="#E3E5E5"
                         Padding="10" Margin="5"
                         HeightRequest="50">
@@ -156,7 +182,7 @@
                                VerticalTextAlignment="Center"
                                Text="1"/>
                     </Grid>
-                </Border>
+                </Border>-->
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

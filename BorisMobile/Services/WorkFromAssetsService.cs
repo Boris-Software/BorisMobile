@@ -1,10 +1,7 @@
 ﻿using BorisMobile.DataHandler;
+using BorisMobile.DataHandler.Data;
 using BorisMobile.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace BorisMobile.Services
 {
@@ -16,9 +13,13 @@ namespace BorisMobile.Services
             dataHandler = new WorkFromAssetsDataHandler();
         }
 
-        public async void GetData(WorkOrderList SelectedItem)
+        public async Task<List<WorkFromAssets>> GetData(WorkOrderList SelectedItem,int drawingListId)
         {
-            //return await dataHandler.GetInitData(SelectedItem);
+            var list = await dataHandler.GetAssetData(drawingListId);
+            return list;
         }
+
+
+        
     }
 }

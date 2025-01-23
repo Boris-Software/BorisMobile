@@ -9,4 +9,15 @@ public partial class WorkFromAssetsPage : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
+
+    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            if (drawingsPicker.IsFocused)
+                drawingsPicker.Unfocus();
+
+            drawingsPicker.Focus();
+        });
+    }
 }

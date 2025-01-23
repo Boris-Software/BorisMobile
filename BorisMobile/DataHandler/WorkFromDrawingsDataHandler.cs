@@ -165,7 +165,7 @@ namespace BorisMobile.DataHandler
                 int drawingListToUse = await DrawingListToUse(workOrder, additionalSettings);
                 if (drawingListToUse > 0)
                 {
-                    return GetListEntriesForList(drawingListToUse);
+                    return await GetListEntriesForList(drawingListToUse);
                 }
             }
             return null;
@@ -178,9 +178,9 @@ namespace BorisMobile.DataHandler
             return await GeneralEntityList(workOrder, entity, attribute);
         }
 
-        public IdAndDescriptionCollection GetListEntriesForList(int listId)
+        public async Task<IdAndDescriptionCollection> GetListEntriesForList(int listId)
         {
-            return GetListEntriesForList(listId, null, null);
+            return await GetListEntriesForList(listId, null, null);
         }
 
         

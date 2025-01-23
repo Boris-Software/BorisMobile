@@ -15,9 +15,9 @@ namespace BorisMobile.DataHandler
             return await GetAttributeFromDataSql("SELECT XmlDoc FROM WorkOrderDefinitions WHERE Id = " + workOrderDefinitionId, attName);
         }
 
-        public IdAndDescriptionCollection GetListEntriesList(int iconListId)
+        public async Task<IdAndDescriptionCollection> GetListEntriesList(int iconListId)
         {
-            return GetListEntriesForList(iconListId,null,null);
+            return await GetListEntriesForList(iconListId,null,null);
         }
     }
 }

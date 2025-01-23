@@ -15,6 +15,12 @@ namespace BorisMobile.DataHandler.Data
             UPLOADED_ALL = 3
         }
 
+        public enum LocalEntityStatusEnum : int
+        {
+            DEFAULT = 0,
+            PENDING = 1,
+            DELETED = 2
+        }
         public enum ResultStatusEnum : int
         {
             NOT_STARTED = 1,
@@ -29,12 +35,7 @@ namespace BorisMobile.DataHandler.Data
             RECEIVED_AS_FORWARD_AWAITING_INITIALISATION = 10
         }
 
-        public enum LocalEntityStatusEnum : int
-        {
-            DEFAULT = 0,
-            PENDING = 1,
-            DELETED = 2
-        }
+        
         public enum AttachmentStatusEnum : int
         {
             PENDING = 1,

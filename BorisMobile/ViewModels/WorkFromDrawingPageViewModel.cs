@@ -25,7 +25,7 @@ namespace BorisMobile.ViewModels
 
         public async void Init()
         {
-            workFrowDrawings = await service.GetData(SelectedWorkOrder);
+            WorkFrowDrawings = await service.GetData(SelectedWorkOrder);
         }
 
         [RelayCommand]

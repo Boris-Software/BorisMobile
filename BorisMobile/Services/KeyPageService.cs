@@ -30,7 +30,7 @@ namespace BorisMobile.Services
         public async Task<IdAndDescriptionCollection> IconListForWorkOrder(WorkOrders workOrder)
         {
             int iconListId = await GetAttributeForWODefDoc_int(Convert.ToInt32(workOrder.DefinitionId), "option_extender_iconbox_list", -1);
-            return keyPageHandler.GetListEntriesList(iconListId);
+            return await keyPageHandler.GetListEntriesList(iconListId);
         }
 
         public async Task<int> GetAttributeForWODefDoc_int(int workOrderDefinitionId, string attName, int defaultValue)

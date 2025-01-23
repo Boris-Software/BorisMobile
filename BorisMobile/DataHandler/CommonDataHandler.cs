@@ -64,7 +64,7 @@ namespace BorisMobile.DataHandler
             return command;
         }
 
-        public IdAndDescriptionCollection GetListEntriesForList(int listId, string activityId, RecordFilterFunction filterFunction)
+        public async Task<IdAndDescriptionCollection> GetListEntriesForList(int listId, string activityId, RecordFilterFunction filterFunction)
         {
             SqlCeCommand command = GetSimpleListCommandObject(listId);
             IdAndDescriptionCollection listEntries = new IdAndDescriptionCollection();
@@ -82,7 +82,7 @@ namespace BorisMobile.DataHandler
                     }
                     if (!string.IsNullOrEmpty(activityId))
                     {
-                        string listActivityId = GetAttributeForListEntry(listData.Id, "activityId");
+                        string listActivityId = await GetAttributeForListEntry(listData.Id, "activityId");
                         if (!string.IsNullOrEmpty(listActivityId) && (listActivityId == activityId))
                             listEntries.Add(listData);
                     }
@@ -102,16 +102,24 @@ namespace BorisMobile.DataHandler
             return listEntries;
         }
 
-        public string GetAttributeForListEntry(int listEntryId, string attName)
+        public async Task<string> GetAttributeForListEntry(int listEntryId, string attName)
         {
             if (attName == "score")
             {
-                return GetScoreForListEntry(listEntryId).ToString(); // BDCT 040719
+                int id = await GetScoreForListEntry(listEntryId); 
+                string stringId = id.ToString();
+                return stringId;
             }
-            return GetAttributeForListEntry(listEntryId, attName);
+            
+            return await GetAttributeForListEntryOther(listEntryId, attName);
         }
 
-        public int GetScoreForListEntry(int listEntryId)
+        public async Task<string> GetAttributeForListEntryOther(int listEntryId, string attName)
+        {
+            return await GetAttributeFromDataSql("SELECT XmlDoc FROM GenericLists WHERE Id = " + listEntryId, attName);
+        }
+
+        public async Task<int> GetScoreForListEntry(int listEntryId)
         {
             return GetIntFromDataSql("SELECT Score FROM GenericLists WHERE Id = " + listEntryId);
         }
