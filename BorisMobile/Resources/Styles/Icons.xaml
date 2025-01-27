@@ -11,5 +11,6 @@
     <x:String x:Key="logout">&#xf2f5;</x:String>
     <x:String x:Key="chevronup">&#xf077;</x:String>
     <x:String x:Key="chevrondown">&#xf078;</x:String>
+    <x:String x:Key="location">&#xf601;</x:String>
 
 </ResourceDictionary>

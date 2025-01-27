@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BorisMobile.Views.JobFormPage"
+             Title="JobFormPage"
+             x:Name="jobFormPageContent"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <Grid RowDefinitions="*">
+            <!-- Dynamic Content View -->
+            <StackLayout VerticalOptions="FillAndExpand" Padding="10">
+                <Grid ColumnDefinitions="0.1*,0.8*" RowDefinitions="50" >
+                    <Label Grid.Column="0" Padding="10"  FontFamily="FaSolid" TextColor="Black" Text="{StaticResource backarrow}" VerticalTextAlignment="Center" >
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label Grid.Column="1" VerticalTextAlignment="Center" FontAttributes="Bold" Text="{Binding FormTitle}" TextColor="Black" FontSize="20"></Label>
+                    
+
+                </Grid>
+                <ContentView VerticalOptions="FillAndExpand" Content="{Binding DynamicForm.Content}" IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+                </ContentView>
+            </StackLayout>
+
+            <!-- Activity Indicator -->
+            <ActivityIndicator 
+                IsVisible="{Binding IsLoading}" 
+                IsRunning="{Binding IsLoading}" 
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" 
+                Color="#00B1E3" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

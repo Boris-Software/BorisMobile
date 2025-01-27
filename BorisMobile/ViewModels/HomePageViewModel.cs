@@ -38,7 +38,7 @@ namespace BorisMobile.ViewModels
             List<Item>   itemL = itemList.Where(i => i.Page == 0).ToList();
             foreach (var item in itemL)
             {
-                item.NewImage = item.Name.Replace(" ", string.Empty);
+                item.NewImage = item.Name.Replace(" ", string.Empty).ToLower();
             }
             var ru = itemL.Where(x => x.Name == "Receive updates").FirstOrDefault();
             var sr = itemL.Where(x => x.Name == "Send reports").FirstOrDefault();

@@ -2,9 +2,12 @@
 using BorisMobile.ViewModels;
 using BorisMobile.Views;
 using Microsoft.Extensions.Logging;
+using BorisMobile.Services.Interfaces;
+using BorisMobile.Services;
+using Syncfusion.Maui.Toolkit.Hosting;
+
 #if ANDROID
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
-using Syncfusion.Maui.Toolkit.Hosting;
 #endif
 
 using Microsoft.Extensions.Logging;
@@ -70,6 +73,10 @@ namespace BorisMobile
             builder.Services.AddTransient<DocumentStorePage>();
             builder.Services.AddTransient<DocumentStorePageViewModel>();
 
+
+            builder.Services.AddSingleton<IXmlParserService, XmlParserService>();
+            builder.Services.AddSingleton<IFormGenerationService, FormGenerationService>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
@@ -112,6 +119,20 @@ namespace BorisMobile
                // handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
 #endif
                 }
+            });
+
+            Microsoft.Maui.Handlers.DatePickerHandler.Mapper.AppendToMapping("MyCustomization", (handler, view) =>
+            {
+
+                if (view is NoBorderDatePicker)
+                {
+
+#if ANDROID
+                    handler.PlatformView.BackgroundTintList =
+        Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+#endif
+                }
+
             });
 
             Microsoft.Maui.Handlers.PickerHandler.Mapper.AppendToMapping("Borderless", (handler, view) =>

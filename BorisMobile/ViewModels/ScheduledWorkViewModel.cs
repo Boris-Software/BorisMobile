@@ -1,13 +1,10 @@
 ﻿using BorisMobile.DataHandler;
 using BorisMobile.Models;
-using BorisMobile.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Data.SqlTypes;
 using System.Globalization;
 using System.Xml;
-using System.Xml.Linq;
 using static BorisMobile.XML.ParseXML;
 
 namespace BorisMobile.ViewModels
@@ -16,6 +13,9 @@ namespace BorisMobile.ViewModels
     {
         [ObservableProperty]
         private bool isVisibelCalenderPicker;
+
+        [ObservableProperty]
+        private bool isLoading;
 
         private DateTime _selectedWordkflowDate;
 
@@ -68,13 +68,19 @@ namespace BorisMobile.ViewModels
         List<WorkOrderList> DisplayList;
         public ScheduledWorkViewModel(Item item)
         {
+            IsLoading = true;
             List<string> items = ["Weekly", "Monthly", "Daily"];
             GroupOptions = new ObservableCollection<string>(items);
             _selectedGroupBy = "Monthly";
             isGroupBy = true;
             this.item = item;
             IsVisibelCalenderPicker = false;
-            LoadWorkOrders();
+
+            Task.Delay(new TimeSpan(0, 0, 1)).ContinueWith(o => {
+                LoadWorkOrders();
+                //SaveFormDataCommand = new Command(SaveFormData);
+            });
+            
         }
 
         // Group the WorkOrders based on the selected option (Monthly, Weekly, Daily)
@@ -191,6 +197,8 @@ namespace BorisMobile.ViewModels
                 WorkOrderGroups.Clear();
                 WorkOrderGroups = new ObservableCollection<WorkOrderGroup>(groupedOrders);
             }
+
+            IsLoading = false;
         }
 
         public string GetData(string xmlContent , string type)
@@ -322,7 +330,9 @@ namespace BorisMobile.ViewModels
         [RelayCommand]
         public async void JobClick(WorkOrderList item)
         {
-            await App.Current.MainPage.Navigation.PushAsync(new JobDetailsPage(new JobDetailsPageViewModel(item)));
+            JobOptionsPageViewModel jobOptionsPageViewModel = new JobOptionsPageViewModel();
+            jobOptionsPageViewModel.HandleJob(item);
+            //await App.Current.MainPage.Navigation.PushAsync(new JobDetailsPage(new JobDetailsPageViewModel(DependencyService.Get<IXmlParserService>(), DependencyService.Get<IFormGenerationService>(),item)));
         }
     }
 }

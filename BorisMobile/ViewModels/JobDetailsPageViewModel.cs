@@ -10,7 +10,7 @@ namespace BorisMobile.ViewModels
         [ObservableProperty]
         public WorkOrderList selectedItem;
 
-        public JobDetailsPageViewModel(WorkOrderList item) {
+        public JobDetailsPageViewModel(WorkOrderList item ) {
             SelectedItem = item;
         }
 
