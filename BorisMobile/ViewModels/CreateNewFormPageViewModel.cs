@@ -15,27 +15,44 @@ namespace BorisMobile.ViewModels
         WorkOrderList workOrder;
 
         [ObservableProperty]
+        bool isLoading;
+
+        [ObservableProperty]
         ObservableCollection<TemplateDocument> templateDocuments;
 
         public CreateNewFormPageViewModel(WorkOrderList workOrder) 
-        { 
+        {
+            IsLoading = true;
             WorkOrder = workOrder;
             service = new CreateNewFormService();
-            Init();
+
+            Task.Delay(new TimeSpan(0, 0, 1)).ContinueWith(o => {
+                Init();
+                //SaveFormDataCommand = new Command(SaveFormData);
+            });
+            
         }
 
         public async void Init()
         {
             List<TemplateDocument>  list = await service.GetCreateFormListData(WorkOrder);
 
-            templateDocuments = new ObservableCollection<TemplateDocument>(list);
+            TemplateDocuments = new ObservableCollection<TemplateDocument>(list);
 
+            IsLoading = false;
         }
 
         [RelayCommand]
         public async void BackButtonClick()
         {
             await App.Current.MainPage.Navigation.PopAsync();
+        }
+
+        [RelayCommand]
+        public async void FormClick(TemplateDocument doc)
+        {
+            JobOptionsPageViewModel jobOptionsPageViewModel = new JobOptionsPageViewModel();
+            jobOptionsPageViewModel.HandleJob(doc.InnerXml.ToString());
         }
     }
   

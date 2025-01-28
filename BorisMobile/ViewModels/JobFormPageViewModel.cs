@@ -33,13 +33,13 @@ namespace BorisMobile.ViewModels
         public Command SaveFormDataCommand { get; }
 
         public JobFormPageViewModel(IXmlParserService xmlParserService,
-        IFormGenerationService formGenerationService,WorkOrderList workOrderItem)
+        IFormGenerationService formGenerationService,string xmlContent)
         {
             _xmlParserService = xmlParserService;
             _formGenerationService = formGenerationService;
             IsLoading = true;
 
-            XDocument doc = XDocument.Parse(workOrderItem.audit.XmlDoc);
+            XDocument doc = XDocument.Parse(xmlContent);
             var configElement = doc.Descendants("Config").FirstOrDefault();
 
             // Extract Document properties
@@ -48,7 +48,7 @@ namespace BorisMobile.ViewModels
            // FormTitle = configElement.Element("Header")?.Element("ScreenTitle")?.Value ?? "Dynamic Form";
 
             Task.Delay(new TimeSpan(0, 0, 1)).ContinueWith(o => {
-                LoadXmlConfiguration(workOrderItem.audit.XmlDoc);
+                LoadXmlConfiguration(xmlContent);
                 //SaveFormDataCommand = new Command(SaveFormData);
             });
             

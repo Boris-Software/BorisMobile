@@ -11,6 +11,7 @@
         public string MinValue { get; set; }
         public string MaxValue { get; set; }
         public bool IsMandatory { get; set; }
+        public bool AllowCreateNew { get; set; }
         public object Value { get; set; }
         public int? Lines { get; set; }
     }

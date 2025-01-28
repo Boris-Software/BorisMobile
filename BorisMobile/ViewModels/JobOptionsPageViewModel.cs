@@ -11,20 +11,20 @@ namespace BorisMobile.ViewModels
 {
     public class JobOptionsPageViewModel :BaseViewModel
     {
-        public async void HandleJob(WorkOrderList item)
+        public async void HandleJob(string xmlElement)
         {
             //if audit progress has something for this day then open job details page.
             // else open jobformpage - dynamic form page
 
             //DependencyService.Get<IXmlParserService>(), DependencyService.Get<IFormGenerationService>()
-            if (true)
-            {
-                 await App.Current.MainPage.Navigation.PushAsync(new JobFormPage(item));
-            }
-            else
-            {
-                await App.Current.MainPage.Navigation.PushAsync(new JobDetailsPage(new JobDetailsPageViewModel( item)));
-            }
+            //if (true)
+            //{
+                 await App.Current.MainPage.Navigation.PushAsync(new JobFormPage(xmlElement));
+            //}
+            //else
+            //{
+            //    await App.Current.MainPage.Navigation.PushAsync(new JobDetailsPage(new JobDetailsPageViewModel( item)));
+            //}
         }
     }
 }

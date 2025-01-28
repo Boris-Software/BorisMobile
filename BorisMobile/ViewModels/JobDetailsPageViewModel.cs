@@ -10,8 +10,16 @@ namespace BorisMobile.ViewModels
         [ObservableProperty]
         public WorkOrderList selectedItem;
 
+        [ObservableProperty]
+        public bool isLoading;
         public JobDetailsPageViewModel(WorkOrderList item ) {
-            SelectedItem = item;
+            IsLoading = true;
+            Task.Delay(new TimeSpan(0, 0, 1)).ContinueWith(o => {
+                SelectedItem = item;
+                IsLoading = false;
+                //SaveFormDataCommand = new Command(SaveFormData);
+            });
+            
         }
 
         [RelayCommand]

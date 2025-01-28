@@ -47,63 +47,66 @@
                 </Label>
 
             </Grid>
-            <StackLayout HorizontalOptions="FillAndExpand" 
+
+            <StackLayout x:Name="bodyStack" IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+
+                <StackLayout HorizontalOptions="FillAndExpand" 
                          BackgroundColor="#EFFAFF" 
                          HeightRequest="260"
                          Padding="10">
-                <StackLayout >
-                    <Label Text="Client" 
+                    <StackLayout >
+                        <Label Text="Client" 
                            TextColor="Black"
                            FontAttributes="Bold"
                            Margin="0,0,0,2"/>
-                    <Label Text="{Binding SelectedItem.customer.Desc}" TextColor="Black"
+                        <Label Text="{Binding SelectedItem.customer.Desc}" TextColor="Black"
                            Margin="0,0,0,10"/>
-                    <BoxView
+                        <BoxView
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="1"
                         BackgroundColor="#E3E9EA"
                         Margin="0,0,0,20"/>
-                </StackLayout>
-                <StackLayout >
-                    <Label Text="Job no" TextColor="Black"
+                    </StackLayout>
+                    <StackLayout >
+                        <Label Text="Job no" TextColor="Black"
                            FontAttributes="Bold"
                            Margin="0,0,0,2"/>
-                    <Label Text="{Binding SelectedItem.workOrder.JobNo}" TextColor="Black"
+                        <Label Text="{Binding SelectedItem.workOrder.JobNo}" TextColor="Black"
                            Margin="0,0,0,10"/>
-                    <BoxView
+                        <BoxView
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="1"
                         BackgroundColor="#E3E9EA"
                         Margin="0,0,0,20"/>
-                </StackLayout>
-                <StackLayout >
-                    <Label Text="Notes" TextColor="Black"
+                    </StackLayout>
+                    <StackLayout >
+                        <Label Text="Notes" TextColor="Black"
                            FontAttributes="Bold"
                            Margin="0,0,0,2"/>
-                    <Label Text="{Binding SelectedItem.workOrder.Notes}"
+                        <Label Text="{Binding SelectedItem.workOrder.Notes}"
                           TextColor="Black" Margin="0,0,0,20"/>
-                </StackLayout>
+                    </StackLayout>
 
-            </StackLayout>
-            <StackLayout>
-                <Border Margin="0,50,0,0" 
+                </StackLayout>
+                <StackLayout>
+                    <Border Margin="0,50,0,0" 
                         Padding="0"
                         HorizontalOptions="FillAndExpand"
                         Stroke="White"
                         HeightRequest="56">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding WFDrawingsClickedCommand}" 
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding WFDrawingsClickedCommand}" 
                                                />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="2.5*,1*" 
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="2.5*,1*" 
                           RowDefinitions="56" 
                           Padding="0">
-                        <Label VerticalTextAlignment="Center" 
+                            <Label VerticalTextAlignment="Center" 
                                Grid.Column="0" 
                                TextColor="Black" 
                                Text="Work from Drawings" 
                                Padding="20,0,0,0"/>
-                        <Label Padding="0,0,20,0" 
+                            <Label Padding="0,0,20,0" 
                                VerticalTextAlignment="Center" 
                                HorizontalOptions="End" 
                                Grid.Column="1" 
@@ -111,33 +114,33 @@
                                TextColor="Black" 
                                Text="{StaticResource rightarrow}" />
 
-                    </Grid>
-                </Border>
-                <BoxView
+                        </Grid>
+                    </Border>
+                    <BoxView
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="1"
                         BackgroundColor="#E3E9EA"/>
-            </StackLayout>
+                </StackLayout>
 
-            <StackLayout>
-                <Border Margin="0,0,0,0" 
+                <StackLayout>
+                    <Border Margin="0,0,0,0" 
                         Padding="0"
                         HorizontalOptions="FillAndExpand"
                         Stroke="White"
                         HeightRequest="56">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding InProgressClickedCommand}" 
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding InProgressClickedCommand}" 
                                                />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="2.5*,1*" 
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="2.5*,1*" 
                           RowDefinitions="56" 
                           Padding="0">
-                        <Label VerticalTextAlignment="Center" 
+                            <Label VerticalTextAlignment="Center" 
                                Grid.Column="0" 
                                TextColor="Black" 
                                Text="In progress" 
                                Padding="20,0,0,0"/>
-                        <Label Padding="0,0,20,0" 
+                            <Label Padding="0,0,20,0" 
                                VerticalTextAlignment="Center" 
                                HorizontalOptions="End" 
                                Grid.Column="1" 
@@ -145,33 +148,33 @@
                                TextColor="Black" 
                                Text="{StaticResource rightarrow}" />
 
-                    </Grid>
-                </Border>
-                <BoxView
+                        </Grid>
+                    </Border>
+                    <BoxView
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="1"
                         BackgroundColor="#E3E9EA"/>
-            </StackLayout>
+                </StackLayout>
 
-            <StackLayout>
-                <Border Margin="0,0,0,0" 
+                <StackLayout>
+                    <Border Margin="0,0,0,0" 
                         Padding="0"
                         HorizontalOptions="FillAndExpand"
                         Stroke="White"
                         HeightRequest="56">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding CreateFormClickedCommand}" 
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CreateFormClickedCommand}" 
                                                />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="2.5*,1*" 
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="2.5*,1*" 
                           RowDefinitions="56" 
                           Padding="0">
-                        <Label VerticalTextAlignment="Center" 
+                            <Label VerticalTextAlignment="Center" 
                                Grid.Column="0" 
                                TextColor="Black" 
                                Text="Create a new form" 
                                Padding="20,0,0,0"/>
-                        <Label Padding="0,0,20,0" 
+                            <Label Padding="0,0,20,0" 
                                VerticalTextAlignment="Center" 
                                HorizontalOptions="End" 
                                Grid.Column="1" 
@@ -179,33 +182,33 @@
                                TextColor="Black" 
                                Text="{StaticResource rightarrow}" />
 
-                    </Grid>
-                </Border>
-                <BoxView
+                        </Grid>
+                    </Border>
+                    <BoxView
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="1"
                         BackgroundColor="#E3E9EA"/>
-            </StackLayout>
+                </StackLayout>
 
-            <StackLayout>
-                <Border Margin="0,0,0,0" 
+                <StackLayout>
+                    <Border Margin="0,0,0,0" 
                         Padding="0"
                         HorizontalOptions="FillAndExpand"
                         Stroke="White"
                         HeightRequest="56">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding WorkFromAssetsClickedCommand}" 
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding WorkFromAssetsClickedCommand}" 
                                               />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="2.5*,1*" 
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="2.5*,1*" 
                           RowDefinitions="56" 
                           Padding="0">
-                        <Label VerticalTextAlignment="Center" 
+                            <Label VerticalTextAlignment="Center" 
                                Grid.Column="0" 
                                TextColor="Black" 
                                Text="Work from assets" 
                                Padding="20,0,0,0"/>
-                        <Label Padding="0,0,20,0" 
+                            <Label Padding="0,0,20,0" 
                                VerticalTextAlignment="Center" 
                                HorizontalOptions="End" 
                                Grid.Column="1" 
@@ -213,33 +216,33 @@
                                TextColor="Black" 
                                Text="{StaticResource rightarrow}" />
 
-                    </Grid>
-                </Border>
-                <BoxView
+                        </Grid>
+                    </Border>
+                    <BoxView
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="1"
                         BackgroundColor="#E3E9EA"/>
-            </StackLayout>
+                </StackLayout>
 
-            <StackLayout>
-                <Border Margin="0,0,0,0" 
+                <StackLayout>
+                    <Border Margin="0,0,0,0" 
                         Padding="0"
                         HorizontalOptions="FillAndExpand"
                         Stroke="White"
                         HeightRequest="56">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding DocumentsClickedCommand}" 
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DocumentsClickedCommand}" 
                                                />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="2.5*,1*" 
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="2.5*,1*" 
                           RowDefinitions="56" 
                           Padding="0">
-                        <Label VerticalTextAlignment="Center" 
+                            <Label VerticalTextAlignment="Center" 
                                Grid.Column="0" 
                                TextColor="Black" 
                                Text="Documents" 
                                Padding="20,0,0,0"/>
-                        <Label Padding="0,0,20,0" 
+                            <Label Padding="0,0,20,0" 
                                VerticalTextAlignment="Center" 
                                HorizontalOptions="End" 
                                Grid.Column="1" 
@@ -247,33 +250,33 @@
                                TextColor="Black" 
                                Text="{StaticResource rightarrow}" />
 
-                    </Grid>
-                </Border>
-                <BoxView
+                        </Grid>
+                    </Border>
+                    <BoxView
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="1"
                         BackgroundColor="#E3E9EA"/>
-            </StackLayout>
+                </StackLayout>
 
-            <StackLayout>
-                <Border Margin="0,0,0,0" 
+                <StackLayout>
+                    <Border Margin="0,0,0,0" 
                         Padding="0"
                         HorizontalOptions="FillAndExpand"
                         Stroke="White"
                         HeightRequest="56">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding KeyClickedCommand}" 
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding KeyClickedCommand}" 
                                                />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="2.5*,1*" 
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="2.5*,1*" 
                           RowDefinitions="56" 
                           Padding="0">
-                        <Label VerticalTextAlignment="Center" 
+                            <Label VerticalTextAlignment="Center" 
                                Grid.Column="0" 
                                TextColor="Black" 
                                Text="Key" 
                                Padding="20,0,0,0"/>
-                        <Label Padding="0,0,20,0" 
+                            <Label Padding="0,0,20,0" 
                                VerticalTextAlignment="Center" 
                                HorizontalOptions="End" 
                                Grid.Column="1" 
@@ -281,11 +284,18 @@
                                TextColor="Black" 
                                Text="{StaticResource rightarrow}" />
 
-                    </Grid>
-                </Border>
+                        </Grid>
+                    </Border>
+                </StackLayout>
             </StackLayout>
 
-        
+            <ActivityIndicator 
+                IsVisible="{Binding IsLoading}" 
+                IsRunning="{Binding IsLoading}" 
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" 
+                Color="#00B1E3" />
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

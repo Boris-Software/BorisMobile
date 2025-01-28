@@ -1,5 +1,6 @@
 ﻿using BorisMobile.DataHandler;
 using BorisMobile.Models;
+using BorisMobile.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -330,9 +331,9 @@ namespace BorisMobile.ViewModels
         [RelayCommand]
         public async void JobClick(WorkOrderList item)
         {
-            JobOptionsPageViewModel jobOptionsPageViewModel = new JobOptionsPageViewModel();
-            jobOptionsPageViewModel.HandleJob(item);
-            //await App.Current.MainPage.Navigation.PushAsync(new JobDetailsPage(new JobDetailsPageViewModel(DependencyService.Get<IXmlParserService>(), DependencyService.Get<IFormGenerationService>(),item)));
+            //JobOptionsPageViewModel jobOptionsPageViewModel = new JobOptionsPageViewModel();
+            //jobOptionsPageViewModel.HandleJob(item);
+            await App.Current.MainPage.Navigation.PushAsync(new JobDetailsPage(new JobDetailsPageViewModel(item)));
         }
     }
 }

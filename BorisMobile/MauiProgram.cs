@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using BorisMobile.Services.Interfaces;
 using BorisMobile.Services;
 using Syncfusion.Maui.Toolkit.Hosting;
+using CommunityToolkit.Maui;
+
 
 #if ANDROID
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
@@ -21,6 +23,7 @@ namespace BorisMobile
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureSyncfusionToolkit()
                 .ConfigureFonts(fonts =>
                 {

@@ -20,7 +20,18 @@ public partial class TextBox :  ContentView
             titleLabel.Text = _Title;
         }
     }
+    private bool _isMandatory;
+    public bool IsMandatory
+    {
+        get => _isMandatory;
 
+        set
+        {
+            _isMandatory = value;
+            mandatory.IsVisible = value;
+
+        }
+    }
     private int _minLength;
     public int MinLength
     {

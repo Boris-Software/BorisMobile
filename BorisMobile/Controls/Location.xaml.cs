@@ -20,7 +20,18 @@ public partial class Location :  ContentView
             titleLabel.Text = _Title;
         }
     }
+    private bool _isMandatory;
+    public bool IsMandatory
+    {
+        get => _isMandatory;
 
+        set
+        {
+            _isMandatory = value;
+            mandatory.IsVisible = value;
+
+        }
+    }
 
     #endregion
     public async void OnControlTapped(object sender, EventArgs args)

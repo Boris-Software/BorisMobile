@@ -8,10 +8,10 @@ public partial class JobFormPage : ContentPage
 {
 	JobFormPageViewModel vm;
 
-    public JobFormPage(WorkOrderList item)
+    public JobFormPage(string xmlElement)
 	{
 		vm = new JobFormPageViewModel(Application.Current.Handler.MauiContext.Services.GetService<IXmlParserService>(),
-                Application.Current.Handler.MauiContext.Services.GetService<IFormGenerationService>(), item);
+                Application.Current.Handler.MauiContext.Services.GetService<IFormGenerationService>(), xmlElement);
 		InitializeComponent();
 		BindingContext = vm;
 	}

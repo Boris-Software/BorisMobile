@@ -47,7 +47,19 @@ public partial class ComboBox : ContentView
         }
     }
 
-    
+    private bool _isMandatory;
+    public bool IsMandatory
+    {
+        get => _isMandatory;
+
+        set
+        {
+            _isMandatory = value;
+            mandatory.IsVisible = value;
+            
+        }
+    }
+
     #endregion
 
     public async void OnControlTapped(object sender, EventArgs args)

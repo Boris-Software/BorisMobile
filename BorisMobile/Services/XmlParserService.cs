@@ -63,6 +63,7 @@ namespace BorisMobile.Services
                                 Description = sectionElement.Attribute("desc")?.Value ?? "Section",
                                 UniqueName = sectionElement.Attribute("uniquename")?.Value,
                                 IsRepeatable = sectionElement.Attribute("repeat")?.Value == "yes",
+                                AllowSectionDelete = sectionElement.Attribute("allow_section_delete")?.Value == "yes",
                                 Elements = new List<ElementModel>()
                             };
 
@@ -118,7 +119,8 @@ namespace BorisMobile.Services
                 UniqueName = element.Attribute("uniquename")?.Value,
                 ListId = element.Attribute("listid")?.Value,
                 IsMandatory = element.Attribute("mandatory")?.Value == "yes",
-                DefaultValue = element.Attribute("default")?.Value
+                DefaultValue = element.Attribute("default")?.Value,
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
             };
         }
 
@@ -142,7 +144,8 @@ namespace BorisMobile.Services
                 IsMandatory = element.Attribute("mandatory")?.Value == "yes",
                 DefaultValue = element.Attribute("default")?.Value,
                 MaxLength = element.Attribute("maxlen")?.Value,
-                Lines = attribute !=null ?  string.IsNullOrEmpty(element.Attribute("lines")?.Value.ToString()) ? 0 : Convert.ToInt32(element.Attribute("lines")?.Value.ToString()) : 0
+                Lines = attribute !=null ?  string.IsNullOrEmpty(element.Attribute("lines")?.Value.ToString()) ? 0 : Convert.ToInt32(element.Attribute("lines")?.Value.ToString()) : 0,
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
             };
         }
 
@@ -155,7 +158,9 @@ namespace BorisMobile.Services
                 UniqueName = element.Attribute("uniquename")?.Value,
                 IsMandatory = element.Attribute("mandatory")?.Value == "yes",
                 MinValue = element.Attribute("min_value")?.Value,
-                MaxValue = element.Attribute("max_value")?.Value
+                MaxValue = element.Attribute("max_value")?.Value,
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes",
+                
             };
         }
 
@@ -166,7 +171,8 @@ namespace BorisMobile.Services
                 Type = "Date",
                 Text = element.Attribute("text")?.Value,
                 UniqueName = element.Attribute("uniquename")?.Value,
-                IsMandatory = element.Attribute("mandatory")?.Value == "yes"
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
             };
 
         }
@@ -178,7 +184,8 @@ namespace BorisMobile.Services
                 Type = "Video",
                 Text = element.Attribute("text")?.Value,
                 UniqueName = element.Attribute("uniquename")?.Value,
-                IsMandatory = element.Attribute("mandatory")?.Value == "yes"
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
             };
 
         }
@@ -189,7 +196,8 @@ namespace BorisMobile.Services
                 Type = "Photo",
                 Text = element.Attribute("text")?.Value,
                 UniqueName = element.Attribute("uniquename")?.Value,
-                IsMandatory = element.Attribute("mandatory")?.Value == "yes"
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
             };
         }
 
@@ -198,7 +206,8 @@ namespace BorisMobile.Services
             return new ElementModel
             {
                 Type = "StaticText",
-                Text = element.Attribute("static_text")?.Value
+                Text = element.Attribute("static_text")?.Value,
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
             };
         }
 

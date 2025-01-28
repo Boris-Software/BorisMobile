@@ -23,6 +23,7 @@
                 </Grid>
                 <ContentView VerticalOptions="FillAndExpand" Content="{Binding DynamicForm.Content}" IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
                 </ContentView>
+                
             </StackLayout>
 
             <!-- Activity Indicator -->
