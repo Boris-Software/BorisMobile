@@ -60,12 +60,17 @@ namespace BorisMobile.ViewModels
             {
                 CurrentFormConfig = await _xmlParserService.ParseXmlConfiguration(xmlContent);
                 // Generate form UI
-                DynamicForm = await _formGenerationService.CreateDynamicForm(CurrentFormConfig);
+                MainThread.InvokeOnMainThreadAsync( async () =>
+                {
+                    DynamicForm = await _formGenerationService.CreateDynamicForm(CurrentFormConfig);
+                });
+
+
                 IsLoading = false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"LoadXmlConfiguration  {ex.Message}");
             }
         }
 

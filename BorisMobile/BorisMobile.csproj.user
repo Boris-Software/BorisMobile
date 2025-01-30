@@ -24,6 +24,9 @@
     <MauiXaml Update="Controls\Location.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="Controls\MultiChoiceSelector.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="Controls\TextBox.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>

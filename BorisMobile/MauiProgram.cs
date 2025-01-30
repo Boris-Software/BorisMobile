@@ -1,18 +1,22 @@
 ﻿using BorisMobile.Controls;
+using BorisMobile.Services;
+using BorisMobile.Services.Interfaces;
 using BorisMobile.ViewModels;
 using BorisMobile.Views;
 using Microsoft.Extensions.Logging;
-using BorisMobile.Services.Interfaces;
-using BorisMobile.Services;
 using Syncfusion.Maui.Toolkit.Hosting;
 using CommunityToolkit.Maui;
 
 
+
+
+
 #if ANDROID
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+#elif IOS
+using UIKit;
 #endif
 
-using Microsoft.Extensions.Logging;
 
 namespace BorisMobile
 {
@@ -131,8 +135,8 @@ namespace BorisMobile
                 {
 
 #if ANDROID
-                    handler.PlatformView.BackgroundTintList =
-        Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+                    //handler.PlatformView.BackgroundTintList =
+                    //Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
 #endif
                 }
 

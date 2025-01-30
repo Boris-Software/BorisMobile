@@ -2,167 +2,180 @@
 using BorisMobile.DataHandler;
 using BorisMobile.Models.DynamicFormModels;
 using BorisMobile.Services.Interfaces;
-using CommunityToolkit.Maui.Core;
-using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Views;
 
 namespace BorisMobile.Services
 {
     public class FormGenerationService : IFormGenerationService
     {
-        JobFormHandler jobFormHandler;
         public FormGenerationService() {
-           jobFormHandler =new JobFormHandler();
+           
         }
         public async Task<Page> CreateDynamicForm(FormConfigModel formConfig)
         {
-            return formConfig.SubDocumentModel.Pages.Count > 1
-            ? await CreateTabbedPage(formConfig)
-            : await CreateSinglePage(formConfig);
+            try
+            {
+                return formConfig.SubDocumentModel.Pages.Count > 1
+                ? await CreateTabbedPage(formConfig)
+                : await CreateSinglePage(formConfig);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error CreateDynamicForm: {ex}");
+                return null;
+            }
         }
 
         private async Task<Page> CreateTabbedPage(FormConfigModel formConfig) {
-
-            var DynamicPage = new ContentPage { };
-
-            var mainstack = new StackLayout
+            try
             {
-                Padding = 10
-            };
+                var DynamicPage = new ContentPage { };
 
-            var bodyStack = new StackLayout
-            {
-                Margin = new Thickness(10, 15, 10, 0),
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
-            //Set Form Header
-            var headerLabel = new Label { Text = formConfig.SubDocumentModel.Name, TextColor = Colors.Black,FontAttributes = FontAttributes.Bold, FontSize=16 };
-            bodyStack.Children.Add(headerLabel);
-
-
-            var tabScrollView = new ScrollView
-            {
-                Orientation = ScrollOrientation.Horizontal,
-                Margin = new Thickness(0, 0, 0, 0)
-
-            };
-
-            // Horizontal layout for section labels
-            var sectionLabelsLayout = new HorizontalStackLayout
-            {
-                Spacing = 20, // Space between labels
-                //HorizontalOptions = LayoutOptions.Center
-                Margin=new Thickness(0,10,0,0)
-            };
-
-            
-            // Dynamic data for sections
-            
-            // Dictionary to keep track of section labels and their corresponding content
-            var sectionLabels = new Dictionary<Label, View>();
-
-            // Content layout to display the currently selected section's content
-            var contentLayout = new VerticalStackLayout { VerticalOptions = LayoutOptions.FillAndExpand };
-
-            // Loop through sections to create UI
-            foreach (var page in formConfig.SubDocumentModel.Pages)
-            {
-                // Section Label
-                var sectionLabel = new Label
+                var mainstack = new StackLayout
                 {
-                    Text = page.Name,
-                    FontSize = 16,
-                    TextColor = Colors.Gray,
-                    HorizontalTextAlignment = TextAlignment.Center
+                    Padding = 10
                 };
 
-                // Content for the section
-                
-
-                var stack = new StackLayout { Margin = new Thickness(0, 10, 0, 0) };
-
-                foreach (var section in page.Sections)
+                var bodyStack = new StackLayout
                 {
-                    var sectionLayout = await CreateSectionLayout(section);
-                    stack.Children.Add(sectionLayout);
+                    Margin = new Thickness(10, 15, 10, 0),
+                    VerticalOptions = LayoutOptions.FillAndExpand
+                };
+                //Set Form Header
+                var headerLabel = new Label { Text = formConfig.SubDocumentModel.Name, TextColor = Colors.Black, FontAttributes = FontAttributes.Bold, FontSize = 16 };
+                bodyStack.Children.Add(headerLabel);
+
+
+                var tabScrollView = new ScrollView
+                {
+                    Orientation = ScrollOrientation.Horizontal,
+                    Margin = new Thickness(0, 0, 0, 0)
+
+                };
+
+                // Horizontal layout for section labels
+                var sectionLabelsLayout = new HorizontalStackLayout
+                {
+                    Spacing = 20, // Space between labels
+                                  //HorizontalOptions = LayoutOptions.Center
+                    Margin = new Thickness(0, 10, 0, 0)
+                };
+
+
+                // Dynamic data for sections
+
+                // Dictionary to keep track of section labels and their corresponding content
+                var sectionLabels = new Dictionary<Label, View>();
+
+                // Content layout to display the currently selected section's content
+                var contentLayout = new StackLayout { };
+
+                // Loop through sections to create UI
+                foreach (var page in formConfig.SubDocumentModel.Pages)
+                {
+                    // Section Label
+                    var sectionLabel = new Label
+                    {
+                        Text = page.Name,
+                        FontSize = 16,
+                        TextColor = Colors.Gray,
+                        HorizontalTextAlignment = TextAlignment.Center
+                    };
+
+                    // Content for the section
+
+
+                    var stack = new StackLayout { Margin = new Thickness(0, 10, 0, 0) };
+
+                    foreach (var section in page.Sections)
+                    {
+                        var sectionLayout = await CreateSectionLayout(section);
+                        stack.Children.Add(sectionLayout);
+                    }
+
+                    var saveButton = new Button
+                    {
+                        CornerRadius = 10,
+                        Margin = new Thickness(0, 15, 0, 10),
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
+                        Text = "Save",
+                        BackgroundColor = Color.FromHex("#00B1E3")
+                    };
+                    stack.Children.Add(saveButton);
+
+                    var mainLayout = new ScrollView
+                    {
+                        HeightRequest = DeviceDisplay.MainDisplayInfo.Height * 0.3,
+                        Content = stack,
+                        Margin = new Thickness(0, 0, 0, 20)
+
+                    };
+
+                    var sectionContent = mainLayout;
+
+                    // Add underline using TextDecorations
+                    sectionLabel.TextDecorations = TextDecorations.None;
+
+                    // Initially hide the content except for the first section
+                    sectionContent.IsVisible = false;
+                    sectionLabels[sectionLabel] = sectionContent;
+
+                    // Add label to the horizontal layout
+                    sectionLabelsLayout.Children.Add(sectionLabel);
+
+                    // Add content to the content layout
+                    contentLayout.Children.Add(sectionContent);
+
+                    // Tap gesture for label click
+                    var tapGestures = new TapGestureRecognizer();
+                    tapGestures.Tapped += (s, e) =>
+                    {
+                        foreach (var kvp in sectionLabels)
+                        {
+                            var label = kvp.Key;
+                            var contentView = kvp.Value;
+
+                            // Update label appearance and content visibility
+                            if (label == sectionLabel)
+                            {
+                                label.TextColor = Color.FromHex("#00B1E3");
+                                label.TextDecorations = TextDecorations.Underline;
+                                contentView.IsVisible = true;
+                            }
+                            else
+                            {
+                                label.TextColor = Colors.Gray;
+                                label.TextDecorations = TextDecorations.None;
+                                contentView.IsVisible = false;
+                            }
+                        }
+                    };
+                    sectionLabel.GestureRecognizers.Add(tapGestures);
                 }
 
-                var saveButton = new Button
-                {
-                    CornerRadius = 10,
-                    Margin = new Thickness(0, 15, 0, 10),
-                    HorizontalOptions = LayoutOptions.FillAndExpand,
-                    Text = "Save",
-                    BackgroundColor = Color.FromHex("#00B1E3")
-                };
-                stack.Children.Add(saveButton);
+                // Set the first section as active by default
+                var firstLabel = sectionLabels.Keys.First();
+                firstLabel.TextColor = Color.FromHex("#00B1E3");
+                firstLabel.TextDecorations = TextDecorations.Underline;
+                sectionLabels[firstLabel].IsVisible = true;
 
-                var mainLayout = new ScrollView
-                {
-                    HeightRequest = DeviceDisplay.MainDisplayInfo.Height * 0.3,
-                    Content = stack,
-                    Margin = new Thickness(0,0,0,20)
-                    
-                }; 
+                // Add sections and content layout to the main layout
+                tabScrollView.Content = sectionLabelsLayout;
+                bodyStack.Children.Add(tabScrollView);
+                bodyStack.Children.Add(contentLayout);
 
-                var sectionContent = mainLayout;
+                mainstack.Children.Add(bodyStack);
 
-                // Add underline using TextDecorations
-                sectionLabel.TextDecorations = TextDecorations.None;
+                DynamicPage.Content = mainstack;
 
-                // Initially hide the content except for the first section
-                sectionContent.IsVisible = false;
-                sectionLabels[sectionLabel] = sectionContent;
-
-                // Add label to the horizontal layout
-                sectionLabelsLayout.Children.Add(sectionLabel);
-
-                // Add content to the content layout
-                contentLayout.Children.Add(sectionContent);
-
-                // Tap gesture for label click
-                var tapGestures = new TapGestureRecognizer();
-                tapGestures.Tapped += (s, e) =>
-                {
-                    foreach (var kvp in sectionLabels)
-                    {
-                        var label = kvp.Key;
-                        var contentView = kvp.Value;
-
-                        // Update label appearance and content visibility
-                        if (label == sectionLabel)
-                        {
-                            label.TextColor = Color.FromHex("#00B1E3");
-                            label.TextDecorations = TextDecorations.Underline;
-                            contentView.IsVisible = true;
-                        }
-                        else
-                        {
-                            label.TextColor = Colors.Gray;
-                            label.TextDecorations = TextDecorations.None;
-                            contentView.IsVisible = false;
-                        }
-                    }
-                };
-                sectionLabel.GestureRecognizers.Add(tapGestures);
+                return DynamicPage;
             }
-
-            // Set the first section as active by default
-            var firstLabel = sectionLabels.Keys.First();
-            firstLabel.TextColor = Color.FromHex("#00B1E3");
-            firstLabel.TextDecorations = TextDecorations.Underline;
-            sectionLabels[firstLabel].IsVisible = true;
-
-            // Add sections and content layout to the main layout
-            tabScrollView.Content = sectionLabelsLayout;
-            bodyStack.Children.Add(tabScrollView);
-            bodyStack.Children.Add(contentLayout);
-
-            mainstack.Children.Add(bodyStack);
-
-            DynamicPage.Content = mainstack;
-
-            return DynamicPage;
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in CreateTabbedPage: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                throw;
+            }
         }
 
 
@@ -219,7 +232,7 @@ namespace BorisMobile.Services
                 sectionMainStack.Children.Add(headerStack);
             //}
 
-            var repeatableSectionLayout = new VerticalStackLayout();
+            var repeatableSectionLayout = new StackLayout();
 
             // Add the initial section content
             var initialContent = await CreateSectionContent(section, repeatableSectionLayout,false);
@@ -232,141 +245,148 @@ namespace BorisMobile.Services
             
         }
 
-        private async Task<View> CreateSectionContent(SectionModel section, VerticalStackLayout container, bool isRepeating)
+        private async Task<View> CreateSectionContent(SectionModel section, StackLayout container, bool isRepeating)
         {
-            var contentStack = new VerticalStackLayout
+            try
             {
-                Spacing = 5
-            };
-
-            var headerStack = new HorizontalStackLayout
-            {
-                Spacing = 10
-            };
-
-            if (section.IsRepeatable)
-            {
-                if (isRepeating)
+                var contentStack = new StackLayout
                 {
-                    if (!string.IsNullOrEmpty(section.Description) && !section.Description.Equals(" "))
+                    Spacing = 5
+                };
+
+                var headerStack = new HorizontalStackLayout
+                {
+                    Spacing = 10
+                };
+
+                if (section.IsRepeatable)
+                {
+                    if (isRepeating)
                     {
-                        headerStack.Children.Add(new Label
+                        if (!string.IsNullOrEmpty(section.Description) && !section.Description.Equals(" "))
                         {
-                            Margin = new Thickness(0, 10, 0, 0),
-                            Text = section.Description,
-                            TextColor = Colors.Black,
-                            FontAttributes = FontAttributes.Bold
-                        });
-                    }
-                    else
-                    {
-                        headerStack.Children.Add(new Label
+                            headerStack.Children.Add(new Label
+                            {
+                                Margin = new Thickness(0, 10, 0, 0),
+                                Text = section.Description,
+                                TextColor = Colors.Black,
+                                FontAttributes = FontAttributes.Bold
+                            });
+                        }
+                        else
                         {
-                            Margin = new Thickness(0, 10, 0, 0),
-                            Text = section.Elements[0].Text,
-                            TextColor = Colors.Black,
-                            FontAttributes = FontAttributes.Bold
-                        });
+                            headerStack.Children.Add(new Label
+                            {
+                                Margin = new Thickness(0, 10, 0, 0),
+                                Text = section.Elements[0].Text,
+                                TextColor = Colors.Black,
+                                FontAttributes = FontAttributes.Bold
+                            });
+                        }
+
+                        var deleteButton = new Image
+                        {
+                            Source = "delete",
+                            Margin = new Thickness(5, 4, 0, 0),
+                            BackgroundColor = Colors.Transparent,
+                        };
+                        headerStack.Children.Add(deleteButton);
+                        var deleteGesture = new TapGestureRecognizer();
+                        deleteGesture.Tapped += (s, e) => DeleteRepeatableSection(contentStack, container);
+                        headerStack.GestureRecognizers.Add(deleteGesture);
                     }
 
-                    var deleteButton = new Image
-                    {
-                        Source = "delete",
-                        Margin = new Thickness(5, 4, 0, 0),
-                        BackgroundColor = Colors.Transparent,
-                    };
-                    headerStack.Children.Add(deleteButton);
-                    var deleteGesture = new TapGestureRecognizer();
-                    deleteGesture.Tapped += (s, e) => DeleteRepeatableSection(contentStack, container);
-                    headerStack.GestureRecognizers.Add(deleteGesture);
+                    //deleteButton.Clicked += (s, e) => DeleteRepeatableSection(contentStack, container);
+                    //contentStack.Children.Add(deleteButton);
                 }
-
-                //deleteButton.Clicked += (s, e) => DeleteRepeatableSection(contentStack, container);
-                //contentStack.Children.Add(deleteButton);
-            }
-            contentStack.Children.Add(headerStack);
+                contentStack.Children.Add(headerStack);
 
 
-            // Create a horizontal container for media elements
-            var currentMediaGrid = new Grid
-            {
-                ColumnDefinitions =
+                // Create a horizontal container for media elements
+                var currentMediaGrid = new Grid
+                {
+                    ColumnDefinitions =
             {
                 new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
                 new ColumnDefinition(new GridLength(1, GridUnitType.Star))
             },
-                ColumnSpacing = 10
-            };
+                    ColumnSpacing = 10
+                };
 
-            int mediaCount = 0;
-            bool hasMediaElements = false;
+                int mediaCount = 0;
+                bool hasMediaElements = false;
 
-            // Render section elements
-            foreach (var element in section.Elements)
-            {
-                var control = await CreateControl(element);
-                if (control != null)
+                // Render section elements
+                foreach (var element in section.Elements)
                 {
-                    if (element.Type == "Photo" || element.Type == "Video")
+                    var control = await CreateControl(element);
+                    if (control != null)
                     {
-                        hasMediaElements = true;
-                        // Add to the grid
-                        Grid.SetColumn(control, mediaCount % 2);
-                        if (mediaCount % 2 == 0 && mediaCount > 0)
+                        if (element.Type == "Photo" || element.Type == "Video")
                         {
-                            // Add the current grid and create a new one
-                            contentStack.Children.Add(currentMediaGrid);
-                            currentMediaGrid = new Grid
+                            hasMediaElements = true;
+                            // Add to the grid
+                            Grid.SetColumn(control, mediaCount % 2);
+                            if (mediaCount % 2 == 0 && mediaCount > 0)
                             {
-                                ColumnDefinitions =
+                                // Add the current grid and create a new one
+                                contentStack.Children.Add(currentMediaGrid);
+                                currentMediaGrid = new Grid
+                                {
+                                    ColumnDefinitions =
                         {
                             new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
                             new ColumnDefinition(new GridLength(1, GridUnitType.Star))
                         },
-                                ColumnSpacing = 10,
-                                Margin = new Thickness(0, 10, 0, 0)
-                            };
+                                    ColumnSpacing = 10,
+                                    Margin = new Thickness(0, 10, 0, 0)
+                                };
+                            }
+                            currentMediaGrid.Children.Add(control);
+                            mediaCount++;
                         }
-                        currentMediaGrid.Children.Add(control);
-                        mediaCount++;
-                    }
-                    else
-                    {
-                        // If we have pending media elements, add the grid first
-                        if (hasMediaElements && mediaCount > 0)
+                        else
                         {
-                            contentStack.Children.Add(currentMediaGrid);
-                            currentMediaGrid = new Grid
+                            // If we have pending media elements, add the grid first
+                            if (hasMediaElements && mediaCount > 0)
                             {
-                                ColumnDefinitions =
+                                contentStack.Children.Add(currentMediaGrid);
+                                currentMediaGrid = new Grid
+                                {
+                                    ColumnDefinitions =
                         {
                             new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
                             new ColumnDefinition(new GridLength(1, GridUnitType.Star))
                         },
-                                ColumnSpacing = 10
-                            };
-                            mediaCount = 0;
-                            hasMediaElements = false;
+                                    ColumnSpacing = 10
+                                };
+                                mediaCount = 0;
+                                hasMediaElements = false;
+                            }
+                            // Add non-media elements directly to the stack
+                            contentStack.Children.Add(control);
                         }
-                        // Add non-media elements directly to the stack
-                        contentStack.Children.Add(control);
-                    }
 
-                    //contentStack.Children.Add(control);
+                        //contentStack.Children.Add(control);
+                    }
                 }
+                // Add any remaining media elements in the grid
+                if (hasMediaElements && mediaCount > 0)
+                {
+                    contentStack.Children.Add(currentMediaGrid);
+                }
+
+                return contentStack;
             }
-            // Add any remaining media elements in the grid
-            if (hasMediaElements && mediaCount > 0)
+            catch (Exception ex)
             {
-                contentStack.Children.Add(currentMediaGrid);
+                Console.Write(ex.ToString());
+                return null;
             }
-
-            return contentStack;
-
         }
         private async Task AddRepeatableSection(SectionModel section, StackLayout parentStack)
         {
-            var container = parentStack.Children.LastOrDefault() as VerticalStackLayout;
+            var container = parentStack.Children.LastOrDefault() as StackLayout;
             if (container != null)
             {
                 var newContent = await CreateSectionContent(section, container,true);
@@ -375,7 +395,7 @@ namespace BorisMobile.Services
             }
         }
 
-        private void DeleteRepeatableSection(View sectionContent, VerticalStackLayout container)
+        private void DeleteRepeatableSection(View sectionContent, StackLayout container)
         {
             if (container.Children.Count > 1)  // Ensure at least one section remains
             {
@@ -384,14 +404,14 @@ namespace BorisMobile.Services
             }
         }
 
-        private void UpdateDeleteButtonVisibility(VerticalStackLayout container)
+        private void UpdateDeleteButtonVisibility(StackLayout container)
         {
             // Hide delete buttons if only one section remains
             bool shouldShowDelete = container.Children.Count > 1;
 
             foreach (var child in container.Children)
             {
-                if (child is VerticalStackLayout contentStack)
+                if (child is StackLayout contentStack)
                 {
                     var deleteButton = contentStack.Children.FirstOrDefault() as ImageButton;
                     if (deleteButton != null)
@@ -403,7 +423,7 @@ namespace BorisMobile.Services
         }
         private async Task<View> CreateControl(ElementModel element)
         {
-            return element.Type switch
+            return await MainThread.InvokeOnMainThreadAsync(async () => element.Type switch
             {
                 "Combo" => await CreateComboBox(element),
                 "TextBox" => await CreateTextBox(element),
@@ -413,14 +433,15 @@ namespace BorisMobile.Services
                 "Video" => await CreateVideoUpload(element),
                 "Date" => await CreateDateField(element),
                 "Signature" => await CreateSignatureField(element),
+                "MultiChoice" => await CreateMultiChoice(element),
                 _ => null
-            };
+            });
         }
 
         private async Task<View> CreateComboBox(ElementModel element)
         {
-            if (jobFormHandler == null)
-                jobFormHandler = new JobFormHandler() ;
+            var jobFormHandler = new JobFormHandler();
+            
             var picker = new ComboBox
             {
                 Title = element.Text,
@@ -488,13 +509,39 @@ namespace BorisMobile.Services
 
         private async Task<View> CreateSignatureField(ElementModel element)
         {
-            return new CommunityToolkit.Maui.Views.DrawingView
+            var stack = new StackLayout();
+
+            var title = new Label
+            {
+                Text = element.Text,
+                TextColor = Colors.Black
+            };
+            stack.Children.Add(title);
+            var sign =  new DrawingView
             {
                 //Lines = new ObservableCollection<IDrawingLine>(),
                 LineColor = Colors.Black,
                 LineWidth = 5,
                 HeightRequest = 100,
+                BackgroundColor = Colors.AliceBlue,
                 HorizontalOptions = LayoutOptions.FillAndExpand
+            };
+            stack.Children.Add(sign);
+            return stack;
+        }
+
+        private async Task<View> CreateMultiChoice(ElementModel element)
+        {
+            var jobFormHandler = new JobFormHandler();
+            return new MultiChoiceSelector
+            {
+                //Lines = new ObservableCollection<IDrawingLine>(),
+                //LineColor = Colors.Black,
+                //LineWidth = 5,
+                Title = element.Text,
+                IsMandatory = element.IsMandatory,
+                ItemsSource = await jobFormHandler.GetComboBoxData(Convert.ToInt32(element.ListId))
+
             };
         }
         private async Task<View> CreateDateField(ElementModel element)
@@ -537,72 +584,80 @@ namespace BorisMobile.Services
 
         private async Task<Page> CreateSinglePage(FormConfigModel formConfig) {
 
-            var DynamicPage = new ContentPage { };
-
-            var mainstack = new StackLayout
+            try
             {
-                Padding = 10
-            };
+                var DynamicPage = new ContentPage { };
 
-            var bodyStack = new StackLayout
-            {
-                Margin = new Thickness(10, 15, 10, 0),
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
-            //Set Form Header
-            var headerLabel = new Label { Text = formConfig.SubDocumentModel.Name, TextColor = Colors.Black, FontAttributes = FontAttributes.Bold, FontSize = 16 };
-            bodyStack.Children.Add(headerLabel);
-
-            // Dynamic data for sections
-
-            // Content layout to display the currently selected section's content
-            var contentLayout = new VerticalStackLayout { VerticalOptions = LayoutOptions.FillAndExpand };
-
-            // Loop through sections to create UI
-            foreach (var page in formConfig.SubDocumentModel.Pages)
-            {
-                
-                // Content for the section
-
-                var stack = new StackLayout { Margin = new Thickness(0, 10, 0, 0) };
-
-                foreach (var section in page.Sections)
+                var mainstack = new StackLayout
                 {
-                    var sectionLayout = await CreateSectionLayout(section);
-                    stack.Children.Add(sectionLayout);
+                    Padding = 10
+                };
+
+                var bodyStack = new StackLayout
+                {
+                    Margin = new Thickness(10, 15, 10, 0),
+                    VerticalOptions = LayoutOptions.FillAndExpand
+                };
+                //Set Form Header
+                var headerLabel = new Label { Text = formConfig.SubDocumentModel.Name, TextColor = Colors.Black, FontAttributes = FontAttributes.Bold, FontSize = 16 };
+                bodyStack.Children.Add(headerLabel);
+
+                // Dynamic data for sections
+
+                // Content layout to display the currently selected section's content
+                var contentLayout = new StackLayout { };
+
+                // Loop through sections to create UI
+                foreach (var page in formConfig.SubDocumentModel.Pages)
+                {
+
+                    // Content for the section
+
+                    var stack = new StackLayout { Margin = new Thickness(0, 10, 0, 0) };
+
+                    foreach (var section in page.Sections)
+                    {
+                        var sectionLayout = await CreateSectionLayout(section);
+                        stack.Children.Add(sectionLayout);
+                    }
+
+                    var saveButton = new Button
+                    {
+                        CornerRadius = 10,
+                        Margin = new Thickness(0, 15, 0, 10),
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
+                        Text = "Save",
+                        BackgroundColor = Color.FromHex("#00B1E3")
+                    };
+                    stack.Children.Add(saveButton);
+
+                    var mainLayout = new ScrollView
+                    {
+                        HeightRequest = DeviceDisplay.MainDisplayInfo.Height * 0.3,
+                        Content = stack,
+                        Margin = new Thickness(0, 0, 0, 20)
+
+                    };
+
+                    var sectionContent = mainLayout;
+
+                    // Add content to the content layout
+                    contentLayout.Children.Add(sectionContent);
                 }
+                // Add sections and content layout to the main layout
+                bodyStack.Children.Add(contentLayout);
 
-                var saveButton = new Button
-                {
-                    CornerRadius = 10,
-                    Margin = new Thickness(0, 15, 0, 10),
-                    HorizontalOptions = LayoutOptions.FillAndExpand,
-                    Text = "Save",
-                    BackgroundColor = Color.FromHex("#00B1E3")
-                };
-                stack.Children.Add(saveButton);
+                mainstack.Children.Add(bodyStack);
 
-                var mainLayout = new ScrollView
-                {
-                    HeightRequest = DeviceDisplay.MainDisplayInfo.Height * 0.3,
-                    Content = stack,
-                    Margin = new Thickness(0, 0, 0, 20)
+                DynamicPage.Content = mainstack;
 
-                };
-
-                var sectionContent = mainLayout;
-
-                // Add content to the content layout
-                contentLayout.Children.Add(sectionContent);
+                return DynamicPage;
             }
-            // Add sections and content layout to the main layout
-            bodyStack.Children.Add(contentLayout);
-
-            mainstack.Children.Add(bodyStack);
-
-            DynamicPage.Content = mainstack;
-
-            return DynamicPage;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error CreateSinglePage: {ex}");
+                return null;
+            }
         }
 
     }

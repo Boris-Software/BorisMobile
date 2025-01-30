@@ -82,7 +82,8 @@ namespace BorisMobile.Services
             }
             catch (Exception ex)
             {
-                throw new XmlException("Error parsing XML configuration", ex);
+                Console.WriteLine($"Error parsing XML configuration {ex}");
+                return null;
             }
         }
 
@@ -96,7 +97,9 @@ namespace BorisMobile.Services
                 { "Photo", ParsePhotoControl },
                 { "Video", ParseVideoControl },
                 { "Date", ParseDateControl },
-                { "StaticText", ParseStaticText }
+                { "StaticText", ParseStaticText },
+                { "Signature", ParseSignature },
+                { "MultiChoice", ParseMultiChoice },
             };
 
             foreach (var element in sectionElement.Elements())
@@ -127,14 +130,6 @@ namespace BorisMobile.Services
         private ElementModel ParseTextBox(XElement element)
         {
             var attribute = element.Attribute("lines");
-            if (attribute != null)
-            {
-                Console.WriteLine($"Attribute lines' exists with value: {attribute.Value}");
-            }
-            else
-            {
-                Console.WriteLine($"Attribute lines does not exist.");
-            }
 
             return new ElementModel
             {
@@ -149,6 +144,32 @@ namespace BorisMobile.Services
             };
         }
 
+        private ElementModel ParseMultiChoice(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "MultiChoice",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+            };
+        }
+        private ElementModel ParseSignature(XElement element)
+        {
+            //Convert.ToInt32(element.Attribute("penWidth")?.Value)
+            return new ElementModel
+            {
+                Type = "Signature",
+                Text = element.Attribute("text")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = string.IsNullOrEmpty(element.Attribute("penWidth")?.Value.ToString()) ? 0 : Convert.ToInt32(element.Attribute("penWidth")?.Value.ToString()) ,
+            };
+        }
         private ElementModel ParseIntegerBox(XElement element)
         {
             return new ElementModel

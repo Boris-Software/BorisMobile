@@ -14,5 +14,8 @@
         public bool AllowCreateNew { get; set; }
         public object Value { get; set; }
         public int? Lines { get; set; }
+        public int? PenWidth { get; set; }
+        public bool? ArrangeHorizontally { get; set; }
+        public bool? UseListItemImages { get; set; }
     }
 }
