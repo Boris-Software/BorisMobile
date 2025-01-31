@@ -142,7 +142,7 @@ namespace BorisMobile.DataHandler
 
         public async Task<string> GetAttributeFromDataSql(string sqlString, string attName)
         {
-            string xmlText = GetStringFromDataSql(sqlString);
+            string xmlText = await GetStringFromDataSql(sqlString);
             if (!string.IsNullOrEmpty(xmlText))
             {
                 XmlDocument xmlDoc = new XmlDocument();
@@ -159,7 +159,7 @@ namespace BorisMobile.DataHandler
             return null;
         }
 
-        public string GetStringFromDataSql(string strSql)
+        public async Task<string> GetStringFromDataSql(string strSql)
         {
             object sqlResult = GetScalarResult(strSql);
             if (sqlResult == System.DBNull.Value || (sqlResult == null))

@@ -1,5 +1,7 @@
 ﻿using BorisMobile.Controls;
 using BorisMobile.DataHandler;
+using BorisMobile.Helper;
+using BorisMobile.Models;
 using BorisMobile.Models.DynamicFormModels;
 using BorisMobile.Services.Interfaces;
 using CommunityToolkit.Maui.Views;
@@ -8,13 +10,16 @@ namespace BorisMobile.Services
 {
     public class FormGenerationService : IFormGenerationService
     {
+        WorkOrderList workOrder;
+        JobFormHandler jobFormHandler;
         public FormGenerationService() {
-           
+            jobFormHandler = new JobFormHandler();
         }
-        public async Task<Page> CreateDynamicForm(FormConfigModel formConfig)
+        public async Task<Page> CreateDynamicForm(FormConfigModel formConfig, WorkOrderList workOrder)
         {
             try
             {
+                this.workOrder = workOrder;
                 return formConfig.SubDocumentModel.Pages.Count > 1
                 ? await CreateTabbedPage(formConfig)
                 : await CreateSinglePage(formConfig);
@@ -89,8 +94,14 @@ namespace BorisMobile.Services
 
                     foreach (var section in page.Sections)
                     {
-                        var sectionLayout = await CreateSectionLayout(section);
-                        stack.Children.Add(sectionLayout);
+                        if (!(bool)section.ReportOnly )
+                        {
+                            if (section.Condition0 == null || section.Condition0.Equals(""))
+                            {
+                                var sectionLayout = await CreateSectionLayout(section);
+                                stack.Children.Add(sectionLayout);
+                            }
+                        }
                     }
 
                     var saveButton = new Button
@@ -197,7 +208,8 @@ namespace BorisMobile.Services
                 {
                     Margin = new Thickness(0, 10, 0, 0),
                     Text = section.Description,
-                    TextColor = Colors.Black,
+                    FontSize = 15,
+                    TextColor = Color.FromArgb("#00B1E3"),
                     FontAttributes = FontAttributes.Bold
                 });
             }
@@ -319,6 +331,8 @@ namespace BorisMobile.Services
                 // Render section elements
                 foreach (var element in section.Elements)
                 {
+                    if (!(bool)section.ReportOnly)
+                    {
                     var control = await CreateControl(element);
                     if (control != null)
                     {
@@ -369,6 +383,7 @@ namespace BorisMobile.Services
 
                         //contentStack.Children.Add(control);
                     }
+                }
                 }
                 // Add any remaining media elements in the grid
                 if (hasMediaElements && mediaCount > 0)
@@ -423,25 +438,41 @@ namespace BorisMobile.Services
         }
         private async Task<View> CreateControl(ElementModel element)
         {
-            return await MainThread.InvokeOnMainThreadAsync(async () => element.Type switch
+            //if (element.Condition0==null || !element.Condition0.Equals("resultValueX;dummy;equals;dummy"))
+            //{
+                if (element.Condition0 == null || element.Condition0.Equals(""))
+                {
+                    
+                return await MainThread.InvokeOnMainThreadAsync(async () => element.Type switch
+                {
+                    "Combo" => await CreateComboBox(element),
+                    "TextBox" => await CreateTextBox(element),
+                    "Integer" => await CreateIntegerEntry(element),
+                    "Photo" => await CreatePhotoUpload(element),
+                    "StaticText" => await CreateStaticLabel(element),
+                    "Video" => await CreateVideoUpload(element),
+                    "Date" => await CreateDateField(element),
+                    "Signature" => await CreateSignatureField(element),
+                    "MultiChoice" => await CreateMultiChoice(element),
+                    "OutputField" => await CreateOutputField(element),
+                    "ActionButtons" => await CreateActionButtons(element),
+                    "Score" => await CreateScore(element),
+                    "GPSEarliest" => await CreateGPSEarliest(element),
+                    "Time" => await CreateTime(element),
+                    "GenericAttachments" => await CreateGenericAttachments(element),
+                    //"ExternalSystemField" => await CreateExternalSystemField(element
+                    
+                    _ => null
+                });
+            }
+            else
             {
-                "Combo" => await CreateComboBox(element),
-                "TextBox" => await CreateTextBox(element),
-                "Integer" => await CreateIntegerEntry(element),
-                "Photo"  => await CreatePhotoUpload(element),
-                "StaticText" => await CreateStaticLabel(element),
-                "Video" => await CreateVideoUpload(element),
-                "Date" => await CreateDateField(element),
-                "Signature" => await CreateSignatureField(element),
-                "MultiChoice" => await CreateMultiChoice(element),
-                _ => null
-            });
+                return null;
+            }
         }
 
         private async Task<View> CreateComboBox(ElementModel element)
         {
-            var jobFormHandler = new JobFormHandler();
-            
             var picker = new ComboBox
             {
                 Title = element.Text,
@@ -532,7 +563,6 @@ namespace BorisMobile.Services
 
         private async Task<View> CreateMultiChoice(ElementModel element)
         {
-            var jobFormHandler = new JobFormHandler();
             return new MultiChoiceSelector
             {
                 //Lines = new ObservableCollection<IDrawingLine>(),
@@ -544,6 +574,185 @@ namespace BorisMobile.Services
 
             };
         }
+        private async Task<View> CreateExternalSystemField (ElementModel element)
+        {
+            return new MultiChoiceSelector
+            {
+                //Lines = new ObservableCollection<IDrawingLine>(),
+                //LineColor = Colors.Black,
+                //LineWidth = 5,
+                Title = element.Text,
+                IsMandatory = element.IsMandatory,
+                //ItemsSource = await jobFormHandler.GetComboBoxData(Convert.ToInt32(element.EternalSystemField))
+
+            };
+        }
+
+
+
+        private async Task<View> CreateOutputField(ElementModel element)
+        {
+            if (element.Text.Equals("Date"))
+            {
+                var stack = new StackLayout();
+
+                var titleLabel = new Label
+                {
+                    Text = element.Text,
+                    TextColor = Colors.Black,
+                };
+                stack.Children.Add(titleLabel);
+                    
+                var dateLabel = new Label
+                {
+                    Text = DateTime.Now.ToString("dd/MM/yyyy"),
+                    TextColor = Colors.Black,
+
+                };
+                stack.Children.Add(dateLabel);
+                return stack;
+            }
+            
+            else
+            {
+                var stack = new StackLayout();
+
+                var titleLabel = new Label
+                {
+                    Text = element.Text,
+                    TextColor = Colors.Black,
+                };
+                stack.Children.Add(titleLabel);
+                if(element.OutputField !=null && !element.OutputField.Equals("-1"))
+                {
+                    
+                    var result = await jobFormHandler.GetOutputFielddata(element.OutputField, workOrder.workOrder.LocationId, workOrder.workOrder.CustomerId, workOrder.workOrder.UserId);
+
+                    var dateLabel = new Label
+                    {
+                        
+                        Text = result, // TODO bind with list ID in the element get the name 
+                        TextColor = Colors.Black,
+
+                    };
+                    stack.Children.Add(dateLabel);
+                }
+                
+                return stack;
+            }
+            
+        }
+
+        private async Task<View> CreateActionButtons(ElementModel element)
+        {
+            return new Button
+            {
+                Text = element.TextCol0,
+                HorizontalOptions = LayoutOptions.Center,
+                BackgroundColor = Color.FromArgb("#00B1E3"),
+                Padding = new Thickness(50, 2, 50, 2),
+                IsVisible = string.IsNullOrEmpty(element.Condition0) ? true : false,
+            };
+
+        }
+        private async Task<View> CreateScore(ElementModel element)
+        {
+            return new Label
+            {
+                Text = element.Text,
+                TextColor = Colors.Black,
+                HorizontalOptions = LayoutOptions.Start,
+            };
+
+        }
+
+        private async Task<View> CreateGPSEarliest(ElementModel element)
+        {
+            var stack = new StackLayout();
+
+            var titleLabel = new Label
+            {
+                Text = element.Text,
+                TextColor = Colors.Black,
+                HorizontalOptions = LayoutOptions.Start,
+            };
+            stack.Children.Add(titleLabel);
+
+            var responseLabel = new Label
+            {
+                Text = "Location Recorded",
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Colors.Black,
+                HorizontalOptions = LayoutOptions.Start,
+            };
+            stack.Children.Add(responseLabel);
+            return stack;
+        }
+
+        private async Task<View> CreateTime(ElementModel element)
+        {
+            //var stack = new StackLayout();
+
+            //var titleLabel = new Label
+            //{
+            //    Text = element.Text,
+            //    TextColor = Colors.Black,
+            //    HorizontalOptions = LayoutOptions.Start,
+            //};
+            //stack.Children.Add(titleLabel);
+
+            //var timePicker = new TimePicker
+            //{
+            //    TextColor = Colors.Black,
+            //    HorizontalOptions = LayoutOptions.FillAndExpand,
+            //};
+            //stack.Children.Add(timePicker);
+            //return stack;
+
+            return new TimeSelector
+            {
+                Title = element.Text,
+                IsMandatory = element.IsMandatory,
+            };
+        }
+        private async Task<View> CreateGenericAttachments(ElementModel element)
+        {
+            DocumentsService documentsService = new DocumentsService(workOrder);
+            List<Attachments>  list = await documentsService.GetDocumentsList();
+
+            var stack = new StackLayout();
+            foreach (Attachments attachment in list)
+            {
+                var button = new Button
+                {
+                    Text = attachment.DisplayName,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    Background = Color.FromArgb("#00B1E3")
+                };
+                button.Clicked += async (sender, e) => await OpenFile(attachment);
+                stack.Children.Add(button);
+            }
+            return stack;
+        }
+
+        private async Task OpenFile(Attachments attachments)
+        {
+            string filePath = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME), attachments.FileName);
+
+            if (File.Exists(filePath.ToLower()))
+            {
+                await Launcher.OpenAsync(new OpenFileRequest
+                {
+                    File = new ReadOnlyFile(filePath.ToLower())
+                });
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "File not found!", "OK");
+            }
+        
+        }
+
         private async Task<View> CreateDateField(ElementModel element)
         {
             return new Controls.DatePicker
@@ -617,8 +826,14 @@ namespace BorisMobile.Services
 
                     foreach (var section in page.Sections)
                     {
-                        var sectionLayout = await CreateSectionLayout(section);
-                        stack.Children.Add(sectionLayout);
+                        if (!(bool)section.ReportOnly)
+                        {
+                            if (section.Condition0 == null || section.Condition0.Equals(""))
+                            {
+                                var sectionLayout = await CreateSectionLayout(section);
+                                stack.Children.Add(sectionLayout);
+                            }
+                        }
                     }
 
                     var saveButton = new Button

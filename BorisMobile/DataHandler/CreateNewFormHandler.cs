@@ -29,7 +29,7 @@ namespace BorisMobile.DataHandler
                         {
                             continue;
                         }
-                        TemplateDocument templateDoc = TemplateDocument.GetTemplate(templateId);
+                        TemplateDocument templateDoc = await TemplateDocument.GetTemplate(templateId);
 
                         templates.Add(templateDoc);
                         //if (templateDoc != null)

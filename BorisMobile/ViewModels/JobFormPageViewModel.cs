@@ -2,14 +2,7 @@
 using BorisMobile.Models.DynamicFormModels;
 using BorisMobile.Services.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace BorisMobile.ViewModels
@@ -30,11 +23,13 @@ namespace BorisMobile.ViewModels
         [ObservableProperty]
         public string formTitle;
 
+        WorkOrderList workOrder;
         public Command SaveFormDataCommand { get; }
 
         public JobFormPageViewModel(IXmlParserService xmlParserService,
-        IFormGenerationService formGenerationService,string xmlContent)
+        IFormGenerationService formGenerationService,string xmlContent, WorkOrderList workOrder)
         {
+            this.workOrder = workOrder;
             _xmlParserService = xmlParserService;
             _formGenerationService = formGenerationService;
             IsLoading = true;
@@ -62,7 +57,7 @@ namespace BorisMobile.ViewModels
                 // Generate form UI
                 MainThread.InvokeOnMainThreadAsync( async () =>
                 {
-                    DynamicForm = await _formGenerationService.CreateDynamicForm(CurrentFormConfig);
+                    DynamicForm = await _formGenerationService.CreateDynamicForm(CurrentFormConfig, workOrder);
                 });
 
 

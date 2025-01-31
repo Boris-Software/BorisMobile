@@ -193,7 +193,7 @@ namespace BorisMobile.DataHandler.Data
                 "soUserSig"
             };
 
-        public static TemplateDocument GetTrimmedAuditDefinitionFromId(int auditId)
+        public async static Task<TemplateDocument> GetTrimmedAuditDefinitionFromId(int auditId)
         {
             //if (m_cachedAuditDefinitions == null || m_dataHandler.HaveDoneUpdate)
             //{
@@ -203,7 +203,7 @@ namespace BorisMobile.DataHandler.Data
 
             //if (!m_cachedAuditDefinitions.ContainsKey(auditId))
             //{
-                string baseResult = new CommonDataHandler().GetStringFromDataSql("SELECT XmlDoc FROM Audits WHERE Id = " + auditId); //Events 100 and 150
+                string baseResult = await new CommonDataHandler().GetStringFromDataSql("SELECT XmlDoc FROM Audits WHERE Id = " + auditId); //Events 100 and 150
                 if (baseResult == "")
                 {
                     return null;
@@ -231,9 +231,9 @@ namespace BorisMobile.DataHandler.Data
             //    return m_cachedAuditDefinitions[auditId];
             //}
         }
-        public static TemplateDocument GetTemplate(int templateId)
+        public async static Task<TemplateDocument> GetTemplate(int templateId)
         {
-            TemplateDocument doc = GetTrimmedAuditDefinitionFromId(templateId);
+            TemplateDocument doc = await GetTrimmedAuditDefinitionFromId(templateId);
             if (doc != null)
             {
                 doc.TemplateId = templateId;
@@ -349,9 +349,15 @@ namespace BorisMobile.DataHandler.Data
             foreach (int templateId in templatesInvolved)
             {
 
-                this.Add(TemplateDocument.GetTemplate(templateId));
+                this.Add(TemplateDoc(templateId).Result);
 
             }
+        }
+
+        private async Task<TemplateDocument> TemplateDoc(int templateId)
+        {
+            return await TemplateDocument.GetTemplate(templateId);
+
         }
         public int GetAuditIdFromAuditInProgressGuid(Guid auditInProgressId)
         {

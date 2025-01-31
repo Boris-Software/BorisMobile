@@ -17,5 +17,23 @@
         public int? PenWidth { get; set; }
         public bool? ArrangeHorizontally { get; set; }
         public bool? UseListItemImages { get; set; }
+        public bool? ReportOnly { get; set; }
+
+        public string? Condition0 { get; set; }
+
+        public string? Condition1 { get; set; }
+        public string? TextCol0 { get; set; }
+        public string? EntityType0 { get; set; }
+        public string? EntityType1 { get; set; }
+        public int OutputField { get; set; }
+        public string Calculation { get; set; }
+        public int ResultType { get; set; }
+        public string CurrencySymbol { get; set; }
+        public string ExternalSystemField { get; set; }
+        public bool GPSUse { get; set; }
+        public bool NetworkUse { get; set; }
+
+        public int? MinuteIncrement { get; set; }
+
     }
 }

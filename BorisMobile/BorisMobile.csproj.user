@@ -30,6 +30,9 @@
     <MauiXaml Update="Controls\TextBox.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="Controls\TimeSelector.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="Controls\VideoSelector.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>

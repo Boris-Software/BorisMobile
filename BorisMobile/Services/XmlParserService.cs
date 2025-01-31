@@ -1,8 +1,8 @@
 ﻿using BorisMobile.Models.DynamicFormModels;
 using BorisMobile.Services.Interfaces;
-using System.Xml.Linq;
+using Microsoft.Maui.Controls;
 using System.Xml;
-using static System.Collections.Specialized.BitVector32;
+using System.Xml.Linq;
 
 namespace BorisMobile.Services
 {
@@ -64,6 +64,9 @@ namespace BorisMobile.Services
                                 UniqueName = sectionElement.Attribute("uniquename")?.Value,
                                 IsRepeatable = sectionElement.Attribute("repeat")?.Value == "yes",
                                 AllowSectionDelete = sectionElement.Attribute("allow_section_delete")?.Value == "yes",
+                                ReportOnly = sectionElement.Attribute("report_only")?.Value == "yes",
+                                Condition0 = sectionElement.Attribute("condition0")?.Value,
+                                Condition1 = sectionElement.Attribute("condition1")?.Value,
                                 Elements = new List<ElementModel>()
                             };
 
@@ -100,6 +103,13 @@ namespace BorisMobile.Services
                 { "StaticText", ParseStaticText },
                 { "Signature", ParseSignature },
                 { "MultiChoice", ParseMultiChoice },
+                { "OutputField", ParseOutputField },
+                { "ActionButtons", ParseActionButtons},
+                { "Score", ParseScore},
+                { "GPSEarliest", ParseGPSEarliest},
+                { "Time", ParseTime},
+                { "GenericAttachments", ParseGenericAttachments},
+                //{ "ExternalWorkOrderAttachments", ParseExternalWorkOrderAttachments},
             };
 
             foreach (var element in sectionElement.Elements())
@@ -123,7 +133,10 @@ namespace BorisMobile.Services
                 ListId = element.Attribute("listid")?.Value,
                 IsMandatory = element.Attribute("mandatory")?.Value == "yes",
                 DefaultValue = element.Attribute("default")?.Value,
-                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
             };
         }
 
@@ -140,7 +153,10 @@ namespace BorisMobile.Services
                 DefaultValue = element.Attribute("default")?.Value,
                 MaxLength = element.Attribute("maxlen")?.Value,
                 Lines = attribute !=null ?  string.IsNullOrEmpty(element.Attribute("lines")?.Value.ToString()) ? 0 : Convert.ToInt32(element.Attribute("lines")?.Value.ToString()) : 0,
-                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
             };
         }
 
@@ -156,8 +172,178 @@ namespace BorisMobile.Services
                 PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
                 ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
                 UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
             };
         }
+
+        
+        private ElementModel ParseOutputField(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "OutputField",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+            };
+        }
+
+        private ElementModel ParseActionButtons(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "ActionButtons",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+                TextCol0 = element.Attribute("text_col0")?.Value,
+            };
+        }
+        private ElementModel ParseScore(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "Score",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+                TextCol0 = element.Attribute("text_col0")?.Value,
+                Calculation = element.Attribute("calculation")?.Value,
+                ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
+                CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+            };
+        }
+        private ElementModel ParseGPSEarliest(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "GPSEarliest",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                GPSUse = element.Attribute("lm_gps_use")?.Value == "yes",
+                NetworkUse = element.Attribute("lm_network_use")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+                TextCol0 = element.Attribute("text_col0")?.Value,
+                Calculation = element.Attribute("calculation")?.Value,
+                ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
+                CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+            };
+        }
+
+        private ElementModel ParseGenericAttachments(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "GenericAttachments",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                EntityType0 = element.Attribute("entityType0")?.Value,
+                EntityType1 = element.Attribute("entityType1")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                MinuteIncrement = Convert.ToInt32(element.Attribute("minuteIncrement")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                GPSUse = element.Attribute("lm_gps_use")?.Value == "yes",
+                NetworkUse = element.Attribute("lm_network_use")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+                TextCol0 = element.Attribute("text_col0")?.Value,
+                Calculation = element.Attribute("calculation")?.Value,
+                ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
+                CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+            };
+        }
+        private ElementModel ParseTime(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "Time",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                MinuteIncrement = Convert.ToInt32(element.Attribute("minuteIncrement")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                GPSUse = element.Attribute("lm_gps_use")?.Value == "yes",
+                NetworkUse = element.Attribute("lm_network_use")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+                TextCol0 = element.Attribute("text_col0")?.Value,
+                Calculation = element.Attribute("calculation")?.Value,
+                ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
+                CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+            };
+        }
+
+        private ElementModel ParseExternalWorkOrderAttachments(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "ExternalWorkOrderAttachments",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                ExternalSystemField = element.Attribute("externalSystemField")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                MinuteIncrement = Convert.ToInt32(element.Attribute("minuteIncrement")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                GPSUse = element.Attribute("lm_gps_use")?.Value == "yes",
+                NetworkUse = element.Attribute("lm_network_use")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+                TextCol0 = element.Attribute("text_col0")?.Value,
+                Calculation = element.Attribute("calculation")?.Value,
+                ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
+                CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+            };
+        }
+
         private ElementModel ParseSignature(XElement element)
         {
             //Convert.ToInt32(element.Attribute("penWidth")?.Value)
@@ -167,6 +353,9 @@ namespace BorisMobile.Services
                 Text = element.Attribute("text")?.Value,
                 UniqueName = element.Attribute("uniquename")?.Value,
                 IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
                 PenWidth = string.IsNullOrEmpty(element.Attribute("penWidth")?.Value.ToString()) ? 0 : Convert.ToInt32(element.Attribute("penWidth")?.Value.ToString()) ,
             };
         }
@@ -181,7 +370,10 @@ namespace BorisMobile.Services
                 MinValue = element.Attribute("min_value")?.Value,
                 MaxValue = element.Attribute("max_value")?.Value,
                 AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes",
-                
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+
             };
         }
 
@@ -193,7 +385,10 @@ namespace BorisMobile.Services
                 Text = element.Attribute("text")?.Value,
                 UniqueName = element.Attribute("uniquename")?.Value,
                 IsMandatory = element.Attribute("mandatory")?.Value == "yes",
-                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
             };
 
         }
@@ -206,7 +401,10 @@ namespace BorisMobile.Services
                 Text = element.Attribute("text")?.Value,
                 UniqueName = element.Attribute("uniquename")?.Value,
                 IsMandatory = element.Attribute("mandatory")?.Value == "yes",
-                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
             };
 
         }
@@ -218,7 +416,10 @@ namespace BorisMobile.Services
                 Text = element.Attribute("text")?.Value,
                 UniqueName = element.Attribute("uniquename")?.Value,
                 IsMandatory = element.Attribute("mandatory")?.Value == "yes",
-                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
             };
         }
 
@@ -228,7 +429,10 @@ namespace BorisMobile.Services
             {
                 Type = "StaticText",
                 Text = element.Attribute("static_text")?.Value,
-                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes"
+                AllowCreateNew = element.Attribute("allowCreateNew")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
             };
         }
 

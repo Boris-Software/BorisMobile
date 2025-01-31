@@ -1,10 +1,11 @@
-﻿using BorisMobile.Models.DynamicFormModels;
+﻿using BorisMobile.Models;
+using BorisMobile.Models.DynamicFormModels;
 
 namespace BorisMobile.Services.Interfaces
 {
     public interface IFormGenerationService
     {
-        Task<Page> CreateDynamicForm(FormConfigModel formConfig);
+        Task<Page> CreateDynamicForm(FormConfigModel formConfig,WorkOrderList workOrer);
 
     }
 }

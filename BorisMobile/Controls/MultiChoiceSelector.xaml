@@ -7,8 +7,7 @@
     <StackLayout Spacing="10">
         <Label x:Name="TitleLabel"
                Text="{Binding Title}"
-               TextColor="Black"
-               FontAttributes="Bold" />
+               TextColor="Black" />
 
         <CollectionView x:Name="ChoicesCollection"
                        ItemsSource ="{Binding Choices, Source={x:Reference this}}"

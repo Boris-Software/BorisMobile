@@ -52,7 +52,7 @@ namespace BorisMobile.ViewModels
         public async void FormClick(TemplateDocument doc)
         {
             JobOptionsPageViewModel jobOptionsPageViewModel = new JobOptionsPageViewModel();
-            jobOptionsPageViewModel.HandleJob(doc.InnerXml.ToString());
+            jobOptionsPageViewModel.HandleJob(doc.InnerXml.ToString(), WorkOrder);
         }
     }
   

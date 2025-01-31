@@ -97,6 +97,9 @@
 	  <MauiXaml Update="Controls\TextBox.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Controls\TimeSelector.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Controls\VideoSelector.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

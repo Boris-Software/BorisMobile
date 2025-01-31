@@ -1,4 +1,5 @@
-﻿using BorisMobile.Models;
+﻿using BorisMobile.Helper;
+using BorisMobile.Models;
 using BorisMobile.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -25,7 +26,7 @@ namespace BorisMobile.ViewModels
         public async void Init()
         {
             var list   = await documentsService.GetDocumentsList();
-            attachmentList = new ObservableCollection<Attachments>(list);
+            AttachmentList = new ObservableCollection<Attachments>(list);
         }
 
 
@@ -35,6 +36,28 @@ namespace BorisMobile.ViewModels
             await App.Current.MainPage.Navigation.PopAsync();
         }
 
-        
+        [RelayCommand]
+        public async void DocumentClick(Attachments attachement)
+        {
+            await OpenFile(attachement);
+        }
+
+        private async Task OpenFile(Attachments attachments)
+        {
+            string filePath = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME), attachments.FileName);
+
+            if (File.Exists(filePath.ToLower()))
+            {
+                await Launcher.OpenAsync(new OpenFileRequest
+                {
+                    File = new ReadOnlyFile(filePath.ToLower())
+                });
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "File not found!", "OK");
+            }
+
+        }
     }
 }
