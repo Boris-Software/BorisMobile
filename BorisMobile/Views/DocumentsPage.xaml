@@ -67,16 +67,18 @@
                 </CollectionView.Triggers>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border Margin="0,10,0,0"
-                                StrokeShape="RoundRectangle 7"
-                                Stroke="#C1ECF8">
+                        <StackLayout Margin="0,0,0,4">
+                        <Border Margin="5"
+                                StrokeShape="RoundRectangle 10" StrokeThickness="1"
+                                Stroke="#C1ECF8" HeightRequest="60">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding BindingContext.DocumentClickCommand, Source={x:Reference documentpage}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                             </Border.GestureRecognizers>
-                            <StackLayout BackgroundColor="#C1ECF8" Padding="20">
-                                <Label Text="{Binding DisplayName}" TextColor="Black" HorizontalTextAlignment="Center"/>
+                            <StackLayout BackgroundColor="#C1ECF8" >
+                                <Label Text="{Binding DisplayName}" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand"/>
                             </StackLayout>
                         </Border>
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

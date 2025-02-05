@@ -66,13 +66,16 @@
                 </CollectionView.Triggers>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border Margin="0,10,0,0"
-                            StrokeShape="RoundRectangle 7"
-                            Stroke="#EFFAFF">
-                            <StackLayout BackgroundColor="#DEF5FF" Padding="20">
-                                <Label Text="{Binding Description}" TextColor="Black" HorizontalTextAlignment="Center"/>
+                        <StackLayout Margin="0,0,0,4">
+                        <Border Margin="5"
+                            StrokeShape="RoundRectangle 10" StrokeThickness="1"
+                            Stroke="#EFFAFF"
+                                HeightRequest="60">
+                            <StackLayout BackgroundColor="#DEF5FF">
+                                <Label Text="{Binding Description}" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center"/>
                             </StackLayout>
                         </Border>
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

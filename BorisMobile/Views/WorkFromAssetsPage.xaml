@@ -8,65 +8,68 @@
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="White">
     <ContentPage.Content>
-        <StackLayout>
-            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" 
+        <Grid>
+            <StackLayout Padding="10" >
+                <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" 
                   RowDefinitions="50" 
                   Padding="0,15,0,30">
-                <Label Grid.Column="0" 
+                    <Label Grid.Column="0" 
                        Padding="10"  
                        FontFamily="FaSolid" 
                        TextColor="Black" 
                        Text="{StaticResource backarrow}" 
                        VerticalTextAlignment="Center" >
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
 
-                <Label Grid.Column="1"
+                    <Label Grid.Column="1"
                        HorizontalOptions="CenterAndExpand" 
                        VerticalOptions="CenterAndExpand"
                        FontAttributes="Bold" 
                        Text="Work From Assets" 
                        TextColor="Black" 
                        FontSize="20"></Label>
-                <Grid Grid.Column="2">
-                    <Image Source="cloud.png" 
+                    <Grid Grid.Column="2">
+                        <Image Source="cloud.png" 
                            WidthRequest="20" 
                            HeightRequest="20"></Image>
-                    <Image Source="syncavailable.png" 
+                        <Image Source="syncavailable.png" 
                            WidthRequest="10" 
                            HeightRequest="10" 
                            Margin="10,10,0,0"></Image>
-                </Grid>
-                <Label VerticalTextAlignment="Center" 
+                    </Grid>
+                    <Label VerticalTextAlignment="Center" 
                        Grid.Column="3" 
                        FontFamily="FaSolid" 
                        TextColor="Black" 
                        Text="{StaticResource user}" >
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>
-            </Grid>
-            <StackLayout HorizontalOptions="FillAndExpand" 
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                <StackLayout HorizontalOptions="FillAndExpand" 
                          BackgroundColor="#EFFAFF"
                          Padding="10" >
-                <Label Text="Firestopping Customer JJL" TextColor="Black"
+                    <Label Text="{Binding SelectedWorkOrder.customer.Desc}" TextColor="Black"
                        Margin="0,0,0,2"/>
-                <Label Text="06" TextColor="Black"
+                    <Label Text="{Binding SelectedWorkOrder.workOrder.JobNo}" TextColor="Black"
                        Margin="0,0,0,10"/>
-            </StackLayout>
-            <StackLayout Margin="20">
-                <Border StrokeShape="RoundRectangle 10"
+                </StackLayout>
+
+                <StackLayout IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+                <StackLayout Margin="20">
+                    <Border StrokeShape="RoundRectangle 10" HeightRequest="50"
                         Stroke="#CAD3D7">
-                    <Grid ColumnDefinitions="4*,0.5*" 
+                        <Grid ColumnDefinitions="4*,0.5*" RowDefinitions="50"
                           Padding="10,0,0,0">
-                        <controls:NoBorderPicker TextColor="Black" x:Name="drawingsPicker"
+                            <controls:NoBorderPicker TextColor="Black" x:Name="drawingsPicker"
                              SelectedItem="{Binding SelectedDrawing,Mode=TwoWay}" ItemsSource="{Binding WorkFrowDrawings,Mode=TwoWay}" 
                              Margin="10,0" ItemDisplayBinding="{Binding Description}">
-                        </controls:NoBorderPicker>
-                        <!--<controls:NoBorderPicker TextColor="Black" Grid.Column="0" x:Name="picker"
+                            </controls:NoBorderPicker>
+                            <!--<controls:NoBorderPicker TextColor="Black" Grid.Column="0" x:Name="picker"
                             Title="Level 0">
                             <controls:NoBorderPicker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
@@ -75,52 +78,85 @@
                                 </x:Array>
                             </controls:NoBorderPicker.ItemsSource>
                         </controls:NoBorderPicker>-->
-                        <Label Grid.Column="1"  Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Gray" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </Grid>
-                </Border>
-            </StackLayout>
-            <StackLayout Margin="15"
-                         HeightRequest="75">
-
-                <CollectionView ItemsSource="{Binding AssetsList}" >
-                    <CollectionView.Triggers>
-                        <DataTrigger TargetType="CollectionView"
+                            <Label Grid.Column="1"  Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Gray" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </Border>
+                </StackLayout>
+                    <Grid Margin="15,10,15,15" VerticalOptions="FillAndExpand" RowDefinitions="550">
+                        <CollectionView ItemsSource="{Binding AssetsList}" VerticalOptions="FillAndExpand"  >
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout 
+                                    Orientation="Vertical" 
+                                    ItemSpacing="5"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView"
                             Binding="{Binding AssetsList.Count}" Value="0">
-                            <Setter Property="IsVisible" Value="False" />
-                        </DataTrigger>
-                    </CollectionView.Triggers>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Border StrokeShape="RoundRectangle 10"
-                        Stroke="#E3E5E5"
-                        Padding="10"
-                        Margin="5"
-                        HeightRequest="50">
-                                <Grid ColumnDefinitions="0.5*,4*">
-                                    <Image Grid.Column="0" 
-                               Source="location_yellow.png"/>
-                                    <Label Grid.Column="1" TextColor="#999999"
-                               VerticalTextAlignment="Center"
-                               Text="{Binding Description}"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-
-                <Label Text="No results found" IsVisible="False" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Margin="0,0,0,4">
+                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1"
+                                            Stroke="#E3E5E5"
+                                            Margin="5"
+                                                VerticalOptions="FillAndExpand">
+                                            <StackLayout>
+                                        <Grid ColumnDefinitions="0.5*,4*" RowDefinitions="60">
+                                            <Image Grid.Column="0" HeightRequest="30" WidthRequest="30"
+                                               Source="location_yellow.png" VerticalOptions="CenterAndExpand"/>
+                                                            <Label Grid.Column="1" TextColor="#999999"
+                                               VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand"
+                                               Text="{Binding Description}"/>
+                                        </Grid>
+                                            <StackLayout Margin="10,0,0,5">
+                                                    <Label Text="{Binding Location,StringFormat='Location : {0}'}" TextColor="Black">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label"
+                                                                Binding="{Binding Location}" Value="N/A">
+                                                                <Setter Property="IsVisible" Value="False" />
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                                    <Label Text="{Binding InstallType,StringFormat='Install Type : {0}'}" TextColor="Black">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label"
+                                                                Binding="{Binding InstallType}" Value="N/A">
+                                                                <Setter Property="IsVisible" Value="False" />
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                                    <Label Text="{Binding Pens,StringFormat='Pen services : {0}'}" TextColor="Black">
+                                                        <Label.Triggers>
+                                                        <DataTrigger TargetType="Label"
+                                                            Binding="{Binding Pens}" Value="N/A">
+                                                            <Setter Property="IsVisible" Value="False" />
+                                                        </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                            </StackLayout>
+                                            </StackLayout>
+                                        </Border>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                        
+                    
+                        <Label Text="No results found" IsVisible="False" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
                                 Binding="{Binding AssetsList.Count}" Value="0">
-                            <Setter Property="IsVisible" Value="True" />
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <!--<Border StrokeShape="RoundRectangle 10"
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <!--<Border StrokeShape="RoundRectangle 10"
                         Stroke="#E3E5E5"
                         Padding="10" Margin="5"
                         HeightRequest="50">
@@ -183,7 +219,16 @@
                                Text="1"/>
                     </Grid>
                 </Border>-->
+                    </Grid>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+
+            <ActivityIndicator 
+             IsVisible="{Binding IsLoading}" 
+             IsRunning="{Binding IsLoading}" 
+             VerticalOptions="Center" 
+             HorizontalOptions="Center" 
+             Color="#00B1E3" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

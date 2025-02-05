@@ -13,5 +13,8 @@ namespace BorisMobile.DataHandler.Data
         public string Description { get; set; }
 
         public GenericLists genericList { get; set; }
+        public string Location { get; set; }
+        public string Pens { get; set; }
+        public string InstallType { get; set; }
     }
 }

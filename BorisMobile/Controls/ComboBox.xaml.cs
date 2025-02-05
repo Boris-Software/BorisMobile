@@ -68,6 +68,10 @@ public partial class ComboBox : ContentView
         {
             return;
         }
+        else
+        {
+            picker.Focus();
+        }
 
     }
 

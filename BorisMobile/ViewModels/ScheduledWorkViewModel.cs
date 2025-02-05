@@ -70,7 +70,7 @@ namespace BorisMobile.ViewModels
         public ScheduledWorkViewModel(Item item)
         {
             IsLoading = true;
-            List<string> items = ["Weekly", "Monthly", "Daily"];
+            List<string> items = ["Daily", "Weekly", "Monthly"];
             GroupOptions = new ObservableCollection<string>(items);
             _selectedGroupBy = "Monthly";
             isGroupBy = true;

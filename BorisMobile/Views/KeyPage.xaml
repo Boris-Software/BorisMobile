@@ -66,20 +66,21 @@
                         </DataTrigger>
                     </CollectionView.Triggers>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate >
+                            <StackLayout Margin="0,0,0,4">
                             <Border StrokeShape="RoundRectangle 10"
-                                Stroke="#E3E5E5"
-                                Padding="10"
+                                Stroke="#E3E5E5" StrokeThickness="1"
                                 Margin="5"
-                                HeightRequest="50">
-                                <Grid ColumnDefinitions="0.5*,4*">
-                                    <Image Grid.Column="0" 
-                               Source="location_black.png"/>
-                                    <Label Grid.Column="1" TextColor="#999999"
-                               VerticalTextAlignment="Center"
+                                HeightRequest="60">
+                                <Grid ColumnDefinitions="0.5*,4*" RowDefinitions="60">
+                                    <Image Grid.Column="0" HeightRequest="30" WidthRequest="30"
+                               Source="location_black.png" VerticalOptions="CenterAndExpand"/>
+                                    <Label Grid.Column="1" Margin="10,0,0,0" TextColor="#999999"
+                               VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand"
                                Text="{Binding Description}"/>
                                 </Grid>
                             </Border>
+                            </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

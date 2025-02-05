@@ -75,7 +75,7 @@
 
             </StackLayout>
         </StackLayout>
-            <ActivityIndicator IsRunning="True" IsVisible="{Binding IsLoading}" Scale="0.2"></ActivityIndicator>
+            <ActivityIndicator IsRunning="True" IsVisible="{Binding IsLoading}" Scale="0.2" Color="#00B1E3"></ActivityIndicator>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

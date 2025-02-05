@@ -15,12 +15,16 @@
                 Stroke="#E3E5E5"
                 StrokeShape="RoundRectangle 8"
                 Background="White">
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnControlTapped"></TapGestureRecognizer>
-            </Border.GestureRecognizers>
             <Grid ColumnDefinitions="0.9*,0.1*">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnControlTapped"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
                 <controls:NoBorderPicker x:Name="picker" ItemDisplayBinding="{Binding Desc}" Grid.Column="0" TextColor="Black" ItemsSource="{Binding ItemsSource, Source={x:Reference this}}" SelectedItem="{Binding SelectedItem, Source={x:Reference this}}" SelectedIndexChanged="ThisPickerSelectedIndexChanged"/>
-                <Label Grid.Column="1" Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center"/>
+                <Label Grid.Column="1" Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource chevrondown}" VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnControlTapped"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
 
             </Grid>
         </Border>

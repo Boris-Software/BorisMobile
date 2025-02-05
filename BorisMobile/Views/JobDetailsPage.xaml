@@ -52,38 +52,37 @@
 
                 <StackLayout HorizontalOptions="FillAndExpand" 
                          BackgroundColor="#EFFAFF" 
-                         HeightRequest="260"
                          Padding="10">
-                    <StackLayout >
+                    <StackLayout VerticalOptions="Start" >
                         <Label Text="Client" 
-                           TextColor="Black"
+                           TextColor="Black" FontSize="15"
                            FontAttributes="Bold"
                            Margin="0,0,0,2"/>
                         <Label Text="{Binding SelectedItem.customer.Desc}" TextColor="Black"
-                           Margin="0,0,0,10"/>
-                        <BoxView
-                        HorizontalOptions="FillAndExpand"
-                        HeightRequest="1"
-                        BackgroundColor="#E3E9EA"
-                        Margin="0,0,0,20"/>
+                           Margin="0,2,0,0" FontSize="15"/>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1"
+                        Stroke="#E3E9EA" BackgroundColor="#E3E9EA"
+                        Margin="5,10,5,10"
+                        HeightRequest="2"
+                        />
                     </StackLayout>
                     <StackLayout >
                         <Label Text="Job no" TextColor="Black"
-                           FontAttributes="Bold"
+                           FontAttributes="Bold" FontSize="15"
                            Margin="0,0,0,2"/>
                         <Label Text="{Binding SelectedItem.workOrder.JobNo}" TextColor="Black"
-                           Margin="0,0,0,10"/>
-                        <BoxView
-                        HorizontalOptions="FillAndExpand"
-                        HeightRequest="1"
-                        BackgroundColor="#E3E9EA"
-                        Margin="0,0,0,20"/>
+                           Margin="0,2,0,0" FontSize="15"/>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1"
+                            Stroke="#E3E9EA" BackgroundColor="#E3E9EA"
+                            Margin="5,10,5,10"
+                            HeightRequest="2"
+                            />
                     </StackLayout>
                     <StackLayout >
                         <Label Text="Notes" TextColor="Black"
-                           FontAttributes="Bold"
+                           FontAttributes="Bold" FontSize="15"
                            Margin="0,0,0,2"/>
-                        <Label Text="{Binding SelectedItem.workOrder.Notes}"
+                        <Label Text="{Binding SelectedItem.workOrder.Notes}" FontSize="15"
                           TextColor="Black" Margin="0,0,0,20"/>
                     </StackLayout>
 

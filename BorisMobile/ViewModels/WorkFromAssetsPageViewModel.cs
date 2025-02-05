@@ -16,7 +16,20 @@ namespace BorisMobile.ViewModels
         WorkOrderList selectedWorkOrder;
 
         [ObservableProperty]
-        public IdAndDescriptionCollection workFrowDrawings;
+        private bool isLoading;
+
+        //[ObservableProperty]
+        //public IdAndDescriptionCollection workFrowDrawings;
+        private IdAndDescriptionCollection _workFrowDrawings;
+        public IdAndDescriptionCollection WorkFrowDrawings
+        {
+            get => _workFrowDrawings;
+            set
+            {
+                _workFrowDrawings = value;
+                OnPropertyChanged(nameof(_workFrowDrawings));
+            }
+        }
 
         [ObservableProperty]
         public ObservableCollection<WorkFromAssets> assetsList;
@@ -30,35 +43,46 @@ namespace BorisMobile.ViewModels
                 
                     _selectedDrawing = value;
                     OnPropertyChanged();
-                    LoadAssets();
-                
+                    IsLoading = true;
+                    
+                    Task.Delay(new TimeSpan(0, 0, 1)).ContinueWith(o => {
+                        LoadAssets();
+                    });
+
             }
         }
 
         public WorkFromAssetsPageViewModel(WorkOrderList workOrder)
         {
+            IsLoading = true;
             assetsService = new WorkFromAssetsService();
             drawingsService = new WorkFromDrawingsService();
             SelectedWorkOrder = workOrder;
-            IdAndDescriptionListItem listData = new IdAndDescriptionListItem(0, "Please select the option");
-            if(WorkFrowDrawings == null)
-                WorkFrowDrawings = new IdAndDescriptionCollection();
-            WorkFrowDrawings.Add(listData);
-
-            Init();
+            Task.Delay(new TimeSpan(0, 0, 1)).ContinueWith(o => {
+                Init();
+                //SaveFormDataCommand = new Command(SaveFormData);
+            });
+            
         }
 
         public async void Init()
         {
             var list = await drawingsService.GetData(SelectedWorkOrder);
 
+            IdAndDescriptionListItem listData = new IdAndDescriptionListItem(0, "Please select the option");
+            if (WorkFrowDrawings == null)
+                WorkFrowDrawings = new IdAndDescriptionCollection();
+
+            //list.Add(listData);
+            WorkFrowDrawings.Add(listData);
+
             foreach (var item in list)
             {
                 WorkFrowDrawings.Add(item);
             }
-
+            OnPropertyChanged(nameof(WorkFrowDrawings));
+            IsLoading = false;
             //_selectedDrawing = WorkFrowDrawings[0];
-
         }
 
 
@@ -70,8 +94,10 @@ namespace BorisMobile.ViewModels
             {
                 List<WorkFromAssets> resultList = await assetsService.GetData(SelectedWorkOrder,drawingListId);
                 //Collection<object> list = resultList;
+                
                 AssetsList = new ObservableCollection<WorkFromAssets>(resultList);
             }
+            IsLoading = false;
         }
 
         

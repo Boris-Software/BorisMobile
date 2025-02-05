@@ -9,7 +9,7 @@
                Text="{Binding Title}"
                TextColor="Black" />
 
-        <CollectionView x:Name="ChoicesCollection"
+        <CollectionView x:Name="ChoicesCollection" HeightRequest="50"
                        ItemsSource ="{Binding Choices, Source={x:Reference this}}"
                        SelectionMode="Single">
             <CollectionView.ItemsLayout>
@@ -29,11 +29,11 @@
                             <TapGestureRecognizer Tapped="OnChoiceTapped" />
                         </Frame.GestureRecognizers>
 
-                        <StackLayout>
+                        <StackLayout VerticalOptions="CenterAndExpand">
                             <Label Text="{Binding Desc}"
                                    TextColor="White"
                                    HorizontalOptions="Center"
-                                   VerticalOptions="Center" />
+                                   VerticalOptions="Center" VerticalTextAlignment="Center" />
                         </StackLayout>
                     </Frame>
                 </DataTemplate>

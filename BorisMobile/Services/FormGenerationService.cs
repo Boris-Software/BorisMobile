@@ -38,12 +38,13 @@ namespace BorisMobile.Services
 
                 var mainstack = new StackLayout
                 {
-                    Padding = 10
+                    Padding = 10,
+                    Margin = new Thickness(0,0,0,100)
                 };
 
                 var bodyStack = new StackLayout
                 {
-                    Margin = new Thickness(10, 15, 10, 0),
+                    Margin = new Thickness(10, 15, 10, 200),
                     VerticalOptions = LayoutOptions.FillAndExpand
                 };
                 //Set Form Header
@@ -53,6 +54,7 @@ namespace BorisMobile.Services
 
                 var tabScrollView = new ScrollView
                 {
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Never,
                     Orientation = ScrollOrientation.Horizontal,
                     Margin = new Thickness(0, 0, 0, 0)
 
@@ -73,7 +75,7 @@ namespace BorisMobile.Services
                 var sectionLabels = new Dictionary<Label, View>();
 
                 // Content layout to display the currently selected section's content
-                var contentLayout = new StackLayout { };
+                var contentLayout = new StackLayout { Margin = new Thickness(0, 0, 0, 300) };
 
                 // Loop through sections to create UI
                 foreach (var page in formConfig.SubDocumentModel.Pages)
@@ -118,7 +120,8 @@ namespace BorisMobile.Services
                     {
                         HeightRequest = DeviceDisplay.MainDisplayInfo.Height * 0.3,
                         Content = stack,
-                        Margin = new Thickness(0, 0, 0, 20)
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Never,
+                        Margin = new Thickness(0, 0, 0, 300)
 
                     };
 
@@ -252,9 +255,6 @@ namespace BorisMobile.Services
 
             sectionMainStack.Children.Add(repeatableSectionLayout);
             return sectionMainStack;
-
-            
-            
         }
 
         private async Task<View> CreateSectionContent(SectionModel section, StackLayout container, bool isRepeating)
@@ -315,18 +315,18 @@ namespace BorisMobile.Services
 
 
                 // Create a horizontal container for media elements
-                var currentMediaGrid = new Grid
-                {
-                    ColumnDefinitions =
-            {
-                new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
-                new ColumnDefinition(new GridLength(1, GridUnitType.Star))
-            },
-                    ColumnSpacing = 10
-                };
+            //    var currentMediaGrid = new Grid
+            //    {
+            //        ColumnDefinitions =
+            //{
+            //    new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
+            //    new ColumnDefinition(new GridLength(1, GridUnitType.Star))
+            //},
+            //        ColumnSpacing = 10
+            //    };
 
-                int mediaCount = 0;
-                bool hasMediaElements = false;
+            //    int mediaCount = 0;
+            //    bool hasMediaElements = false;
 
                 // Render section elements
                 foreach (var element in section.Elements)
@@ -334,63 +334,64 @@ namespace BorisMobile.Services
                     if (!(bool)section.ReportOnly)
                     {
                     var control = await CreateControl(element);
-                    if (control != null)
-                    {
-                        if (element.Type == "Photo" || element.Type == "Video")
-                        {
-                            hasMediaElements = true;
-                            // Add to the grid
-                            Grid.SetColumn(control, mediaCount % 2);
-                            if (mediaCount % 2 == 0 && mediaCount > 0)
-                            {
-                                // Add the current grid and create a new one
-                                contentStack.Children.Add(currentMediaGrid);
-                                currentMediaGrid = new Grid
-                                {
-                                    ColumnDefinitions =
-                        {
-                            new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
-                            new ColumnDefinition(new GridLength(1, GridUnitType.Star))
-                        },
-                                    ColumnSpacing = 10,
-                                    Margin = new Thickness(0, 10, 0, 0)
-                                };
-                            }
-                            currentMediaGrid.Children.Add(control);
-                            mediaCount++;
-                        }
-                        else
-                        {
-                            // If we have pending media elements, add the grid first
-                            if (hasMediaElements && mediaCount > 0)
-                            {
-                                contentStack.Children.Add(currentMediaGrid);
-                                currentMediaGrid = new Grid
-                                {
-                                    ColumnDefinitions =
-                        {
-                            new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
-                            new ColumnDefinition(new GridLength(1, GridUnitType.Star))
-                        },
-                                    ColumnSpacing = 10
-                                };
-                                mediaCount = 0;
-                                hasMediaElements = false;
-                            }
-                            // Add non-media elements directly to the stack
-                            contentStack.Children.Add(control);
-                        }
+                        contentStack.Children.Add(control);
 
-                        //contentStack.Children.Add(control);
+                        //if (control != null)
+                        //{
+                        //    if (element.Type == "Photo" || element.Type == "Video")
+                        //    {
+                        //        hasMediaElements = true;
+                        //        // Add to the grid
+                        //        Grid.SetColumn(control, mediaCount % 2);
+                        //        if (mediaCount % 2 == 0 && mediaCount > 0)
+                        //        {
+                        //            // Add the current grid and create a new one
+                        //            contentStack.Children.Add(currentMediaGrid);
+                        //            currentMediaGrid = new Grid
+                        //            {
+                        //                ColumnDefinitions =
+                        //    {
+                        //        new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
+                        //        new ColumnDefinition(new GridLength(1, GridUnitType.Star))
+                        //    },
+                        //                ColumnSpacing = 10,
+                        //                Margin = new Thickness(0, 10, 0, 0)
+                        //            };
+                        //        }
+                        //        currentMediaGrid.Children.Add(control);
+                        //        mediaCount++;
+                        //    }
+                        //    else
+                        //    {
+                        //        // If we have pending media elements, add the grid first
+                        //        if (hasMediaElements && mediaCount > 0)
+                        //        {
+                        //            contentStack.Children.Add(currentMediaGrid);
+                        //            currentMediaGrid = new Grid
+                        //            {
+                        //                ColumnDefinitions =
+                        //    {
+                        //        new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
+                        //        new ColumnDefinition(new GridLength(1, GridUnitType.Star))
+                        //    },
+                        //                ColumnSpacing = 10
+                        //            };
+                        //            mediaCount = 0;
+                        //            hasMediaElements = false;
+                        //        }
+                        //        // Add non-media elements directly to the stack
+                        //        contentStack.Children.Add(control);
+                        //    }
+
+                        //    //contentStack.Children.Add(control);
+                        //}
                     }
                 }
-                }
                 // Add any remaining media elements in the grid
-                if (hasMediaElements && mediaCount > 0)
-                {
-                    contentStack.Children.Add(currentMediaGrid);
-                }
-
+                //if (hasMediaElements && mediaCount > 0)
+                //{
+                //    contentStack.Children.Add(currentMediaGrid);
+                //}
                 return contentStack;
             }
             catch (Exception ex)
@@ -737,13 +738,13 @@ namespace BorisMobile.Services
 
         private async Task OpenFile(Attachments attachments)
         {
-            string filePath = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME), attachments.FileName);
+            string filePath = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME), attachments.FileName.ToLower());
 
-            if (File.Exists(filePath.ToLower()))
+            if (File.Exists(filePath))
             {
                 await Launcher.OpenAsync(new OpenFileRequest
                 {
-                    File = new ReadOnlyFile(filePath.ToLower())
+                    File = new ReadOnlyFile(filePath)
                 });
             }
             else
@@ -814,7 +815,7 @@ namespace BorisMobile.Services
                 // Dynamic data for sections
 
                 // Content layout to display the currently selected section's content
-                var contentLayout = new StackLayout { };
+                var contentLayout = new StackLayout { Margin = new Thickness(0,0,0,100) };
 
                 // Loop through sections to create UI
                 foreach (var page in formConfig.SubDocumentModel.Pages)
@@ -839,7 +840,7 @@ namespace BorisMobile.Services
                     var saveButton = new Button
                     {
                         CornerRadius = 10,
-                        Margin = new Thickness(0, 15, 0, 10),
+                        Margin = new Thickness(0, 15, 0, 100),
                         HorizontalOptions = LayoutOptions.FillAndExpand,
                         Text = "Save",
                         BackgroundColor = Color.FromHex("#00B1E3")
@@ -850,7 +851,8 @@ namespace BorisMobile.Services
                     {
                         HeightRequest = DeviceDisplay.MainDisplayInfo.Height * 0.3,
                         Content = stack,
-                        Margin = new Thickness(0, 0, 0, 20)
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Never,
+                        Margin = new Thickness(0, 0, 0, 300)
 
                     };
 

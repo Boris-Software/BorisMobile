@@ -27,28 +27,28 @@
             <StackLayout VerticalOptions="FillAndExpand">
                 <Label Text="Please select your option" Margin="0,20,0,0" TextColor="#878787"></Label>
 
-                <CollectionView ItemsSource="{Binding MenuItems}" SelectionMode="Single" Margin="0" >
+                <CollectionView ItemsSource="{Binding MenuItems}" SelectionMode="Single" Margin="0,10,0,0" >
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <!--<StackLayout VerticalOptions="FillAndExpand" HeightRequest="150">-->
-                            <Border Margin="0,5,0,0" Padding="0"
+                            <StackLayout Margin="0,0,0,4">
+                                <Border 
                                         VerticalOptions="FillAndExpand"
                                         HorizontalOptions="FillAndExpand"
                                         Stroke="#EFFAFF"
                                         HeightRequest="56"
                                         StrokeShape="RoundRectangle 5"
                                         Background="#EFFAFF">
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.MenuItemClickedCommand, Source={x:Reference MyHomePage}}" CommandParameter="{Binding .}" ></TapGestureRecognizer>
-                                </Border.GestureRecognizers>
-                                <Grid ColumnDefinitions="0.5*,2*,1*" RowDefinitions="56" Padding="0">
-                                    <Image Grid.Column="0" Source="{Binding NewImage}" HeightRequest="24" WidthRequest="24" />
-                                            <Label VerticalTextAlignment="Center" Grid.Column="1" TextColor="Black" Text="{Binding Name}" />
-                                            <Label Padding="0,0,20,0" VerticalTextAlignment="Center" HorizontalOptions="End" Grid.Column="2" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource rightarrow}" />
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.MenuItemClickedCommand, Source={x:Reference MyHomePage}}" CommandParameter="{Binding .}" ></TapGestureRecognizer>
+                                    </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="0.5*,2*,1*" RowDefinitions="56" Padding="0">
+                                        <Image Grid.Column="0" Source="{Binding NewImage}" HeightRequest="24" WidthRequest="24" />
+                                        <Label VerticalTextAlignment="Center" Grid.Column="1" TextColor="Black" Text="{Binding Name}" />
+                                        <Label Padding="0,0,20,0" VerticalTextAlignment="Center" HorizontalOptions="End" Grid.Column="2" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource rightarrow}" />
 
-                                        </Grid>
-                                    </Border>
-                                <!--</StackLayout>-->
+                                    </Grid>
+                                </Border>
+                            </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

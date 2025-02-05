@@ -101,9 +101,8 @@ namespace BorisMobile
                 handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
                 handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
 #elif IOS
-                handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
-                handler.PlatformView.Layer.BorderWidth = 0;
-                handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
+                    handler.PlatformView.BorderStyle = UITextBorderStyle.None;
+                    handler.PlatformView.BackgroundColor = UIColor.Clear;
 #endif
                 }
             });
@@ -121,9 +120,13 @@ namespace BorisMobile
                linearLayout = linearLayout.GetChildAt(1) as Android.Widget.LinearLayout;  
                linearLayout.Background = null; 
 #elif IOS
-                handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
-                handler.PlatformView.Layer.BorderWidth = 0;
-               // handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
+                    //handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
+                    //handler.PlatformView.Layer.BorderWidth = 0;
+                    handler.PlatformView.BackgroundColor = UIColor.Clear;
+                    handler.PlatformView.Layer.BorderWidth = 0;
+                    handler.PlatformView.Layer.BorderColor = UIColor.Clear.CGColor;
+                    handler.PlatformView.Layer.MasksToBounds = true;
+                    // handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
 #endif
                 }
             });
@@ -135,8 +138,31 @@ namespace BorisMobile
                 {
 
 #if ANDROID
-                    //handler.PlatformView.BackgroundTintList =
-                    //Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+                    handler.PlatformView.Background = null;
+                    handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+                    handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
+#elif IOS
+                    handler.PlatformView.BorderStyle = UITextBorderStyle.None;
+                    handler.PlatformView.BackgroundColor = UIColor.Clear;
+#endif
+                }
+
+            });
+
+            Microsoft.Maui.Handlers.TimePickerHandler.Mapper.AppendToMapping("MyCustomization", (handler, view) =>
+            {
+
+                if (view is NoBorderTimer)
+                {
+
+#if ANDROID
+                    handler.PlatformView.Background = null;
+                    handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+                    handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
+
+#elif IOS
+                    handler.PlatformView.BorderStyle = UITextBorderStyle.None;
+                    handler.PlatformView.BackgroundColor = UIColor.Clear;
 #endif
                 }
 
@@ -149,9 +175,11 @@ namespace BorisMobile
 #if ANDROID
                handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
 #elif IOS
-                handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
-                handler.PlatformView.Layer.BorderWidth = 0;
-               // handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
+                    handler.PlatformView.BorderStyle = UITextBorderStyle.None;
+                    handler.PlatformView.BackgroundColor = UIColor.Clear;
+                    //handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
+                    //handler.PlatformView.Layer.BorderWidth = 0;
+                    // handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
 #endif
                 }
             });
