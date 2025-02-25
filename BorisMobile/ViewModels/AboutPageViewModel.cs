@@ -29,6 +29,11 @@ namespace BorisMobile.ViewModels
         public async void LogoutButtonClick()
         {
             //todo clear stack and redirect
+
+            Preferences.Set("UserName", string.Empty);
+            Preferences.Set("SecurityPermissionAsked", 0);
+            Preferences.Set("Password", string.Empty);
+            Preferences.Set("BioMetricsAllowed", 0);
             await App.Current.MainPage.Navigation.PushAsync(new SigninPage(new SigninPageViewModel()));
 
         }

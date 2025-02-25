@@ -1,4 +1,5 @@
 ﻿using BorisMobile.DataTransferController;
+using BorisMobile.NativePlatformService;
 using BorisMobile.Services;
 using BorisMobile.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -40,8 +41,38 @@ namespace BorisMobile.ViewModels
             signinService = new SigninService();
 
             Email = Preferences.Get("UserName", string.Empty);
+            Password = Preferences.Get("Password", string.Empty);
+
+            //CheckBioMetricsAndProceed();
         }
         
+        public async void CheckBioMetricsAndProceed()
+        {
+            var isBioAllowed = Preferences.Get("BioMetricsAllowed", 0);
+            if(isBioAllowed == 1)
+            {
+                var bioService = DependencyService.Get<IBiometricService>();
+                string res  = bioService.CheckAvailability();
+                //var isAvailable = await CrossFingerprint.Current.IsAvailableAsync();
+
+                //if (isAvailable)
+                //{
+                //    var request = new AuthenticationRequestConfiguration
+                //    ("Login using biometrics", "Confirm login with your biometrics");
+
+                //    var result = await CrossFingerprint.Current.AuthenticateAsync(request);
+
+                //    if (result.Authenticated)
+                //    {
+                //        await LoginLogic(Preferences.Get("UserName",string.Empty),Preferences.Get("Password",string.Empty));
+                //    }
+                //    else
+                //    {
+                //        await App.Current.MainPage.DisplayAlert("Authentication failed", "Please login with credentials", "OK");
+                //    }
+                //}
+            }
+        }
 
         [RelayCommand]
         async Task Submit()
@@ -52,37 +83,7 @@ namespace BorisMobile.ViewModels
                 return;
             }
             else{
-                MainLayoutOpacity = 0.2;
-                IsLoading = true;
-                var response = await signinService.Signin(Email,Password);
-                if (response == WebResponseState.Failed.ToString())
-                {
-                    IsLoading = false;
-                    MainLayoutOpacity = 1;
-                    await App.Current.MainPage.DisplayAlert("Log in failed", " Please enter correct email and password.", "OK");
-
-                }
-                else
-                {
-                    MainLayoutOpacity = 1;
-                    IsLoading = false;
-                    if (!Preferences.Get("DataTransferCompleted", false))
-                    {
-                        Preferences.Set("UserName", Email);
-                        Preferences.Set("Token", response);
-                        await App.Current.MainPage.DisplayAlert("Boris", "A data transfer will be run to download your data", "OK");
-
-
-                        await App.Current.MainPage.Navigation.PushAsync(new SyncPage(new SyncPageViewModel(response, Email)));
-                    }
-                    else
-                    {
-                        Preferences.Set("UserName", Email);
-                        Preferences.Set("Token", response);
-                        await App.Current.MainPage.Navigation.PushAsync(new HomePage(new HomePageViewModel()));
-
-                    }
-                }
+                LoginLogic(Email,Password);
             }
         }
 
@@ -91,6 +92,43 @@ namespace BorisMobile.ViewModels
         {
             Email = string.Empty;
             Password = string.Empty;
+        }
+
+        public async Task LoginLogic(string email,string password)
+        {
+            MainLayoutOpacity = 0.2;
+            IsLoading = true;
+            var response = await signinService.Signin(email, password);
+            if (response == WebResponseState.Failed.ToString())
+            {
+                IsLoading = false;
+                MainLayoutOpacity = 1;
+                await App.Current.MainPage.DisplayAlert("Log in failed", " Please enter correct email and password.", "OK");
+
+            }
+            else
+            {
+                MainLayoutOpacity = 1;
+                IsLoading = false;
+                if (!Preferences.Get("DataTransferCompleted", false))
+                {
+                    Preferences.Set("UserName", Email);
+                    Preferences.Set("Password", Password);
+                    Preferences.Set("Token", response);
+                    await App.Current.MainPage.DisplayAlert("Boris", "A data transfer will be run to download your data", "OK");
+
+
+                    await App.Current.MainPage.Navigation.PushAsync(new SyncPage(new SyncPageViewModel(response, Email)));
+                }
+                else
+                {
+                    Preferences.Set("UserName", Email);
+                    Preferences.Set("Password", Password);
+                    Preferences.Set("Token", response);
+                    await App.Current.MainPage.Navigation.PushAsync(new HomePage(new HomePageViewModel()));
+
+                }
+            }
         }
     }
 }

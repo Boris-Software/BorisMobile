@@ -6,7 +6,12 @@
         {
             return Path.Combine(FileSystem.AppDataDirectory, "config");
         }
-        public static string GetAttachmentDirectoryMAUI(string appName)
+        public static string GetUploadsDirectoryMAUI()
+        {
+            return Path.Combine(FileSystem.AppDataDirectory, "uploads");
+        }
+
+        public static string GetAttachmentDirectoryMAUI()
         {
             return Path.Combine(FileSystem.AppDataDirectory, "attachments");
         }

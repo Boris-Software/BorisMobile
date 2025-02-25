@@ -4,13 +4,13 @@
              x:Class="BorisMobile.Views.InProgressPage"
              xmlns:controls="clr-namespace:BorisMobile.Controls"
              Title="InProgressPage"
+             x:Name="inprogress"
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="White">
     <ContentPage.Content>
-        <StackLayout>
-            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" 
-                  RowDefinitions="50" 
-                  Padding="0,15,0,30">
+        <StackLayout Padding="10">
+            <Grid ColumnDefinitions="0.5*,3*,0.4*,0.4*" 
+                  RowDefinitions="50" >
                 <Label Grid.Column="0" 
                        Padding="10"  
                        FontFamily="FaSolid" 
@@ -38,7 +38,7 @@
                            HeightRequest="10" 
                            Margin="10,10,0,0"></Image>
                 </Grid>
-                <Label VerticalTextAlignment="Center" 
+                <Label VerticalTextAlignment="Center" Padding="10,0,0,0"
                        Grid.Column="3" 
                        FontFamily="FaSolid" 
                        TextColor="Black" 
@@ -51,31 +51,84 @@
             </Grid>
             <StackLayout HorizontalOptions="FillAndExpand" 
                          BackgroundColor="#EFFAFF"
-                         Padding="10" >
-                <Label Text="Firestopping Customer JJL"  TextColor="Black"
+                         Padding="10" Margin="0,20,0,0" >
+                <Label Text="{Binding WorkOrder.customer.Desc}"  TextColor="Black"
                        Margin="0,0,0,2"/>
-                <Label Text="06" TextColor="Black"
+                <Label Text="{Binding WorkOrder.workOrder.JobNo}" TextColor="Black"
                        Margin="0,0,0,10"/>
             </StackLayout>
-            <StackLayout Margin="20">
-                <Border StrokeShape="RoundRectangle 15"
-                    Stroke="white"
-                        BackgroundColor="#F4F6F7">
-                    <Grid ColumnDefinitions="4*,0.5*"
-                          RowDefinitions="50" >
-                        <controls:NoBorderSearchBar  Grid.Column="0" 
-                                                     TextColor="Black"
-                                                     Placeholder="Search" 
-                                                     PlaceholderColor="Gray"/>
-                        <StackLayout Grid.Column="1"
-                                     Padding="5"
-                                     VerticalOptions="Center">
-                            <Image Source="dictation.png"/>
-                        </StackLayout>
-                    </Grid>
-                </Border>
-            </StackLayout>
-            <StackLayout Margin="20" >
+
+            <Grid Margin="15,10,15,15" VerticalOptions="FillAndExpand" RowDefinitions="550" IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+                <StackLayout>
+                    <StackLayout Margin="20">
+                        <Border StrokeShape="RoundRectangle 15"
+                            Stroke="white" BackgroundColor="#F4F6F7">
+                            <Grid ColumnDefinitions="4*,0.5*" RowDefinitions="50" >
+                                <controls:NoBorderSearchBar  Grid.Column="0" 
+                             TextColor="Black"
+                             Placeholder="Search" Text="{Binding SearchText, Mode=TwoWay}"
+                             PlaceholderColor="Gray"/>
+                                <StackLayout Grid.Column="1"
+                                 Padding="5"
+                                 VerticalOptions="Center">
+                                    <Image Source="dictation.png"/>
+                                </StackLayout>
+                            </Grid>
+                        </Border>
+                    </StackLayout>
+
+                    <CollectionView ItemsSource="{Binding FilteredItems}" VerticalOptions="FillAndExpand"  >
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout 
+                    Orientation="Vertical" 
+                    ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView"
+                                Binding="{Binding FilteredItems.Count}" Value="0">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Margin="20" >
+                                    <Grid ColumnDefinitions="4*,0.7*">
+                                        <StackLayout Grid.Column="0">
+                                            <Label Text="{Binding AuditDesc}" TextColor="Black"/>
+                                            <!--<Label Text="Contract Work" TextColor="Black"/>-->
+                                        </StackLayout>
+                                        <Image Grid.Column="1"
+                                           Source="trash.png"
+                                           VerticalOptions="Center">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.DeleteProgressCommand, Source={x:Reference inprogress}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
+                                    <Grid ColumnDefinitions="4*,0.7*">
+                                        <Label Grid.Column="0" 
+                                           Text="{Binding DateTimeStarted,StringFormat='{0:yyyy-MM-dd}'}"
+                                           TextColor="Gray"/>
+                                        <Label Grid.Column="1"
+                                               VerticalOptions="Center"
+                                               Text="{Binding DateTimeStarted,StringFormat='{0:HH:mm}'}"
+                                               TextColor="Gray"/>
+                                    </Grid>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+                
+                <Label Text="No results found" IsVisible="False" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding FilteredItems.Count}" Value="0">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+            <!--<StackLayout Margin="20" >
                 <Grid ColumnDefinitions="4*,0.7*">
                     <StackLayout Grid.Column="0">
                         <Label Text="FireStopping LD" TextColor="Black"/>
@@ -134,9 +187,14 @@
                            Text="2.34PM"
                            TextColor="Gray"/>
                 </Grid>
-            </StackLayout>
+            </StackLayout>-->
 
-
+            <ActivityIndicator 
+                IsVisible="{Binding IsLoading}" 
+                IsRunning="{Binding IsLoading}" 
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" 
+                Color="#00B1E3" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -7,10 +7,9 @@
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="White">
     <ContentPage.Content>
-        <StackLayout>
-            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" 
-                  RowDefinitions="50" 
-                  Padding="0,15,0,30">
+        <StackLayout Padding="10">
+            <Grid ColumnDefinitions="0.5*,3*,0.4*,0.4*" 
+                  RowDefinitions="50">
                 <Label Grid.Column="0" 
                Padding="10"  
                FontFamily="FaSolid" 
@@ -38,7 +37,7 @@
                    HeightRequest="10" 
                    Margin="10,10,0,0"></Image>
                 </Grid>
-                <Label VerticalTextAlignment="Center" 
+                <Label VerticalTextAlignment="Center" Padding="10,0,0,0"
                Grid.Column="3" 
                FontFamily="FaSolid" 
                TextColor="Black" 
@@ -50,7 +49,7 @@
 
             </Grid>
 
-            <StackLayout x:Name="bodyStack" IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+            <StackLayout Margin="0,20,0,0" x:Name="bodyStack" IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
                 <StackLayout HorizontalOptions="FillAndExpand" 
                          BackgroundColor="#EFFAFF"
                          Padding="10" >

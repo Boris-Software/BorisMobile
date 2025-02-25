@@ -8,21 +8,21 @@
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <StackLayout Padding="10">
-            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" RowDefinitions="50" >
+            <Grid ColumnDefinitions="0.5*,3*,0.4*,0.4*" RowDefinitions="50" >
                 <Label Grid.Column="0" Padding="10"  FontFamily="FaSolid" TextColor="Black" Text="{StaticResource backarrow}" VerticalTextAlignment="Center" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackButtonClickCommand}"></TapGestureRecognizer>
                     </Label.GestureRecognizers>
                 </Label>
                 
-                <Label Grid.Column="1" VerticalTextAlignment="Center" FontAttributes="Bold" Text="My Diary" TextColor="Black" FontSize="20"></Label>
-                <Grid Grid.Column="2">
+                <Label Grid.Column="1"  VerticalTextAlignment="Center" FontAttributes="Bold" Text="My Diary" TextColor="Black" FontSize="20"></Label>
+                <Grid Grid.Column="2" >
                     <Image Source="cloud.png" WidthRequest="20" HeightRequest="20"></Image>
                     <Image Source="syncavailable.png" WidthRequest="10" HeightRequest="10" Margin="10,10,0,0"></Image>
                 </Grid>
-                <Label VerticalTextAlignment="Center" Grid.Column="3" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource user}" >
+                <Label  Padding="10,0,0,0" VerticalTextAlignment="Center" Grid.Column="3" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource user}" >
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"></TapGestureRecognizer>
+                        <TapGestureRecognizer ></TapGestureRecognizer>
                     </Label.GestureRecognizers>
                 </Label>
             </Grid>

@@ -23,7 +23,7 @@ namespace BorisMobile.Helper
 
         public static async Task<XmlElement> GetSignInPayload()
         {
-            IRepo<Models.Settings> settingsRepo = new Repo<Models.Settings>(App.Database);
+            IRepo<Models.Settings> settingsRepo = new Repo<Models.Settings>(DBHelper.Database);
             List<Models.Settings> settingsList = await settingsRepo.Get();
 
             var m_configXml = new XmlConfigDoc(Helper.Constants.APPLICATION_CONFIG_FILE);

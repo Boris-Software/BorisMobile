@@ -36,7 +36,7 @@ namespace BorisMobile.ViewModels
         [RelayCommand]
         public async void InProgressClicked()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new InProgressPage(new InProgressPageViewModel()));
+            await App.Current.MainPage.Navigation.PushAsync(new InProgressPage(new InProgressPageViewModel(SelectedItem)));
         }
         [RelayCommand]
         public async void CreateFormClicked()
@@ -57,6 +57,12 @@ namespace BorisMobile.ViewModels
         public async void KeyClicked()
         {
             await App.Current.MainPage.Navigation.PushAsync(new KeyPage(new KeyPageViewModel(SelectedItem)));
+        }
+        [RelayCommand]
+        public async void MoreIconClicked()
+        {
+            await App.Current.MainPage.Navigation.PushAsync(new AboutPage(new AboutPageViewModel()));
+
         }
     }
 }

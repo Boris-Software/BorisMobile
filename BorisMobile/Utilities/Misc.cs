@@ -271,7 +271,7 @@ namespace BorisMobile.Utilities
             return "magic5.mp4";
         }
 
-        public static byte[] GetUploadAttachmentData(byte[] dbBytes, string attachmentId, string rootFolder)
+        public async static Task<byte[]> GetUploadAttachmentData(byte[] dbBytes, string attachmentId, string rootFolder)
         {
             if (dbBytes.Length == 1 && dbBytes[0] == 0 && !string.IsNullOrEmpty(rootFolder))
             {
@@ -279,7 +279,7 @@ namespace BorisMobile.Utilities
                 //if (!string.IsNullOrEmpty(attachmentPath)) // backed out just to be on the safe side && File.Exists(attachmentPath)) // GSI 11/11/15 - Could not find file  blah\14.jpg. Send back null to prevent a backlog. Could be dangerous if it keeps happening or starts happening because of another problem. // 151216, same thing happened again at GSI with 14.jpg!
                 if (!string.IsNullOrEmpty(attachmentPath) && File.Exists(attachmentPath)) // backed out just to be on the safe side && File.Exists(attachmentPath)) // GSI 11/11/15 - Could not find file  blah\14.jpg. Send back null to prevent a backlog. Could be dangerous if it keeps happening or starts happening because of another problem. // 151216, same thing happened again at GSI with 14.jpg!                {
                 {
-                    return IO.ReadFullFile(attachmentPath);
+                    return await IO.ReadFullFile(attachmentPath);
                 }
             }
             return dbBytes;

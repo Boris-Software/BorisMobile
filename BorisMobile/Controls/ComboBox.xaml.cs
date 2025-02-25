@@ -5,7 +5,9 @@ namespace BorisMobile.Controls;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class ComboBox : ContentView
 {
-	public ComboBox()
+    public event EventHandler<SelectedItemChangedEventArgs> SelectedIndexChanged;
+
+    public ComboBox()
 	{
 		InitializeComponent();
 	}
@@ -75,16 +77,32 @@ public partial class ComboBox : ContentView
 
     }
 
-    private void ThisPickerSelectedIndexChanged(object sender, EventArgs e)
+    public void ThisPickerSelectedIndexChanged(object sender, EventArgs e)
     {
-        if (SelectedItem == null)
-        {
-            return;
-        }
+        if (picker.SelectedItem == null) return;
 
-        string selectedValue = null;
-
-        //For the int StaticData
-        
+        SelectedItem = picker.SelectedItem;
+        SelectedIndexChanged?.Invoke(this, new SelectedItemChangedEventArgs(SelectedItem));
     }
+
+    public class SelectedItemChangedEventArgs : EventArgs
+    {
+        public object SelectedItem { get; }
+        public SelectedItemChangedEventArgs(object selectedItem)
+        {
+            SelectedItem = selectedItem;
+        }
+    }
+    //private void ThisPickerSelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    if (SelectedItem == null)
+    //    {
+    //        return;
+    //    }
+
+    //    string selectedValue = null;
+
+    //    //For the int StaticData
+
+    //}
 }

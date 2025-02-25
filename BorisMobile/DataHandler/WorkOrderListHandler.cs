@@ -1,4 +1,5 @@
-﻿using BorisMobile.Models;
+﻿using BorisMobile.Helper;
+using BorisMobile.Models;
 using Microsoft.Data.Sqlite;
 
 namespace BorisMobile.DataHandler
@@ -21,7 +22,7 @@ namespace BorisMobile.DataHandler
                 //{
                 //connection.Open();
 
-                using (var command = new SqliteCommand(query, App.DatabaseConnection))
+                using (var command = new SqliteCommand(query, DBHelper.DatabaseConnection))
                 {
                     // Add parameters to avoid SQL injection
                     //command.Parameters.AddWithValue("@userId", Convert.ToInt32(Preferences.Get("UserId", 0));

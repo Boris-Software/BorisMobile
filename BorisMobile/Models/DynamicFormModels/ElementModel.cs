@@ -1,6 +1,8 @@
-﻿namespace BorisMobile.Models.DynamicFormModels
+﻿using System.ComponentModel;
+
+namespace BorisMobile.Models.DynamicFormModels
 {
-    public class ElementModel
+    public class ElementModel 
     {
         public string UniqueName { get; set; }
         public string Type { get; set; }
@@ -12,7 +14,7 @@
         public string MaxValue { get; set; }
         public bool IsMandatory { get; set; }
         public bool AllowCreateNew { get; set; }
-        public object Value { get; set; }
+        public string Value { get; set; }
         public int? Lines { get; set; }
         public int? PenWidth { get; set; }
         public bool? ArrangeHorizontally { get; set; }
@@ -34,6 +36,17 @@
         public bool NetworkUse { get; set; }
 
         public int? MinuteIncrement { get; set; }
+        public bool CollectResultsAnyway { get; set; }
 
+
+        public event EventHandler<string> ValueChanged;
+
+        public void UpdateValue(string newValue)
+        {
+            Value = newValue;
+            ValueChanged?.Invoke(this, newValue);
+        }
+
+        
     }
 }

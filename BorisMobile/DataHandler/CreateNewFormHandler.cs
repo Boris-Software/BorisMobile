@@ -1,15 +1,16 @@
 ﻿using BorisMobile.DataHandler.Data;
 using BorisMobile.DataHandler.Helper;
 using BorisMobile.Models;
+using static BorisMobile.DataHandler.Data.DataEnum;
+using SqlCeCommand = Microsoft.Data.Sqlite.SqliteCommand;
+using SqlCeDataReader = Microsoft.Data.Sqlite.SqliteDataReader;
 
 namespace BorisMobile.DataHandler
 {
-    public class CreateNewFormHandler
+    public class CreateNewFormHandler : CommonDataHandler
     {
-        CommonDataHandler commonDataHandler;
         public CreateNewFormHandler() 
         {
-            commonDataHandler = new CommonDataHandler();
         }
         
         public async Task<List<TemplateDocument>> GetData(WorkOrderList workOrder)
@@ -56,17 +57,61 @@ namespace BorisMobile.DataHandler
             {
                 return true;
             }
-            return commonDataHandler.GetIntFromDataSql("SELECT COUNT(*) FROM AuditsForLocation WHERE LocationId = " + locationId + " AND AuditId = " + templateId) > 0;
+            return GetIntFromDataSql("SELECT COUNT(*) FROM AuditsForLocation WHERE LocationId = " + locationId + " AND AuditId = " + templateId) > 0;
         }
         public bool CustomerHasTemplate(int customerId, int templateId)
         {
-            return commonDataHandler.GetIntFromDataSql("SELECT COUNT(*) FROM AuditsForCustomer WHERE CustomerId = " + customerId + " AND AuditId = " + templateId) > 0;
+            return GetIntFromDataSql("SELECT COUNT(*) FROM AuditsForCustomer WHERE CustomerId = " + customerId + " AND AuditId = " + templateId) > 0;
         }
 
         public async Task<string> GetAttributeForWODefDoc(int workOrderDefinitionId, string attName)
         {
-            return await commonDataHandler.GetAttributeFromDataSql("SELECT XmlDoc FROM WorkOrderDefinitions WHERE Id = " + workOrderDefinitionId, attName);
+            return await GetAttributeFromDataSql("SELECT XmlDoc FROM WorkOrderDefinitions WHERE Id = " + workOrderDefinitionId, attName);
         }
 
+        public async Task<AuditsInProgress> GetInsertCommandForNewAudit(WorkOrderList wot)
+        {
+            Guid newGuid = Guid.NewGuid();
+            DateTime nowDateTime = DateTime.Now;
+            SqlCeCommand command = GetCommandObject(
+                        @"INSERT INTO AuditsInProgress (IdGuid, UserId, CustomerId, AuditId, DateOfAudit, StatusId, LocationId, DateTimeStarted, WorkOrderId, LastSaveTime)
+                            VALUES (@IdGuid, @UserId, @CustomerId, @AuditId, @DateOfAudit, @StatusId, @LocationId, @DateTimeStarted, @WorkOrderId, @LastSaveTime)"); // XmlResults ignored - null at the moment
+            AddGuidParam(command, "@IdGuid", newGuid);
+            AddIntParam(command, "@UserId", wot.workOrder.UserId);
+            AddIntParam(command, "@CustomerId", wot.workOrder.CustomerId);
+            AddIntParam(command, "@AuditId", wot.audit.Id);
+            AddDateTimeParam(command, "@DateOfAudit", nowDateTime);
+            AddIntParam(command, "@StatusId", (int)ResultStatusEnum.IN_PROGRESS);
+            AddIntParam(command, "@LocationId", wot.workOrder.LocationId);
+            AddDateTimeParam(command, "@DateTimeStarted", DateTime.Now);
+            if (wot.workOrder.Id != -1)
+            {
+                AddIntParam(command, "@WorkOrderId", wot.workOrder.Id);
+            }
+            else
+            {
+                AddIntParamNull(command, "@WorkOrderId");
+            }
+            AddDateTimeParam(command, "@LastSaveTime", DateTime.MinValue);
+
+            command.Prepare();
+
+            
+            command.ExecuteNonQuery();
+            
+            AuditsInProgress inProgress = new AuditsInProgress();
+            inProgress.IdGuid = newGuid;
+            inProgress.DateTimeStarted= nowDateTime;
+            inProgress.DateOfAudit= nowDateTime;
+            inProgress.UserId = wot.workOrder.UserId;
+            inProgress.CustomerId = wot.workOrder.CustomerId;
+            inProgress.AuditId = wot.audit.Id;
+            inProgress.StatusId = (int)ResultStatusEnum.IN_PROGRESS;
+            inProgress.LocationId = wot.workOrder.LocationId;
+            inProgress.WorkOrderId = wot.workOrder.Id;
+            inProgress.LastSaveTime = DateTime.MinValue;
+            //inProgress.XmlResults = DateTime.MinValue;
+            return inProgress;
+        }
     }
 }

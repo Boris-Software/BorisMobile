@@ -24,12 +24,14 @@ namespace BorisMobile.ViewModels
         public string formTitle;
 
         WorkOrderList workOrder;
+        AuditsInProgress inProgress;
         public Command SaveFormDataCommand { get; }
 
         public JobFormPageViewModel(IXmlParserService xmlParserService,
-        IFormGenerationService formGenerationService,string xmlContent, WorkOrderList workOrder)
+        IFormGenerationService formGenerationService,string xmlContent, WorkOrderList workOrder, AuditsInProgress inProgress)
         {
             this.workOrder = workOrder;
+            this.inProgress = inProgress;
             _xmlParserService = xmlParserService;
             _formGenerationService = formGenerationService;
             IsLoading = true;
@@ -57,10 +59,8 @@ namespace BorisMobile.ViewModels
                 // Generate form UI
                 MainThread.InvokeOnMainThreadAsync( async () =>
                 {
-                    DynamicForm = await _formGenerationService.CreateDynamicForm(CurrentFormConfig, workOrder);
+                    DynamicForm = await _formGenerationService.CreateDynamicForm(CurrentFormConfig, workOrder,inProgress);
                 });
-
-
                 IsLoading = false;
             }
             catch (Exception ex)
@@ -76,23 +76,27 @@ namespace BorisMobile.ViewModels
             // Send XML to server or save locally
         }
 
-        public void UpdateElementValue(string uniqueName, object value)
-        {
-            var element = CurrentFormConfig.SubDocumentModel.Pages
-                .SelectMany(p => p.Sections)
-                .SelectMany(s => s.Elements)
-                .FirstOrDefault(e => e.UniqueName == uniqueName);
+        //public void UpdateElementValue(string uniqueName, object value)
+        //{
+        //    var element = CurrentFormConfig.SubDocumentModel.Pages
+        //        .SelectMany(p => p.Sections)
+        //        .SelectMany(s => s.Elements)
+        //        .FirstOrDefault(e => e.UniqueName == uniqueName);
 
-            if (element != null)
-            {
-                element.Value = value;
-            }
-        }
+        //    if (element != null)
+        //    {
+        //        element.Value = value;
+        //    }
+        //}
 
         [RelayCommand]
         public async void BackButtonClick()
         {
-            await App.Current.MainPage.Navigation.PopAsync();
+            var res = await App.Current.MainPage.DisplayAlert("Save Data", "Are you sure that you wish to cancel any changes that you have made?", "Yes", "No");
+            if (res)
+            {
+                await App.Current.MainPage.Navigation.PopAsync();
+            }
         }
     }
 }

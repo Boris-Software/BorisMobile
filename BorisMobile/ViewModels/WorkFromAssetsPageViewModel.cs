@@ -1,6 +1,7 @@
 ﻿using BorisMobile.DataHandler.Data;
 using BorisMobile.Models;
 using BorisMobile.Services;
+using BorisMobile.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -106,6 +107,13 @@ namespace BorisMobile.ViewModels
         public async void BackButtonClick()
         {
             await App.Current.MainPage.Navigation.PopAsync();
+        }
+
+        [RelayCommand]
+        public async void MoreIconClicked()
+        {
+            await App.Current.MainPage.Navigation.PushAsync(new AboutPage(new AboutPageViewModel()));
+
         }
     }
 }

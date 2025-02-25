@@ -1,8 +1,5 @@
 ﻿using BorisMobile.DataHandler.Data;
-using BorisMobile.DataHandler.Helper;
 using BorisMobile.Models;
-using Microsoft.Maui.Controls;
-using System.Xml;
 using SqlCeCommand = Microsoft.Data.Sqlite.SqliteCommand;
 using SqlCeDataReader = Microsoft.Data.Sqlite.SqliteDataReader;
 
@@ -112,5 +109,20 @@ namespace BorisMobile.DataHandler
             }
         }
 
+        public async Task InsertImageForForm(string key, string imagePath,Guid progressId)
+        {
+            SqlCeCommand command = GetCommandObject(
+                        @"INSERT INTO Attachments (IdGuid, UniqueName, AttachmentData, Status, FileName)
+                            VALUES (@IdGuid, @UniqueName,@AttachmentData,@Status,@FileName)"); // XmlResults ignored - null at the moment
+            AddGuidParam(command, "@IdGuid", progressId);
+            AddTextParam(command, "@UniqueName", key);
+            AddTextParam(command, "@AttachmentData", imagePath);
+            AddIntParam(command, "@Status", (int)DataEnum.AttachmentStatusEnum.SAVED);
+            AddTextParam(command, "@FileName", imagePath);
+            
+            command.Prepare();
+
+            command.ExecuteNonQuery();
+        }
     }
 }

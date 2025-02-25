@@ -6,14 +6,20 @@ using BorisMobile.Repository;
 using BorisMobile.Utilities;
 using BorisMobile.XML;
 using CommunityToolkit.Mvvm.Messaging;
+using ICSharpCode.SharpZipLib.GZip;
+using SkiaSharp;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
+using System.Text;
 using System.Xml;
+using System.Xml.Linq;
+using static BorisMobile.DataHandler.Data.DataEnum;
 using static BorisMobile.DataHandler.SyncDataHandler;
 using RequestState = BorisMobile.DataTransferController.RequestState;
-
+using SqlCeCommand = Microsoft.Data.Sqlite.SqliteCommand;
+using SqlCeDataReader = Microsoft.Data.Sqlite.SqliteDataReader;
 namespace BorisMobile.Services
 {
     public class SyncService
@@ -218,7 +224,7 @@ namespace BorisMobile.Services
             {
                 foreach (Attachments oneAttachment in configFiles)
                 {
-                    string sourceFile = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME), oneAttachment.FileName);
+                    string sourceFile = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(), oneAttachment.FileName);
                     if (File.Exists(sourceFile)) // may have been copied already
                     {
                         if (entityType != "MD")
@@ -226,7 +232,7 @@ namespace BorisMobile.Services
                             string destFile = Path.Combine(destDir, oneAttachment.FileName);
                             IO.SafeFileDelete(destFile);
                             File.Copy(sourceFile, destFile, true); // even using "true" on Android causes ERROR_ALREADY_EXISTS. Possibly.
-                            syncDataHandler.DeleteGenericAttachment(FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME), oneAttachment.IdGuid);
+                            syncDataHandler.DeleteGenericAttachment(FilesHelper.GetAttachmentDirectoryMAUI(), oneAttachment.IdGuid);
                             
                         }
                     }
@@ -324,7 +330,7 @@ namespace BorisMobile.Services
         {
             try
             {
-                string attachmentsDir = FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME);
+                string attachmentsDir = FilesHelper.GetAttachmentDirectoryMAUI();
                 string imagesDir = FilesHelper.GetImagesDirectoryMAUI();
                 string configDir = FilesHelper.GetConfigDirectoryMAUI();
                 string fileExtension = Path.GetExtension(attachment.FileName)?.ToLower();
@@ -590,7 +596,7 @@ namespace BorisMobile.Services
 
         public async Task InitialiseDataParameters()
         {
-            IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(App.Database);
+            IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(DBHelper.Database);
             var res = await dataTransferParameterRepo.Get();
             var parameterObject = res.Where(X => X.EntityType == dataTransferParameter.EntityName).FirstOrDefault();
             if(parameterObject == null)
@@ -624,7 +630,7 @@ namespace BorisMobile.Services
                 dataTransferParameter.LastTransactionDate = newDate;
                 dataTransferParameter.LastId = -1;
                 dataTransferParameter.LastGuid = Guid.Empty;
-                IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(App.Database);
+                IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(DBHelper.Database);
                 var paramToUpdate = DataTransferParameterConversion(dataTransferParameter);
                 await dataTransferParameterRepo.Update(paramToUpdate);
             }
@@ -651,7 +657,7 @@ namespace BorisMobile.Services
                 dataTransferParameter.LastGuid = lastGuid;
                 dataTransferParameter.LastId = -1;
             }
-            IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(App.Database);
+            IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(DBHelper.Database);
             var paramToUpdate = DataTransferParameterConversion(dataTransferParameter);
             await dataTransferParameterRepo.Update(paramToUpdate);
         }
@@ -830,83 +836,83 @@ namespace BorisMobile.Services
             {
                 case "Customers":
                     var customer = ParseFromXml<Models.Customers>(dataElement);
-                    IRepo<Models.Customers> customerRepo = new Repo<Models.Customers>(App.Database);
+                    IRepo<Models.Customers> customerRepo = new Repo<Models.Customers>(DBHelper.Database);
                     await customerRepo.Delete(customer);
                     break;
 
                 case "Locations":
                     var location = ParseFromXml<Models.Locations>(dataElement);
-                    IRepo<Models.Locations> locationRepo = new Repo<Models.Locations>(App.Database);
+                    IRepo<Models.Locations> locationRepo = new Repo<Models.Locations>(DBHelper.Database);
                     await locationRepo.Delete(location);
                     break;
                 case "Contacts":
                     var contact = ParseFromXml<Models.Contacts>(dataElement);
-                    IRepo<Models.Contacts> conrepo = new Repo<Models.Contacts>(App.Database);
+                    IRepo<Models.Contacts> conrepo = new Repo<Models.Contacts>(DBHelper.Database);
                     await conrepo.Delete(contact);
                     break;
                 case "Users":
                     var user = ParseFromXml<Models.Users>(dataElement);
-                    IRepo<Models.Users> userrepo = new Repo<Models.Users>(App.Database);
+                    IRepo<Models.Users> userrepo = new Repo<Models.Users>(DBHelper.Database);
                     await userrepo.Delete(user);
                     break;
                 case "GenericListDefinitions":
                     var genericListDefinitions = ParseFromXml<Models.GenericListDefinitions>(dataElement);
-                    IRepo<Models.GenericListDefinitions> genlistrepo = new Repo<Models.GenericListDefinitions>(App.Database);
+                    IRepo<Models.GenericListDefinitions> genlistrepo = new Repo<Models.GenericListDefinitions>(DBHelper.Database);
                     await genlistrepo.Delete(genericListDefinitions);
                     break;
                 case "GenericLists":
                     var gen = ParseFromXml<Models.GenericLists>(dataElement);
-                    IRepo<Models.GenericLists> genrepo = new Repo<Models.GenericLists>(App.Database);
+                    IRepo<Models.GenericLists> genrepo = new Repo<Models.GenericLists>(DBHelper.Database);
                     await genrepo.Delete(gen);
                     break;
                 case "AuditsForCustomer":
                     var auditcustomer = ParseFromXml<Models.AuditsForCustomer>(dataElement);
-                    IRepo<Models.AuditsForCustomer> auditcustomerrepo = new Repo<Models.AuditsForCustomer>(App.Database);
+                    IRepo<Models.AuditsForCustomer> auditcustomerrepo = new Repo<Models.AuditsForCustomer>(DBHelper.Database);
                     await auditcustomerrepo.Delete(auditcustomer);
                     break;
                 case "CustomersForGroup":
                     var customergroup = ParseFromXml<Models.CustomersForGroup>(dataElement);
-                    IRepo<Models.CustomersForGroup> customergrouprepo = new Repo<Models.CustomersForGroup>(App.Database);
+                    IRepo<Models.CustomersForGroup> customergrouprepo = new Repo<Models.CustomersForGroup>(DBHelper.Database);
                     await customergrouprepo.Delete(customergroup);
                     break;
                 case "GroupsForUser":
                     var groupsForUser = ParseFromXml<Models.GroupsForUser>(dataElement);
-                    IRepo<Models.GroupsForUser> groupsForUserrepo = new Repo<Models.GroupsForUser>(App.Database);
+                    IRepo<Models.GroupsForUser> groupsForUserrepo = new Repo<Models.GroupsForUser>(DBHelper.Database);
                     await groupsForUserrepo.Delete(groupsForUser);
                     break;
                 case "Audits":
                     var audits = ParseFromXml<Models.Audits>(dataElement);
-                    IRepo<Models.Audits> auditsrepor = new Repo<Models.Audits>(App.Database);
+                    IRepo<Models.Audits> auditsrepor = new Repo<Models.Audits>(DBHelper.Database);
                     await auditsrepor.Delete(audits);
                     break;
                 case "WorkOrderDefinitions":
                     var workOrderDefinitions = ParseFromXml<Models.WorkOrderDefinitions>(dataElement);
-                    IRepo<Models.WorkOrderDefinitions> workOrderDefinitionsRepo = new Repo<Models.WorkOrderDefinitions>(App.Database);
+                    IRepo<Models.WorkOrderDefinitions> workOrderDefinitionsRepo = new Repo<Models.WorkOrderDefinitions>(DBHelper.Database);
                     await workOrderDefinitionsRepo.Delete(workOrderDefinitions);
                     break;
                 case "WorkOrders":
                     var workOrders = ParseFromXml<Models.WorkOrders>(dataElement);
-                    IRepo<Models.WorkOrders> workOrdersRepo = new Repo<Models.WorkOrders>(App.Database);
+                    IRepo<Models.WorkOrders> workOrdersRepo = new Repo<Models.WorkOrders>(DBHelper.Database);
                     await workOrdersRepo.Delete(workOrders);
                     break;
                 case "WorkOrderAttachments":
                     var workOrderAttachments = ParseFromXml<Models.WorkOrderAttachments>(dataElement);
-                    IRepo<Models.WorkOrderAttachments> workOrderAttachmentsRepo = new Repo<Models.WorkOrderAttachments>(App.Database);
+                    IRepo<Models.WorkOrderAttachments> workOrderAttachmentsRepo = new Repo<Models.WorkOrderAttachments>(DBHelper.Database);
                     await workOrderAttachmentsRepo.Delete(workOrderAttachments);
                     break;
                 case "GenericAttachments":
                     var genericAttachments = ParseFromXml<Models.GenericAttachments>(dataElement);
-                    IRepo<Models.GenericAttachments> genericAttachmentsRepo = new Repo<Models.GenericAttachments>(App.Database);
+                    IRepo<Models.GenericAttachments> genericAttachmentsRepo = new Repo<Models.GenericAttachments>(DBHelper.Database);
                     await genericAttachmentsRepo.Delete(genericAttachments);
                     break;
                 case "AuditsForLocation":
                     var auditsForLocation = ParseFromXml<Models.AuditsForLocation>(dataElement);
-                    IRepo<Models.AuditsForLocation> auditsForLocationRepo = new Repo<Models.AuditsForLocation>(App.Database);
+                    IRepo<Models.AuditsForLocation> auditsForLocationRepo = new Repo<Models.AuditsForLocation>(DBHelper.Database);
                     await auditsForLocationRepo.Delete(auditsForLocation);
                     break;
                 case "DataOrganisations":
                     var dataOrganisations = ParseFromXml<Models.DataOrganisations>(dataElement);
-                    IRepo<Models.DataOrganisations> dataOrganisationsRepo = new Repo<Models.DataOrganisations>(App.Database);
+                    IRepo<Models.DataOrganisations> dataOrganisationsRepo = new Repo<Models.DataOrganisations>(DBHelper.Database);
                     await dataOrganisationsRepo.Delete(dataOrganisations);
                     break;
             }
@@ -919,82 +925,82 @@ namespace BorisMobile.Services
             {
                 case "Customers":
                     var customer = ParseFromXml<Models.Customers>(dataElement);
-                    IRepo<Models.Customers> customerRepo = new Repo<Models.Customers>(App.Database);
+                    IRepo<Models.Customers> customerRepo = new Repo<Models.Customers>(DBHelper.Database);
                     await customerRepo.Update(customer);
                     break;
                 case "Locations":
                     var location = ParseFromXml<Models.Locations>(dataElement);
-                    IRepo<Models.Locations> locationRepo = new Repo<Models.Locations>(App.Database);
+                    IRepo<Models.Locations> locationRepo = new Repo<Models.Locations>(DBHelper.Database);
                     await locationRepo.Update(location);
                     break;
                 case "Contacts":
                     var contact = ParseFromXml<Models.Contacts>(dataElement);
-                    IRepo<Models.Contacts> conrepo = new Repo<Models.Contacts>(App.Database);
+                    IRepo<Models.Contacts> conrepo = new Repo<Models.Contacts>(DBHelper.Database);
                     await conrepo.Update(contact);
                     break;
                 case "Users":
                     var user = ParseFromXml<Models.Users>(dataElement);
-                    IRepo<Models.Users> userrepo = new Repo<Models.Users>(App.Database);
+                    IRepo<Models.Users> userrepo = new Repo<Models.Users>(DBHelper.Database);
                     await userrepo.Update(user);
                     break;
                 case "GenericListDefinitions":
                     var genericListDefinitions = ParseFromXml<Models.GenericListDefinitions>(dataElement);
-                    IRepo<Models.GenericListDefinitions> genlistrepo = new Repo<Models.GenericListDefinitions>(App.Database);
+                    IRepo<Models.GenericListDefinitions> genlistrepo = new Repo<Models.GenericListDefinitions>(DBHelper.Database);
                     await genlistrepo.Update(genericListDefinitions);
                     break;
                 case "GenericLists":
                     var gen = ParseFromXml<Models.GenericLists>(dataElement);
-                    IRepo<Models.GenericLists> genrepo = new Repo<Models.GenericLists>(App.Database);
+                    IRepo<Models.GenericLists> genrepo = new Repo<Models.GenericLists>(DBHelper.Database);
                     await genrepo.Update(gen);
                     break;
                 case "AuditsForCustomer":
                     var auditcustomer = ParseFromXml<Models.AuditsForCustomer>(dataElement);
-                    IRepo<Models.AuditsForCustomer> auditcustomerrepo = new Repo<Models.AuditsForCustomer>(App.Database);
+                    IRepo<Models.AuditsForCustomer> auditcustomerrepo = new Repo<Models.AuditsForCustomer>(DBHelper.Database);
                     await auditcustomerrepo.Update(auditcustomer);
                     break;
                 case "CustomersForGroup":
                     var customergroup = ParseFromXml<Models.CustomersForGroup>(dataElement);
-                    IRepo<Models.CustomersForGroup> customergrouprepo = new Repo<Models.CustomersForGroup>(App.Database);
+                    IRepo<Models.CustomersForGroup> customergrouprepo = new Repo<Models.CustomersForGroup>(DBHelper.Database);
                     await customergrouprepo.Update(customergroup);
                     break;
                 case "GroupsForUser":
                     var groupsForUser = ParseFromXml<Models.GroupsForUser>(dataElement);
-                    IRepo<Models.GroupsForUser> groupsForUserrepo = new Repo<Models.GroupsForUser>(App.Database);
+                    IRepo<Models.GroupsForUser> groupsForUserrepo = new Repo<Models.GroupsForUser>(DBHelper.Database);
                     await groupsForUserrepo.Update(groupsForUser);
                     break;
                 case "Audits":
                     var audits = ParseFromXml<Models.Audits>(dataElement);
-                    IRepo<Models.Audits> auditsrepor = new Repo<Models.Audits>(App.Database);
+                    IRepo<Models.Audits> auditsrepor = new Repo<Models.Audits>(DBHelper.Database);
                     await auditsrepor.Update(audits);
                     break;
                 case "WorkOrderDefinitions":
                     var workOrderDefinitions = ParseFromXml<Models.WorkOrderDefinitions>(dataElement);
-                    IRepo<Models.WorkOrderDefinitions> workOrderDefinitionsRepo = new Repo<Models.WorkOrderDefinitions>(App.Database);
+                    IRepo<Models.WorkOrderDefinitions> workOrderDefinitionsRepo = new Repo<Models.WorkOrderDefinitions>(DBHelper.Database);
                     await workOrderDefinitionsRepo.Update(workOrderDefinitions);
                     break;
                 case "WorkOrders":
                     var workOrders = ParseFromXml<Models.WorkOrders>(dataElement);
-                    IRepo<Models.WorkOrders> workOrdersRepo = new Repo<Models.WorkOrders>(App.Database);
+                    IRepo<Models.WorkOrders> workOrdersRepo = new Repo<Models.WorkOrders>(DBHelper.Database);
                     await workOrdersRepo.Update(workOrders);
                     break;
                 case "WorkOrderAttachments":
                     var workOrderAttachments = ParseFromXml<Models.WorkOrderAttachments>(dataElement);
-                    IRepo<Models.WorkOrderAttachments> workOrderAttachmentsRepo = new Repo<Models.WorkOrderAttachments>(App.Database);
+                    IRepo<Models.WorkOrderAttachments> workOrderAttachmentsRepo = new Repo<Models.WorkOrderAttachments>(DBHelper.Database);
                     await workOrderAttachmentsRepo.Update(workOrderAttachments);
                     break;
                 case "GenericAttachments":
                     var genericAttachments = ParseFromXml<Models.GenericAttachments>(dataElement);
-                    IRepo<Models.GenericAttachments> genericAttachmentsRepo = new Repo<Models.GenericAttachments>(App.Database);
+                    IRepo<Models.GenericAttachments> genericAttachmentsRepo = new Repo<Models.GenericAttachments>(DBHelper.Database);
                     await genericAttachmentsRepo.Update(genericAttachments);
                     break;
                 case "AuditsForLocation":
                     var auditsForLocation = ParseFromXml<Models.AuditsForLocation>(dataElement);
-                    IRepo<Models.AuditsForLocation> auditsForLocationRepo = new Repo<Models.AuditsForLocation>(App.Database);
+                    IRepo<Models.AuditsForLocation> auditsForLocationRepo = new Repo<Models.AuditsForLocation>(DBHelper.Database);
                     await auditsForLocationRepo.Update(auditsForLocation);
                     break;
                 case "DataOrganisations":
                     var dataOrganisations = ParseFromXml<Models.DataOrganisations>(dataElement);
-                    IRepo<Models.DataOrganisations> dataOrganisationsRepo = new Repo<Models.DataOrganisations>(App.Database);
+                    IRepo<Models.DataOrganisations> dataOrganisationsRepo = new Repo<Models.DataOrganisations>(DBHelper.Database);
                     await dataOrganisationsRepo.Update(dataOrganisations);
                     break;
                 default:
@@ -1010,83 +1016,83 @@ namespace BorisMobile.Services
             {
                 case "Customers":
                     var customers = ParseFromXml<Models.Customers>(dataElement);
-                    IRepo<Models.Customers> repo = new Repo<Models.Customers>(App.Database);
+                    IRepo<Models.Customers> repo = new Repo<Models.Customers>(DBHelper.Database);
                     lastId = await repo.Insert(customers);
                     break;
                 case "Locations":
                     var location = ParseFromXml<Models.Locations>(dataElement);
-                    IRepo<Models.Locations> locrepo = new Repo<Models.Locations>(App.Database);
+                    IRepo<Models.Locations> locrepo = new Repo<Models.Locations>(DBHelper.Database);
                     lastId = await locrepo.Insert(location);
                     break;
                 case "Contacts":
                     var contact = ParseFromXml<Models.Contacts>(dataElement);
-                    IRepo<Models.Contacts> conrepo = new Repo<Models.Contacts>(App.Database);
+                    IRepo<Models.Contacts> conrepo = new Repo<Models.Contacts>(DBHelper.Database);
                     lastId = await conrepo.Insert(contact);
                     break;
                 case "Users":
                     var user = ParseFromXml<Models.Users>(dataElement);
-                    IRepo<Models.Users> userrepo = new Repo<Models.Users>(App.Database);
+                    IRepo<Models.Users> userrepo = new Repo<Models.Users>(DBHelper.Database);
                     lastId = await userrepo.Insert(user);
                     break;
                 case "GenericListDefinitions":
                     var genericListDefinitions = ParseFromXml<Models.GenericListDefinitions>(dataElement);
-                    IRepo<Models.GenericListDefinitions> genlistrepo = new Repo<Models.GenericListDefinitions>(App.Database);
+                    IRepo<Models.GenericListDefinitions> genlistrepo = new Repo<Models.GenericListDefinitions>(DBHelper.Database);
                     lastId = await genlistrepo.Insert(genericListDefinitions);
                     break;
                 case "GenericLists":
                     var gen = ParseFromXml<Models.GenericLists>(dataElement);
-                    IRepo<Models.GenericLists> genrepo = new Repo<Models.GenericLists>(App.Database);
+                    IRepo<Models.GenericLists> genrepo = new Repo<Models.GenericLists>(DBHelper.Database);
                     lastId = await genrepo.Insert(gen);
                     break;
                 case "AuditsForCustomer":
                     var auditcustomer = ParseFromXml<Models.AuditsForCustomer>(dataElement);
-                    IRepo<Models.AuditsForCustomer> auditcustomerrepo = new Repo<Models.AuditsForCustomer>(App.Database);
+                    IRepo<Models.AuditsForCustomer> auditcustomerrepo = new Repo<Models.AuditsForCustomer>(DBHelper.Database);
                     lastId = await auditcustomerrepo.Insert(auditcustomer);
                     break;
                 case "CustomersForGroup":
                     var customergroup = ParseFromXml<Models.CustomersForGroup>(dataElement);
-                    IRepo<Models.CustomersForGroup> customergrouprepo = new Repo<Models.CustomersForGroup>(App.Database);
+                    IRepo<Models.CustomersForGroup> customergrouprepo = new Repo<Models.CustomersForGroup>(DBHelper.Database);
                     lastId = await customergrouprepo.Insert(customergroup);
                     break;
                 case "GroupsForUser":
                     var groupsForUser = ParseFromXml<Models.GroupsForUser>(dataElement);
-                    IRepo<Models.GroupsForUser> groupsForUserrepo = new Repo<Models.GroupsForUser>(App.Database);
+                    IRepo<Models.GroupsForUser> groupsForUserrepo = new Repo<Models.GroupsForUser>(DBHelper.Database);
                     lastId = await groupsForUserrepo.Insert(groupsForUser);
                     break;
                 case "Audits":
                     var audits = ParseFromXml<Models.Audits>(dataElement);
-                    IRepo<Models.Audits> auditsrepor = new Repo<Models.Audits>(App.Database);
+                    IRepo<Models.Audits> auditsrepor = new Repo<Models.Audits>(DBHelper.Database);
                     lastId = await auditsrepor.Insert(audits);
                     break;
                 case "WorkOrderDefinitions":
                     var workOrderDefinitions = ParseFromXml<Models.WorkOrderDefinitions>(dataElement);
-                    IRepo<Models.WorkOrderDefinitions> workOrderDefinitionsRepo = new Repo<Models.WorkOrderDefinitions>(App.Database);
+                    IRepo<Models.WorkOrderDefinitions> workOrderDefinitionsRepo = new Repo<Models.WorkOrderDefinitions>(DBHelper.Database);
                     lastId = await workOrderDefinitionsRepo.Insert(workOrderDefinitions);
                     break;
                 case "WorkOrders":
                     var workOrders = ParseFromXml<Models.WorkOrders>(dataElement);
-                    IRepo<Models.WorkOrders> workOrdersRepo = new Repo<Models.WorkOrders>(App.Database);
+                    IRepo<Models.WorkOrders> workOrdersRepo = new Repo<Models.WorkOrders>(DBHelper.Database);
                     lastId = await workOrdersRepo.Insert(workOrders);
                     break;
                 case "WorkOrderAttachments":
                     var workOrderAttachments = ParseFromXml<Models.WorkOrderAttachments>(dataElement);
-                    IRepo<Models.WorkOrderAttachments> workOrderAttachmentsRepo = new Repo<Models.WorkOrderAttachments>(App.Database);
+                    IRepo<Models.WorkOrderAttachments> workOrderAttachmentsRepo = new Repo<Models.WorkOrderAttachments>(DBHelper.Database);
                     lastId = await workOrderAttachmentsRepo.Insert(workOrderAttachments);
                     break;
                 case "GenericAttachments":
                     var genericAttachments = ParseFromXml<Models.GenericAttachments>(dataElement);
                     genericAttachments.NeedToDownload = 1;
-                    IRepo<Models.GenericAttachments> genericAttachmentsRepo = new Repo<Models.GenericAttachments>(App.Database);
+                    IRepo<Models.GenericAttachments> genericAttachmentsRepo = new Repo<Models.GenericAttachments>(DBHelper.Database);
                     lastId = await genericAttachmentsRepo.Insert(genericAttachments);
                     break;
                 case "AuditsForLocation":
                     var auditsForLocation = ParseFromXml<Models.AuditsForLocation>(dataElement);
-                    IRepo<Models.AuditsForLocation> auditsForLocationRepo = new Repo<Models.AuditsForLocation>(App.Database);
+                    IRepo<Models.AuditsForLocation> auditsForLocationRepo = new Repo<Models.AuditsForLocation>(DBHelper.Database);
                     lastId = await auditsForLocationRepo.Insert(auditsForLocation);
                     break;
                 case "DataOrganisations":
                     var dataOrganisations = ParseFromXml<Models.DataOrganisations>(dataElement);
-                    IRepo<Models.DataOrganisations> dataOrganisationsRepo = new Repo<Models.DataOrganisations>(App.Database);
+                    IRepo<Models.DataOrganisations> dataOrganisationsRepo = new Repo<Models.DataOrganisations>(DBHelper.Database);
                     lastId = await dataOrganisationsRepo.Insert(dataOrganisations);
                     break;
                 default:
@@ -1115,9 +1121,683 @@ namespace BorisMobile.Services
             
             dataTransferParameters.BaseTransactionDate = DateTime.Now;
 
-            IRepo<Models.DataTransferParameters> dataTransferParametersRepo = new Repo<Models.DataTransferParameters>(App.Database);
+            IRepo<Models.DataTransferParameters> dataTransferParametersRepo = new Repo<Models.DataTransferParameters>(DBHelper.Database);
             dataTransferParametersRepo.Insert(dataTransferParameters);
 
+        }
+        bool mustSignalCompletion;
+
+        public async Task SyncDataToServer()
+        {
+            List<AuditsInProgress> auditList = await syncDataHandler.GetPendingAuditInProgress();
+
+            foreach (AuditsInProgress audit in auditList)
+            {
+                List<Attachments> attachmentList = await syncDataHandler.GetAuditsInProgressAttachments(audit.IdGuid);
+                var finalXMLString = AddHeaderToXml(audit.XmlResults,audit.UserId,audit.CustomerId,audit.AuditId,audit.LocationId,audit.WorkOrderId,audit.DateOfAudit,audit.DateTimeStarted);
+
+                XmlDocument resultDoc = new XmlDocument();
+                resultDoc.LoadXml("<root/>");
+                XmlNode oneRes = resultDoc.CreateElement("oneres");
+                XmlElement id = resultDoc.CreateElement("id");
+                id.InnerText = audit.IdGuid.ToString();
+                XmlElement res = resultDoc.CreateElement("res");
+                res.InnerXml = finalXMLString;
+                XmlElement keepWOOpen = resultDoc.CreateElement("woKeepOpen");
+                bool keepOpen = true;
+                keepWOOpen.InnerXml = (keepOpen) ? "1" : "0";
+                XmlElement atts = resultDoc.CreateElement("hasAtts");
+                atts.InnerXml = (attachmentList.Count>0) ? "1" : "0";
+                if (attachmentList.Count>0)
+                {
+                    mustSignalCompletion = true;
+                }
+                oneRes.AppendChild(id);
+                oneRes.AppendChild(atts);
+                oneRes.AppendChild(keepWOOpen);
+                oneRes.AppendChild(res);
+                resultDoc.DocumentElement.AppendChild(oneRes);
+                //Console.WriteLine("Uploading pending " + i);
+
+                var m_configXml = new XmlConfigDoc(Helper.Constants.APPLICATION_CONFIG_FILE);
+                urlList = XMLHelper.URLList(m_configXml);
+
+
+
+                string uploadUrl = $"{urlList[0]}MD_{Helper.Constants.RESULTS_FILENAME}/";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uploadUrl);
+                request.Method = "PUT";
+                request.AllowWriteStreamBuffering = true;
+                request.Headers.Add("Ticket:" + Preferences.Get("Token", ""));
+                request.Timeout = 600000;
+
+                m_requestState.Init(request);
+
+                //string resOuterXML = "<root><oneres><id>1ce0d1fe-205e-4dc5-be52-3c3476ee23e7</id><hasAtts>1</hasAtts><woKeepOpen>1</woKeepOpen><res><results><Header User=\"6664\" Customer=\"7722\" Audit=\"15484\" Location=\"11712\" WorkOrder=\"4525\" DateOfAudit=\"2025-02-07T11:42:49\" DateTimeStarted=\"2025-02-07T11:42:49\" DateTimeReleased=\"2025-02-11T22:34:51\" ReleaseStatus=\"5\" Platform=\"Android\" /><aud_2><aud_2_1><aud_2_1_1><locationList res=\"\" /><asset res=\"\" /><frAR res=\"258175\" score=\"0\" /><level res=\"Fg\" /><aud_2_1_1_14 res=\"$GPSLocation[network 51.396848,0.097389 hAcc=85 et=+2d23h57m5s186ms alt=132.60000610351562 vAcc=15 sAcc=??? bAcc=??? {Bundle[mParcelledData.dataSize=52]}]\" /></aud_2_1_1><aud_2_1_3><sealType res=\"700105\" score=\"0\" count=\"0\" /><x res=\"5\" count=\"0\" /><y res=\"6\" count=\"0\" /><totQty res=\"8\" count=\"0\" /></aud_2_1_3><aud_2_1_5><penetratingServices res=\"\" count=\"0\" /></aud_2_1_5><aud_2_1_4><photo res=\"1\" /><aud_2_1_4_7 res=\"\" /><photo0 res=\"1\" /><aud_2_1_4_8 res=\"\" /><comments res=\"\" /><wComp res=\"2025-02-11T00:00:00\" /></aud_2_1_4></aud_2_1><aud_2_2><aud_2_1_2><siteFile res=\"\" /><docs res=\"\" /></aud_2_1_2><aud_2_3_1><drawingLocation res=\"\" /></aud_2_3_1><calcs /></aud_2_2></aud_2></results></res></oneres></root>\r\n";
+                byte[] rdr = Encoding.UTF8.GetBytes(resultDoc.OuterXml);//(resOuterXML);//(resultDoc.OuterXml);
+
+                using (Stream reqStream = request.GetRequestStream())
+                {
+                    GZipOutputStream zipStream = new GZipOutputStream(reqStream); // don't seem able to Dispose of this directly (dispose, calls Close which seems to end up flushing and giving a ContentLength error) 
+                    zipStream.Write(rdr, 0, rdr.GetLength(0));
+                    zipStream.Close();
+
+                    var response = await request.GetResponseAsync();
+
+                    webApiService.CheckProtocol(response);
+                    string failCode = response.Headers["FailCode"];
+                    if (failCode == null)
+                    {
+                        using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
+                        {
+                            var responseLine = responseReader.ReadLine();
+                            Console.WriteLine(responseLine);
+                            //return responseLine;
+
+                            if (attachmentList.Count > 0)
+                            {
+                                bool attachSuccess = true;
+                                foreach (var item in attachmentList)
+                                {
+                                    
+                                    int repeat = 0;
+                                    
+                                    byte[] attachmentData = await IO.ReadFullFile((string)item.FileName);
+
+                                    await UploadAttachment($"{urlList[0]}", item.IdGuid, item.UniqueName, attachmentData, repeat,
+                                       item.FileName,
+                                        item.SubFormIdGuid,
+                                        item.IsCopiedFromWorkOrder == 1 ?true:false, item.Id, -1);
+
+                                    
+                                }
+                                if (mustSignalCompletion)
+                                {
+                                    await SignalCompletionOfResultAndAttachments($"{urlList[0]}", audit.IdGuid.ToString());
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m_requestState.result = WebRequestResult.RESPONSE_ERROR;
+                        Console.WriteLine("Error with fail code UploadDataToServer " + failCode);
+                        throw new ApplicationException("Request failed: " + failCode);
+                    }
+                }
+
+                await syncDataHandler.UpdateAuditInProgressStatus(audit.IdGuid, ResultStatusEnum.COMPLETE);
+            }
+
+        }
+
+        public string AddHeaderToXml(string xmlString,int userId,int customerId,int auditId,int locationId,int workOrderId,DateTime dateOfAudit, DateTime dateTimeStarted)
+        {
+            // Load XML string into XDocument
+            XDocument doc = XDocument.Parse(xmlString);
+
+            // Find the <results> node
+            XElement resultsNode = doc.Descendants("results").FirstOrDefault();
+
+            if (resultsNode != null)
+            {
+                // Create the new <Header> element
+                XElement headerElement = new XElement("Header",
+                    new XAttribute("User", userId),
+                    new XAttribute("Customer", customerId),
+                    new XAttribute("Audit", auditId),
+                    new XAttribute("Location", locationId),
+                    new XAttribute("WorkOrder", workOrderId),
+                    new XAttribute("DateOfAudit", dateOfAudit),
+                    new XAttribute("DateTimeStarted", dateTimeStarted),
+                    new XAttribute("DateTimeReleased", DateTime.Now),
+                    new XAttribute("ReleaseStatus", "5"),
+                    new XAttribute("Platform", DeviceInfo.Current.Platform)
+                );
+
+                // Insert <Header> as the first child of <results>
+                resultsNode.AddFirst(headerElement);
+            }
+
+            // Return updated XML as string
+            return doc.ToString();
+        }
+
+        public async Task<int> UploadDataToServer(string strRequest,Guid uploadGuid)
+        {
+            try
+            {
+                List<AuditsInProgress> auditList = await syncDataHandler.GetPendingAuditInProgress();
+
+                using (SqlCeCommand sqlAttachments = syncDataHandler.GetAttachmentsAwaitingUploadCommand(uploadGuid))
+                {
+                    using (SqlCeDataReader attachments = sqlAttachments.ExecuteReader())
+                    {
+                        //get ready the xml to send to server
+                        XmlDocument resultDoc = new XmlDocument();
+                        resultDoc.LoadXml("<root/>");
+                        XmlNode oneRes = resultDoc.CreateElement("oneres");
+                        XmlElement id = resultDoc.CreateElement("id");
+                        id.InnerText = uploadGuid.ToString();
+                        XmlElement res = resultDoc.CreateElement("res");
+                        res.InnerXml = strRequest;
+                        XmlElement keepWOOpen = resultDoc.CreateElement("woKeepOpen");
+                        bool keepOpen = true;
+                        keepWOOpen.InnerXml = (keepOpen) ? "1" : "0";
+                        XmlElement atts = resultDoc.CreateElement("hasAtts");
+                        atts.InnerXml = (attachments.HasRows == true) ? "1" : "0";
+                         if (attachments.HasRows == true)
+                         {
+                            mustSignalCompletion = true;
+                         }
+                        oneRes.AppendChild(id);
+                        oneRes.AppendChild(atts);
+                        oneRes.AppendChild(keepWOOpen);
+                        oneRes.AppendChild(res);
+                        resultDoc.DocumentElement.AppendChild(oneRes);
+                        //Console.WriteLine("Uploading pending " + i);
+
+                        var m_configXml = new XmlConfigDoc(Helper.Constants.APPLICATION_CONFIG_FILE);
+                        urlList = XMLHelper.URLList(m_configXml);
+
+
+
+                        string uploadUrl = $"{urlList[0]}MD_{Helper.Constants.RESULTS_FILENAME}/";
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uploadUrl);
+                        request.Method = "PUT";
+                        request.AllowWriteStreamBuffering = true;
+                        request.Headers.Add("Ticket:" + Preferences.Get("Token", ""));
+                        request.Timeout = 600000;
+
+                        m_requestState.Init(request);
+
+                        //string resOuterXML = "<root><oneres><id>1ce0d1fe-205e-4dc5-be52-3c3476ee23e7</id><hasAtts>1</hasAtts><woKeepOpen>1</woKeepOpen><res><results><Header User=\"6664\" Customer=\"7722\" Audit=\"15484\" Location=\"11712\" WorkOrder=\"4525\" DateOfAudit=\"2025-02-07T11:42:49\" DateTimeStarted=\"2025-02-07T11:42:49\" DateTimeReleased=\"2025-02-11T22:34:51\" ReleaseStatus=\"5\" Platform=\"Android\" /><aud_2><aud_2_1><aud_2_1_1><locationList res=\"\" /><asset res=\"\" /><frAR res=\"258175\" score=\"0\" /><level res=\"Fg\" /><aud_2_1_1_14 res=\"$GPSLocation[network 51.396848,0.097389 hAcc=85 et=+2d23h57m5s186ms alt=132.60000610351562 vAcc=15 sAcc=??? bAcc=??? {Bundle[mParcelledData.dataSize=52]}]\" /></aud_2_1_1><aud_2_1_3><sealType res=\"700105\" score=\"0\" count=\"0\" /><x res=\"5\" count=\"0\" /><y res=\"6\" count=\"0\" /><totQty res=\"8\" count=\"0\" /></aud_2_1_3><aud_2_1_5><penetratingServices res=\"\" count=\"0\" /></aud_2_1_5><aud_2_1_4><photo res=\"1\" /><aud_2_1_4_7 res=\"\" /><photo0 res=\"1\" /><aud_2_1_4_8 res=\"\" /><comments res=\"\" /><wComp res=\"2025-02-11T00:00:00\" /></aud_2_1_4></aud_2_1><aud_2_2><aud_2_1_2><siteFile res=\"\" /><docs res=\"\" /></aud_2_1_2><aud_2_3_1><drawingLocation res=\"\" /></aud_2_3_1><calcs /></aud_2_2></aud_2></results></res></oneres></root>\r\n";
+                        byte[] rdr = Encoding.UTF8.GetBytes(resultDoc.OuterXml);//(resOuterXML);//(resultDoc.OuterXml);
+                        using (Stream reqStream = request.GetRequestStream())
+                        {
+                            GZipOutputStream zipStream = new GZipOutputStream(reqStream); // don't seem able to Dispose of this directly (dispose, calls Close which seems to end up flushing and giving a ContentLength error) 
+                            zipStream.Write(rdr, 0, rdr.GetLength(0));
+                            zipStream.Close();
+
+                            var response = await request.GetResponseAsync();
+
+                            webApiService.CheckProtocol(response);
+                            string failCode = response.Headers["FailCode"];
+                            if (failCode == null)
+                            {
+                                using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
+                                {
+                                    var responseLine = responseReader.ReadLine();
+                                    Console.WriteLine(responseLine);
+                                    //return responseLine;
+
+                                    if (attachments.HasRows == true)
+                                    {
+                                        bool attachSuccess = true;
+                                        while ((attachSuccess == true) && (attachments.Read() == true))
+                                        {
+                                            //j++;
+                                            //SyncLog("Uploading att " + j);
+                                            //SendMessageBackToParentUI(GetResourceString(DataTransferResources.CLIENTDT_Attachment) + j);
+                                            int repeat = 0;
+                                            //if (attachments["Repeat"] != DBNull.Value)
+                                            //{
+                                              //  repeat = DataHandler.GetIntFromReader(attachments["Repeat"]);
+                                            //}
+                                            //int pageRepeatListItemId = -1;
+                                            //if (attachments["PageRepeatListItemId"] != DBNull.Value)
+                                            //{
+                                              //  pageRepeatListItemId = DataHandler.GetIntFromReader(attachments["PageRepeatListItemId"]);
+                                            //}
+
+                                            byte[] attachmentData = await IO.ReadFullFile((string)attachments["AttachmentData"]);
+
+                                            await UploadAttachment($"{urlList[0]}", uploadGuid, (string)attachments["UniqueName"], attachmentData, repeat,
+                                                attachments["FileName"] != DBNull.Value ? (string)attachments["FileName"] : "",
+                                                attachments["SubFormIdGuid"] != DBNull.Value ? GetGuidFromReader(attachments["SubFormIdGuid"]) : Guid.Empty,
+                                                attachments["IsCopiedFromWorkOrder"] != DBNull.Value ? GetBoolFromReader(attachments["IsCopiedFromWorkOrder"]) : false, attachments["Id"] != DBNull.Value ? GetIntFromReader(attachments["Id"]) : 0, -1);
+                                            //if (m_requestState.exception != null)
+                                            //{
+                                            //    //SyncLog("About to throw exception: " + m_requestState.exception);
+                                            //    throw m_requestState.exception;
+                                            //}
+                                            //DebugLog("Done att " + j);
+                                            
+                                            //DebugLog("Uploaded att " + j);
+                                        }
+                                        if (mustSignalCompletion)
+                                        {
+                                            await SignalCompletionOfResultAndAttachments($"{urlList[0]}",uploadGuid.ToString());
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                m_requestState.result = WebRequestResult.RESPONSE_ERROR;
+                                Console.WriteLine("Error with fail code UploadDataToServer " + failCode);
+                                throw new ApplicationException("Request failed: " + failCode);
+                            }
+                        }
+                    }
+                }
+
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"UploadDataToServer : {e.Message}");
+                return -1;
+            }
+        }
+
+        public async Task UploadAttachment(string url,Guid resultGuid, string uniqueName, byte[] attachmentBytes, int repeat, string filePath, Guid subFormGuid, bool isCopiedFromWorkOrder, int localId, int pageRepeatListItemId)
+        {
+            try
+            {
+                //string filePath = fileName;
+                string fileName = Path.GetFileName(filePath);
+                string queryString = "?guid=" + resultGuid.ToString() + "&uniqueName=" + uniqueName + "&fileName=";
+                if (repeat != -1)
+                {
+                    queryString += "&repeat=" + repeat;
+                }
+                if (pageRepeatListItemId != -1)
+                {
+                    queryString += "&pageRepeatListItemId=" + pageRepeatListItemId;
+                }
+                if (subFormGuid != Guid.Empty)
+                {
+                    queryString += "&subForm=" + subFormGuid.ToString();
+                }
+                if (isCopiedFromWorkOrder)
+                {
+                    queryString += "&isCopiedFromWorkOrder=1";
+                }
+                queryString += "&localId=" + localId;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + Constants.ATTACHMENTS_FILENAME + queryString);
+                request.Method = "PUT";
+                request.AllowWriteStreamBuffering = true;
+
+                request.KeepAlive = false; // back in 23/06/12 bottom of https://bugzilla.novell.com/show_bug.cgi?id=648862#c12
+                request.Timeout = 600000;//Xml.XmlUtils.IntAtt(m_configSettings, "uploadRequestTimeoutSecs", 120) * 1000;
+                request.ReadWriteTimeout = 600000;
+
+                request.Headers.Add("Ticket:" + Preferences.Get("Token", ""));
+                m_requestState.Init(request);
+                using (var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(600000)))
+                {
+                    try
+                    {
+                        // Check if image needs processing (especially for camera images)
+                        if (attachmentBytes.Length > 65000) // If larger than ~1MB
+                        {
+                            attachmentBytes = await CompressImageForDatabaseLimit(attachmentBytes);
+                        }
+                        using (var memoryBuffer = new MemoryStream(attachmentBytes))
+                        {
+                            using (Stream reqStream = request.GetRequestStream())
+                            {
+                                byte[] buffer = new byte[4096];
+                                int bytesRead;
+                                long totalSent = 0;
+
+                                while ((bytesRead = await memoryBuffer.ReadAsync(buffer, 0, buffer.Length, cts.Token)) > 0)
+                                {
+                                    await reqStream.WriteAsync(buffer, 0, bytesRead, cts.Token);
+                                    totalSent += bytesRead;
+                                    Console.WriteLine($"Bytes sent: {totalSent} of {attachmentBytes.Length}");
+                                    // Add a small delay to prevent flooding
+                                    if (totalSent % (buffer.Length * 10) == 0)
+                                        await Task.Delay(1, cts.Token);
+                                }
+                            }
+                        }
+                        // Get response with timeout
+                        using (var response = await request.GetResponseAsync().WaitAsync(cts.Token))
+                        {
+                            webApiService.CheckProtocol(response);
+                            string failCode = response.Headers["FailCode"];
+                            if (failCode == null)
+                            {
+                                Console.WriteLine("Passcode",failCode);
+                                syncDataHandler.UpdateAttachmentUploadStatus(localId, AttachmentStatusEnum.UPLOADED);
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Failcode", failCode);
+
+                            }
+                            using (var responseStream = response.GetResponseStream())
+                            using (var reader = new StreamReader(responseStream))
+                            {
+                                string responseContent = await reader.ReadToEndAsync();
+                                Console.WriteLine("Response", responseContent);
+                                //return !string.IsNullOrEmpty(responseContent);
+                            }
+                        }
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        Console.WriteLine("Upload request timed out");
+                        throw new TimeoutException("The request timed out while trying to upload the image");
+                    }
+                }
+                //using (Stream reqStream = request.GetRequestStream())
+                //{
+                //    MemoryStream rdr = new MemoryStream(attachmentBytes);
+                //    // Allocate byte buffer to hold file contents
+                //    byte[] inData = new byte[4096];
+                //    // loop through the local file reading each data block
+                //    //  and writing to the request stream buffer
+                //    int totalSent = 0;
+                //    int bytesRead = rdr.Read(inData, 0, inData.Length);
+                //    while (bytesRead > 0)
+                //    {
+                //        reqStream.Write(inData, 0, bytesRead);
+                //        totalSent += bytesRead;
+                //        Console.WriteLine("Bytes sent: " + totalSent);
+                //        bytesRead = rdr.Read(inData, 0, inData.Length);
+                //    }
+                //    rdr.Close();
+                //    reqStream.Close();
+
+                //    // Start the asynchronous request.
+                //    var res = await request.GetResponseAsync();
+
+                //    webApiService.CheckProtocol(res);
+                //    string failCode = res.Headers["FailCode"];
+                //    if (failCode == null)
+                //    {
+                //        using (StreamReader responseReader = new StreamReader(res.GetResponseStream()))
+                //        {
+                //            var responseLine = responseReader.ReadLine();
+                //            Console.WriteLine(responseLine);
+
+                //            try
+                //            {
+                //                //syncDataHandler.UpdateAttachmentUploadStatus(localId, (int)DataEnum.AttachmentStatusEnum.UPLOADED);
+                //            }
+                //            catch (Exception e)
+                //            {
+                //                Console.WriteLine("Failed to update attachment status: " + e.Message); // malformed db??
+
+                //            }
+                //        }
+                //    }
+                //    else
+                //    {
+                //        m_requestState.result = WebRequestResult.RESPONSE_ERROR;
+                //        Console.WriteLine("Error with fail code " + failCode);
+                //        throw new ApplicationException("Request failed: " + failCode);
+                //    }
+                //            //SetTimeout(asyncResult);
+
+                //            // The response came in the allowed time. The work processing will happen in the 
+                //            // callback function.
+                //            //DebugLog("Waiting on allDone");
+                //            //allDone.WaitOne();
+                //            //DebugLog("Finished waiting");
+                //        }
+            }
+            //catch (Exception e)
+            //{
+            //    m_requestState.result = WebRequestResult.REQUEST_ERROR;
+            //    m_requestState.exception = e;
+            //    Console.WriteLine("Exception in UploadAttachment: " + e.ToString());
+            //}
+            catch (WebException ex)
+            {
+                if (ex.Response != null)
+                {
+                    using (var errorResponse = ex.Response)
+                    {
+                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+                        {
+                            string errorText = await reader.ReadToEndAsync();
+                            Console.WriteLine($"Error response: {errorText}");
+                        }
+                    }
+                }
+                Console.WriteLine($"WebException: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during upload: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task SignalCompletionOfResultAndAttachments(string url,string resultGuid)
+        {
+            string queryString = "?guid=" + resultGuid.ToString();
+            //SendRequest(Constants.SIGNAL_END_OF_RESULTS_FILENAME, queryString, new AsyncCallback(UploadCallback), resultGuid.ToString());
+
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{url}MD_{Constants.SIGNAL_END_OF_RESULTS_FILENAME}{queryString}");
+                request.Method = "PUT";
+                request.AllowWriteStreamBuffering = true;
+                request.Headers.Add("Ticket:" + Preferences.Get("Token", ""));
+
+                request.Timeout = 600000; // !!!!!!***!!!!
+                m_requestState.Init(request);
+
+                byte[] rdr = System.Text.Encoding.UTF8.GetBytes(resultGuid);
+                using (Stream reqStream = request.GetRequestStream())
+                {
+                    GZipOutputStream zipStream = new GZipOutputStream(reqStream); // don't seem able to Dispose of this directly (dispose, calls Close which seems to end up flushing and giving a ContentLength error) 
+                    zipStream.Write(rdr, 0, rdr.GetLength(0));
+                    zipStream.Close();
+                    // Start the asynchronous request.
+                    //allDone.Reset();
+
+                    var response = await request.GetResponseAsync();
+                    //SetTimeout(asyncResult);
+                    //allDone.WaitOne();
+
+                    webApiService.CheckProtocol(response);
+                    string failCode = response.Headers["FailCode"];
+                    if (failCode == null)
+                    {
+                        using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
+                        {
+                            var responseLine = responseReader.ReadLine();
+                            Console.WriteLine(responseLine);
+                        }
+                    }
+                    else
+                    {
+                        m_requestState.result = WebRequestResult.RESPONSE_ERROR;
+                        //DebugLog("Error with fail code " + failCode);
+                        throw new ApplicationException("Request failed: " + failCode);
+                    }
+                }
+                //Stream s = new GZipOutputStream(request.GetRequestStream());
+                //s.Write(rdr, 0, rdr.GetLength(0));
+                //s.Close();
+                //m_requestState.Init(request);
+                //m_requestState.request = request;
+                //allDone.Reset();
+
+
+
+                //// Start the asynchronous request.
+                //IAsyncResult result = (IAsyncResult)request.BeginGetResponse(callback, m_requestState);
+                //allDone.WaitOne();
+            }
+            catch (Exception e)
+            {
+                m_requestState.result = WebRequestResult.REQUEST_ERROR;
+                m_requestState.exception = e;
+                //DebugLog("SendReq Exception caught!! " + e.ToString());
+            }
+        }
+        //        private void UploadLocalListsCallback(IAsyncResult asynchronousResult)
+        //        {
+        //            CallbackWithStringResponse(asynchronousResult, -1);
+        //        }
+        //        private void CallbackWithStringResponse(IAsyncResult asynchronousResult, int messageType)
+        //        {
+        //            CallbackGeneral(asynchronousResult, true, false, messageType);
+        //        }
+
+        //        private void CallbackGeneral(IAsyncResult asynchronousResult, bool setResponseString, bool setTransactions, int messageType)
+        //        {
+        //            try
+        //            {
+        //                RequestState myRequestState = (RequestState)asynchronousResult.AsyncState;
+        //                HttpWebRequest myHttpWebRequest = myRequestState.request;
+        //                using (HttpWebResponse response = (HttpWebResponse)myHttpWebRequest.EndGetResponse(asynchronousResult))
+        //                {
+        //                    webApiService.CheckProtocol(response);
+        //                    string failCode = response.Headers["FailCode"];
+        //                    if (failCode == null)
+        //                    {
+        //                        if (setResponseString)
+        //                        {
+        //                            var m_uploadResponse = ResponseAsString(response);
+        //                            if (messageType == 1)
+        //                            {
+        //                                //SetSessionStatus(SessionStatus.FINISHED_NATURALLY);
+        //                                //SendMessageBackToParentUI("$res:" + m_uploadResponse);
+        //                            }
+        //                        }
+        //                        if (setTransactions)
+        //                        {
+        //                            var m_returnedTransactions = ResponseAsString(response);
+        //                        }
+        //                        m_requestState.result = WebRequestResult.HAVE_DATA;
+        //                    }
+        //                    else
+        //                    {
+        //                        m_requestState.result = WebRequestResult.RESPONSE_ERROR;
+        //                        //DebugLog("Error with fail code " + failCode);
+        //                        throw new ApplicationException("Request failed: " + failCode);
+        //                    }
+        //                }
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                if (m_requestState.result != WebRequestResult.USER_ABORTED)
+        //                {
+        //                    m_requestState.exception = e;
+        //                } // else - exception details set in abort request
+        //            }
+        //            //allDone.Set();
+        //        }
+
+        //        private string ResponseAsString(HttpWebResponse response)
+        //        {
+        //            char[]  m_inData = new char[4096];
+
+        //            using (MemoryStream decompressedResponse = GetDecompressedResponseFromStream(response.GetResponseStream()))
+        //            {
+        //                using (StreamReader responseReader = new StreamReader(decompressedResponse, Encoding.UTF8))
+        //                {
+        //                    StringBuilder sb = new StringBuilder();
+        //                    int totalLengthReadForLog = 0;
+        //                    int charsRead = responseReader.Read(m_inData, 0, m_inData.Length);
+        //                    while (charsRead > 0)
+        //                    {
+        //                        sb.Append(m_inData, 0, charsRead);
+        //                        totalLengthReadForLog += charsRead;
+        //                        charsRead = responseReader.Read(m_inData, 0, m_inData.Length);
+        //                    }
+        //                    return sb.ToString();
+        //                }
+        //            }
+        //        }
+        //        private GZipInputStream m_compressedStream;
+        //        private MemoryStream GetDecompressedResponseFromStream(Stream inStream)
+        //        {
+        //            FreeCompressedResponse();
+        //            m_compressedStream = new GZipInputStream(inStream);
+        //            MemoryStream decompressedStream = new MemoryStream();
+        //            int totalSize = 0;
+        //            int size = 2048;
+        //            byte[] writeData = new byte[2048];
+        //            while (true)
+        //            {
+        //                size = m_compressedStream.Read(writeData, 0, size);
+        //                totalSize += size;
+        //                if (size > 0)
+        //                {
+        //                    decompressedStream.Write(writeData, 0, size);
+        //                }
+        //                else
+        //                {
+        //                    break;
+        //                }
+        //            }
+        //            decompressedStream.Seek(0, SeekOrigin.Begin);
+        //            return decompressedStream;
+        //        }
+
+        //        private void FreeCompressedResponse()
+        //        {
+        //            if (m_compressedStream != null)
+        //            {
+        //#if !PocketPC
+        //                m_compressedStream.Close();
+        //                m_compressedStream.Dispose();
+        //#endif
+        //                m_compressedStream = null;
+        //            }
+        //        }
+
+        private async Task<byte[]> CompressImageForDatabaseLimit(byte[] imageData)
+        {
+            // Target size slightly below the limit (e.g., 60KB)
+            const int targetSize = 120 * 2048;
+
+            try
+            {
+                using var originalImageStream = new MemoryStream(imageData);
+                var skBitmap = SKBitmap.Decode(originalImageStream);
+                if (skBitmap == null)
+                {
+                    Console.WriteLine("Failed to decode image");
+                    return imageData;
+                }
+                // Start with reasonable quality
+                int quality = 80;
+                byte[] result = imageData;
+
+                // Try increasingly aggressive compression until size is acceptable
+                while (result.Length > targetSize && quality > 5)
+                {
+                    // Calculate appropriate dimensions
+                    // Start with 50% reduction and increase as needed
+                    double scaleFactor = Math.Min(0.5, Math.Sqrt((double)targetSize / imageData.Length));
+                    int newWidth = (int)(skBitmap.Width * scaleFactor);
+                    int newHeight = (int)(skBitmap.Height * scaleFactor);
+
+                    // Ensure minimum dimensions
+                    newWidth = Math.Max(newWidth, 300);
+                    newHeight = Math.Max(newHeight, 300);
+
+                    // Resize image using SkiaSharp
+                    var imageInfo = new SKImageInfo(newWidth, newHeight);
+                    using var resizedBitmap = skBitmap.Resize(imageInfo, SKFilterQuality.Medium);
+                    using var image = SKImage.FromBitmap(resizedBitmap);
+                    using var data = image.Encode(SKEncodedImageFormat.Jpeg, quality);
+                    // Get the compressed bytes
+                    result = data.ToArray();
+                    // Reduce quality for next iteration if needed
+                    quality -= 15;
+                }
+
+                Console.WriteLine($"Compressed image from {imageData.Length} to {result.Length} bytes");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Image compression failed: {ex.Message}");
+                return imageData;
+            }
         }
     }
 }

@@ -16,7 +16,7 @@
             Stroke="#E3E5E5"
             StrokeShape="RoundRectangle 8"
             Background="White">
-            <controls:NoBorderEntry x:Name="entry" TextColor="Black" />
+            <controls:NoBorderEntry x:Name="entry" TextColor="Black" TextChanged="entry_TextChanged" Text="{Binding EnteredValue,Mode=TwoWay}" />
         </Border>
     </StackLayout>
 </ContentView>

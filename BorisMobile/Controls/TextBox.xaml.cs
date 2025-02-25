@@ -5,10 +5,13 @@ public partial class TextBox :  ContentView
 	public TextBox()
 	{
 		InitializeComponent();
-	}
+        //this.TextChanged += OnTextChanged;
+
+    }
+    public event EventHandler<string> TextChanged;
 
     #region binding
-    
+
     private string _Title;
     public string Title
     {
@@ -18,6 +21,18 @@ public partial class TextBox :  ContentView
         {
             _Title = value;
             titleLabel.Text = _Title;
+        }
+    }
+    private string _enteredValue;
+    public string EnteredValue
+    {
+        get => _enteredValue;
+
+        set
+        {
+            _enteredValue = value;
+            //titleLabel.Text = _enteredValue;
+            TextChanged?.Invoke(this, _enteredValue);
         }
     }
     private bool _isMandatory;
@@ -84,9 +99,17 @@ public partial class TextBox :  ContentView
             }
         }
     }
+
+    private void entry_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        EnteredValue = e.NewTextValue;
+    }
     #endregion
 
-
+    //private void OnTextChanged(object sender, TextChangedEventArgs e)
+    //{
+    //    TextChanged?.Invoke(this, new TextChangedEventArgs(e.OldTextValue, e.NewTextValue));
+    //}
 
 
 }

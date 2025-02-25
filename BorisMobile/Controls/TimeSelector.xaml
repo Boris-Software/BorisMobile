@@ -15,7 +15,7 @@
             StrokeShape="RoundRectangle 8"
             Background="White">
             <Grid ColumnDefinitions="*">
-                <TimePicker x:Name="datepicker" Grid.Column="0" />
+                <TimePicker x:Name="datepicker" Grid.Column="0" Time="{Binding TimeEntered,Mode=TwoWay}" />
             </Grid>
         </Border>
     </StackLayout>

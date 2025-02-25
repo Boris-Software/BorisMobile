@@ -13,5 +13,9 @@
         public const string SIGN_IN_FILENAME = "as.m5SI";
         public const string TRANSACTIONS_FILENAME = "as.m5Tr";
         public const string WO_ATTACHMENTS_FILENAME = "as.m5WOAtt";
+        public const string RESULTS_FILENAME = "as.m5Res";
+        public const string SIGNAL_END_OF_RESULTS_FILENAME = "as.m5ERes";
+        public const string ATTACHMENTS_FILENAME = "as.m5Att";
+
     }
 }

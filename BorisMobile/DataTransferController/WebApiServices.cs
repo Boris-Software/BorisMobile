@@ -92,7 +92,7 @@ namespace BorisMobile.DataTransferController
         {
             try
             {
-                var m_attachmentsDir = FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME);
+                var m_attachmentsDir = FilesHelper.GetAttachmentDirectoryMAUI();
                 var m_configDir = FilesHelper.GetConfigDirectoryMAUI();
 
                 string uploadUrl = $"https://provisioning.boris-software.com/as.m5WOAtt?guid={attachment.IdGuid}&generic=yes";
@@ -281,7 +281,7 @@ namespace BorisMobile.DataTransferController
                             }
                         }
                         genericAttachments.NeedToDownload = 1;
-                        IRepo<Models.GenericAttachments> genericAttachmentRepo = new Repo<Models.GenericAttachments>(App.Database);
+                        IRepo<Models.GenericAttachments> genericAttachmentRepo = new Repo<Models.GenericAttachments>(DBHelper.Database);
                         var res = await genericAttachmentRepo.Insert(genericAttachments);
                         break;
 

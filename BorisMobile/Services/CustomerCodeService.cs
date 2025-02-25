@@ -12,7 +12,7 @@ namespace BorisMobile.Services
         DataTransferParameters dataTransferParameter = new DataTransferParameters();
         public async Task InitialiseDataParameters()
         {
-            IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(App.Database);
+            IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(DBHelper.Database);
             var res = await dataTransferParameterRepo.Get();
             var parameterObject = res.Where(X => X.EntityType == dataTransferParameter.EntityName).FirstOrDefault();
             if (parameterObject == null)
@@ -44,7 +44,7 @@ namespace BorisMobile.Services
                 dataTransferParameter.LastTransactionDate = newDate;
                 dataTransferParameter.LastId = -1;
                 dataTransferParameter.LastGuid = Guid.Empty;
-                IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(App.Database);
+                IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(DBHelper.Database);
                 var updateobj = DataTransferParameterConversion(dataTransferParameter);
                 await dataTransferParameterRepo.Update(updateobj);
             }
@@ -71,7 +71,7 @@ namespace BorisMobile.Services
                 dataTransferParameter.LastGuid = lastGuid;
                 dataTransferParameter.LastId = -1;
             }
-            IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(App.Database);
+            IRepo<Models.DataTransferParameters> dataTransferParameterRepo = new Repo<Models.DataTransferParameters>(DBHelper.Database);
             var updateObject = DataTransferParameterConversion(dataTransferParameter);
             await dataTransferParameterRepo.Update(updateObject);
         }
@@ -137,7 +137,7 @@ namespace BorisMobile.Services
 
                 if (responseProvisoinCustomer != WebResponseState.NotInitialized && responseProvisoinCustomer != WebResponseState.Failed)
                 {
-                    IRepo<Models.GenericAttachments> genericAttachmentRepo = new Repo<Models.GenericAttachments>(App.Database);
+                    IRepo<Models.GenericAttachments> genericAttachmentRepo = new Repo<Models.GenericAttachments>(DBHelper.Database);
                     var genericAttachmentList = await genericAttachmentRepo.Get();
                     foreach (var attachment in genericAttachmentList)
                     {
@@ -160,10 +160,10 @@ namespace BorisMobile.Services
         private void CreateProvisionFiles()
         {
             //clear DB after provision
-            IRepo<Models.GenericAttachments> genericAttachmentRepo = new Repo<Models.GenericAttachments>(App.Database);
+            IRepo<Models.GenericAttachments> genericAttachmentRepo = new Repo<Models.GenericAttachments>(DBHelper.Database);
             var recordsGenericAttachment = genericAttachmentRepo.DeleteAll();
 
-            IRepo<Models.DataTransferParameters> dataTransferParametersRepo = new Repo<Models.DataTransferParameters>(App.Database);
+            IRepo<Models.DataTransferParameters> dataTransferParametersRepo = new Repo<Models.DataTransferParameters>(DBHelper.Database);
             var recordsDataTransferParameters = dataTransferParametersRepo.DeleteAll();
 
             string provisionedMarkerFile = System.IO.Path.Combine(FilesHelper.GetCurrentDirectory(), "provisioned.dat");

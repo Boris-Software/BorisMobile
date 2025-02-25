@@ -1,7 +1,9 @@
 ﻿using BorisMobile.DataHandler.Data;
+using BorisMobile.Helper;
 using BorisMobile.XML;
 using Microsoft.Data.Sqlite;
 using System.Xml;
+using System.Xml.Linq;
 using static BorisMobile.DataHandler.Data.DataEnum;
 using SqlCeCommand = Microsoft.Data.Sqlite.SqliteCommand;
 using SqlCeDataReader = Microsoft.Data.Sqlite.SqliteDataReader;
@@ -106,11 +108,11 @@ namespace BorisMobile.DataHandler
         {
             if (attName == "score")
             {
-                int id = await GetScoreForListEntry(listEntryId); 
+                int id = await GetScoreForListEntry(listEntryId);
                 string stringId = id.ToString();
                 return stringId;
             }
-            
+
             return await GetAttributeForListEntryOther(listEntryId, attName);
         }
 
@@ -126,7 +128,7 @@ namespace BorisMobile.DataHandler
 
         public int GetLocalListEntryStatusId(Guid guid)
         {
-            using (SqlCeCommand command = new SqlCeCommand("SELECT StatusId FROM LocalListEntries WHERE IdGuid = @guid", App.DatabaseConnection))
+            using (SqlCeCommand command = new SqlCeCommand("SELECT StatusId FROM LocalListEntries WHERE IdGuid = @guid", DBHelper.DatabaseConnection))
             {
                 AddGuidParam(command, "guid", guid);
                 command.Prepare();
@@ -172,7 +174,7 @@ namespace BorisMobile.DataHandler
         public object GetScalarResult(string strSql)
         {
             //Android.Util.Log.Info("DB", "GetScalarResult SQL: " + strSql);
-            using (SqlCeCommand command = new SqlCeCommand(strSql, App.DatabaseConnection))
+            using (SqlCeCommand command = new SqlCeCommand(strSql, DBHelper.DatabaseConnection))
             {
                 object result = command.ExecuteScalar();
                 //if (result != null)
@@ -190,7 +192,7 @@ namespace BorisMobile.DataHandler
         }
         public SqlCeCommand GetCommandObject(string strSql)
         {
-            return new SqlCeCommand(strSql, App.DatabaseConnection);
+            return new SqlCeCommand(strSql, DBHelper.DatabaseConnection);
         }
 
         public int GetIntFromReader(object result)
@@ -276,10 +278,33 @@ namespace BorisMobile.DataHandler
 
         public void AddGuidParam(SqlCeCommand command, string name, Guid value)
         {
-
-            command.Parameters.Add(name,Microsoft.Data.Sqlite.SqliteType.Text);
-
+            command.Parameters.Add(name, Microsoft.Data.Sqlite.SqliteType.Text);
+            command.Parameters[name].Value = value;
         }
+        public void AddTextParam(SqlCeCommand command, string name, string value)
+        {
+            command.Parameters.Add(name, Microsoft.Data.Sqlite.SqliteType.Text);
+            command.Parameters[name].Value = value;
+        }
+
+        public static void AddIntParam(SqlCeCommand command, string paramName, int value)
+        {
+            command.Parameters.Add(paramName, Microsoft.Data.Sqlite.SqliteType.Integer);
+            command.Parameters[paramName].Value = value;
+        }
+
+        public static void AddIntParamNull(SqliteCommand command, string paramName)
+        {
+            command.Parameters.AddWithValue(paramName, DBNull.Value); // Handle NULL values
+        }
+
+        public static void AddDateTimeParam(SqlCeCommand command, string paramName, DateTime value)
+        {
+            command.Parameters.AddWithValue(paramName, value.ToString("yyyy-MM-dd HH:mm:ss")); // Store DateTime as text in SQLite
+            //command.Parameters.Add(paramName, Microsoft.Data.Sqlite.SqliteType.);
+            //command.Parameters[paramName].Value = value;
+        }
+
         public object GetScalarResultFromCommand(SqlCeCommand command)
         {
             return command.ExecuteScalar();
@@ -314,6 +339,11 @@ namespace BorisMobile.DataHandler
                 return Guid.Empty;
             }
         }
-    }
 
+
+        
+
+        
+
+    }
 }

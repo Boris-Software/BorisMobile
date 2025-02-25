@@ -18,7 +18,7 @@
             }
         }
 
-        public static byte[] ReadFullFile(string fullFileName)
+        public async static Task<byte[]> ReadFullFile(string fullFileName)
         {
             using (FileStream fs = new FileStream(fullFileName, FileMode.Open, FileAccess.Read))
             {

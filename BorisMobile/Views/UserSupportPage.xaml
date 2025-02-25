@@ -8,7 +8,7 @@
              BackgroundColor="White">
     <ContentPage.Content>
         <StackLayout Padding="10">
-            <Grid ColumnDefinitions="0.5*,3*,0.5*,0.2*" 
+            <Grid ColumnDefinitions="0.5*,3*,0.4*,0.4*" 
       RowDefinitions="50" >
                 <Label Grid.Column="0" 
            Padding="10"  
@@ -37,7 +37,7 @@
                HeightRequest="10" 
                Margin="10,10,0,0"></Image>
                 </Grid>
-                <Label VerticalTextAlignment="Center" 
+                <Label VerticalTextAlignment="Center" Padding="10,0,0,0"
            Grid.Column="3" 
            FontFamily="FaSolid" 
            TextColor="Black" 
@@ -48,7 +48,7 @@
                 </Label>
             </Grid>
 
-            <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
                 <Border Margin="10,0,0,0"
                 Stroke="#00B1E3"
                 HeightRequest="40"

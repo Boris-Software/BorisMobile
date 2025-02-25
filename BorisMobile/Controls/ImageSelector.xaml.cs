@@ -1,3 +1,4 @@
+using BorisMobile.Helper;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -8,11 +9,17 @@ public partial class ImageSelector : ContentView
 	public ImageSelector()
 	{
 		InitializeComponent();
+        // Initialize with a new collection if not already set
+        if (SelectedImages == null)
+        {
+            SelectedImages = new ObservableCollection<string>();
+        }
         pickerPopup.IsVisible = false;
         SelectedImages.CollectionChanged += OnImagesCollectionChanged;
         ShowPopupCommand = new Command(ShowPopup);
 
     }
+    public event EventHandler<string> ImageSelected;
     public Command ShowPopupCommand { get; private set; }
 
     private string _Title;
@@ -38,15 +45,15 @@ public partial class ImageSelector : ContentView
 
         }
     }
-
+    
     public static readonly BindableProperty SelectedImagesProperty = BindableProperty.Create(
-        nameof(SelectedImages), typeof(ObservableCollection<ImageSource>), typeof(ImageSelector),
-        defaultValue: new ObservableCollection<ImageSource>(),
+        nameof(SelectedImages), typeof(ObservableCollection<string>), typeof(ImageSelector),
+        defaultValueCreator: bindable => new ObservableCollection<string>(),
         propertyChanged: OnSelectedImagesChanged);
 
-    public ObservableCollection<ImageSource> SelectedImages
+    public ObservableCollection<string> SelectedImages
     {
-        get => (ObservableCollection<ImageSource>)GetValue(SelectedImagesProperty);
+        get => (ObservableCollection<string>)GetValue(SelectedImagesProperty);
         set => SetValue(SelectedImagesProperty, value);
     }
 
@@ -132,9 +139,19 @@ public partial class ImageSelector : ContentView
                     //using FileStream localFileStream = File.OpenWrite(localFilePath);
 
                     //await sourceStream.CopyToAsync(localFileStream);
-                    var stream = await result.OpenReadAsync();
-                    var imageSource = ImageSource.FromStream(() => stream);
-                    SelectedImages.Add(imageSource);
+                    //var stream = await result.OpenReadAsync();
+                    //var imageSource = ImageSource.FromStream( () =>  result.OpenReadAsync().Result);
+                    //var imageSource = ImageSource.FromStream(() => stream);
+                    //SelectedImages.Add(imageSource);
+
+                    var ImagePath = result.FullPath;
+                    
+                    // Copy file to storage
+                    var destinationPath = Path.Combine(FilesHelper.GetUploadsDirectoryMAUI(), result.FileName);
+                    await CopyFileToStorage(ImagePath, destinationPath);
+                    //_image.Source = ImageSource.FromFile(ImagePath);
+                    SelectedImages.Add(destinationPath);
+                    ImageSelected?.Invoke(this, destinationPath);
                 }
             }
         }
@@ -146,6 +163,22 @@ public partial class ImageSelector : ContentView
         {
             pickerPopup.IsVisible = false;
         }
+    }
+
+    private async Task CopyFileToStorage(string sourcePath, string destinationPath)
+    {
+        try
+        {
+            //using var sourceStream = File.OpenRead(sourcePath);
+            //using var destinationStream = File.Create(destinationPath);
+            //await sourceStream.CopyToAsync(destinationStream);
+            File.Move(sourcePath, destinationPath);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
     }
 
     private async void TapGestureRecognizer_Tapped_1(object sender, TappedEventArgs e)
@@ -169,9 +202,16 @@ public partial class ImageSelector : ContentView
 
                     //await sourceStream.CopyToAsync(localFileStream);
 
-                    var stream = await result.OpenReadAsync();
-                    var imageSource = ImageSource.FromStream(() => stream);
-                    SelectedImages.Add(imageSource);
+                    //var stream = await result.OpenReadAsync();
+                    //var imageSource = ImageSource.FromStream(() => stream);
+                    //SelectedImages.Add(imageSource);
+
+                    var ImagePath = result.FullPath;
+                    //_image.Source = ImageSource.FromFile(ImagePath);
+                    var destinationPath = Path.Combine(FilesHelper.GetUploadsDirectoryMAUI(), result.FileName);
+                    await CopyFileToStorage(ImagePath, destinationPath);
+                    SelectedImages.Add(destinationPath);
+                    ImageSelected?.Invoke(this, destinationPath);
                 }
             }
         }

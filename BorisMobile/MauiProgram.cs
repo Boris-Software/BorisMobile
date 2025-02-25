@@ -6,14 +6,15 @@ using BorisMobile.Views;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 using CommunityToolkit.Maui;
-
-
-
+using BorisMobile.NativePlatformService;
+using BorisMobile.NativePlatformService.Interfaces;
 
 
 #if ANDROID
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+using BorisMobile.Platforms.Android;
 #elif IOS
+using BorisMobile.Platforms.iOS;
 using UIKit;
 #endif
 
@@ -35,10 +36,12 @@ namespace BorisMobile
                     fonts.AddFont("fa-regular-400.ttf", "FaRegular");
                     fonts.AddFont("fa-solid-900.ttf", "FaSolid");
 
-                    //fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    //fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemiBold");
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemiBold");
                 });
             builder.RemoveBorders();
+            builder.ConfigureBackgroundServices();
+            builder.ConfigureBiometricServices();
             builder.Services.AddTransient<CustomerCodePage>();
             builder.Services.AddTransient<SigninPage>();
             builder.Services.AddTransient<CustomerCodePageViewModel>();
@@ -84,11 +87,38 @@ namespace BorisMobile
             builder.Services.AddSingleton<IXmlParserService, XmlParserService>();
             builder.Services.AddSingleton<IFormGenerationService, FormGenerationService>();
 
+            builder.Services.AddSingleton<ILocationService, LocationService>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
+        }
+        public static MauiAppBuilder ConfigureBackgroundServices(this MauiAppBuilder builder)
+        {
+            builder.Services.AddSingleton<IBackgroundUploader, BackgroundUploader>();
+
+#if ANDROID
+            builder.Services.AddSingleton<IBackgroundService, AndroidBackgroundService>();
+#elif IOS
+            builder.Services.AddSingleton<IBackgroundService, IOSBackgroundService>();
+#endif
+
+            return builder;
+        }
+        public static MauiAppBuilder ConfigureBiometricServices(this MauiAppBuilder builder)
+        {
+            // builder.Services.AddSingleton<IBiometricAuthService, BiometricAuthService>();
+
+
+            //#if ANDROID
+            //            builder.Services.AddSingleton<IBiometricService, BiometricAndroidImplementation>();
+            //#elif IOS
+            //            builder.Services.AddSingleton<IBiometricService, BiometricIosImplementation>();
+            //#endif
+
+            return builder;
         }
         public static MauiAppBuilder RemoveBorders(this MauiAppBuilder mauiAppBuilder)
         {

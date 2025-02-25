@@ -19,7 +19,7 @@
                 <TapGestureRecognizer Tapped="OnControlTapped"></TapGestureRecognizer>
             </Border.GestureRecognizers>
             <Grid ColumnDefinitions="0.9*,0.1*">
-                <controls:NoBorderEntry x:Name="entry" Grid.Column="0" TextColor="Black" />
+                <controls:NoBorderEntry x:Name="entry" Grid.Column="0" TextColor="Black" TextChanged="entry_TextChanged" Text="{Binding EnteredValue,Mode=TwoWay}" />
                 <Label Grid.Column="1" Margin="10,0,0,0" FontFamily="FaSolid" TextColor="Black" Text="{StaticResource location}" VerticalTextAlignment="Center"/>
 
             </Grid>

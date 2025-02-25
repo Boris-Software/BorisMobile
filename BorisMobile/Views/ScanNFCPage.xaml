@@ -32,7 +32,7 @@
                        TextColor="Black" 
                        Text="Save" >
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding MoreIconClickedCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SaveClickedCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
             </Grid>

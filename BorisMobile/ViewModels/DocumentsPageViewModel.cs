@@ -1,6 +1,7 @@
 ﻿using BorisMobile.Helper;
 using BorisMobile.Models;
 using BorisMobile.Services;
+using BorisMobile.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -44,7 +45,7 @@ namespace BorisMobile.ViewModels
 
         private async Task OpenFile(Attachments attachments)
         {
-            string filePath = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME), attachments.FileName);
+            string filePath = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(), attachments.FileName);
 
             if (File.Exists(filePath.ToLower()))
             {
@@ -57,6 +58,13 @@ namespace BorisMobile.ViewModels
             {
                 await App.Current.MainPage.DisplayAlert("Error", "File not found!", "OK");
             }
+
+        }
+
+        [RelayCommand]
+        public async void MoreIconClicked()
+        {
+            await App.Current.MainPage.Navigation.PushAsync(new AboutPage(new AboutPageViewModel()));
 
         }
     }

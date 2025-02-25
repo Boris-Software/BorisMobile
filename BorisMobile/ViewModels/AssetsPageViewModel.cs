@@ -26,5 +26,12 @@ namespace BorisMobile.ViewModels
         {
             await App.Current.MainPage.Navigation.PushAsync(new ScanNFCPage(new ScanNFCPageViewModel()));
         }
+
+        [RelayCommand]
+        public async void MoreIconClicked()
+        {
+            await App.Current.MainPage.Navigation.PushAsync(new AboutPage(new AboutPageViewModel()));
+
+        }
     }
 }

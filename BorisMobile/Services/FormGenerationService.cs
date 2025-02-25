@@ -3,27 +3,39 @@ using BorisMobile.DataHandler;
 using BorisMobile.Helper;
 using BorisMobile.Models;
 using BorisMobile.Models.DynamicFormModels;
+using BorisMobile.NativePlatformService;
 using BorisMobile.Services.Interfaces;
 using CommunityToolkit.Maui.Views;
+using System.Net.Mail;
+using System.Xml.Linq;
 
 namespace BorisMobile.Services
 {
     public class FormGenerationService : IFormGenerationService
     {
         WorkOrderList workOrder;
+        AuditsInProgress inProgress;
         JobFormHandler jobFormHandler;
+        private Dictionary<string, View> _controls;
+        private Dictionary<string, string> _formAttachments;
+
         public FormGenerationService() {
             jobFormHandler = new JobFormHandler();
         }
-        public async Task<Page> CreateDynamicForm(FormConfigModel formConfig, WorkOrderList workOrder)
+        public async Task<Microsoft.Maui.Controls.Page> CreateDynamicForm(FormConfigModel formConfig, WorkOrderList workOrder, AuditsInProgress inProgress)
         {
             try
             {
                 this.workOrder = workOrder;
+                this.inProgress = inProgress;
+                _controls = new();
+                _formAttachments = new();
+
                 return formConfig.SubDocumentModel.Pages.Count > 1
                 ? await CreateTabbedPage(formConfig)
                 : await CreateSinglePage(formConfig);
-            }
+                 
+    }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error CreateDynamicForm: {ex}");
@@ -31,20 +43,31 @@ namespace BorisMobile.Services
             }
         }
 
-        private async Task<Page> CreateTabbedPage(FormConfigModel formConfig) {
+        //private DynamicFormData _currentFormData;
+        private FormConfigModel _formConfig;
+
+
+        private async Task<Microsoft.Maui.Controls.Page> CreateTabbedPage(FormConfigModel formConfig) {
             try
             {
+                //_currentFormData = new DynamicFormData
+                //{
+                //    FormId = Guid.NewGuid().ToString(),
+                //    CreatedDate = DateTime.Now
+                //};
+                _formConfig = formConfig;
+
                 var DynamicPage = new ContentPage { };
 
-                var mainstack = new StackLayout
+                var mainStack = new Microsoft.Maui.Controls.StackLayout
                 {
                     Padding = 10,
-                    Margin = new Thickness(0,0,0,100)
+                    Margin = new Thickness(0, 0, 0, 0)
                 };
 
-                var bodyStack = new StackLayout
+                var bodyStack = new Microsoft.Maui.Controls.StackLayout
                 {
-                    Margin = new Thickness(10, 15, 10, 200),
+                    Margin = new Thickness(10, 15, 10, 0),
                     VerticalOptions = LayoutOptions.FillAndExpand
                 };
                 //Set Form Header
@@ -52,7 +75,7 @@ namespace BorisMobile.Services
                 bodyStack.Children.Add(headerLabel);
 
 
-                var tabScrollView = new ScrollView
+                var tabScrollView = new Microsoft.Maui.Controls.ScrollView
                 {
                     HorizontalScrollBarVisibility = ScrollBarVisibility.Never,
                     Orientation = ScrollOrientation.Horizontal,
@@ -75,7 +98,7 @@ namespace BorisMobile.Services
                 var sectionLabels = new Dictionary<Label, View>();
 
                 // Content layout to display the currently selected section's content
-                var contentLayout = new StackLayout { Margin = new Thickness(0, 0, 0, 300) };
+                var contentLayout = new Microsoft.Maui.Controls.StackLayout { Margin = new Thickness(0, 0, 0, 0) };
 
                 // Loop through sections to create UI
                 foreach (var page in formConfig.SubDocumentModel.Pages)
@@ -92,11 +115,11 @@ namespace BorisMobile.Services
                     // Content for the section
 
 
-                    var stack = new StackLayout { Margin = new Thickness(0, 10, 0, 0) };
+                    var stack = new Microsoft.Maui.Controls.StackLayout { Margin = new Thickness(0, 10, 0, 0) };
 
                     foreach (var section in page.Sections)
                     {
-                        if (!(bool)section.ReportOnly )
+                        if (!(bool)section.ReportOnly)
                         {
                             if (section.Condition0 == null || section.Condition0.Equals(""))
                             {
@@ -114,14 +137,15 @@ namespace BorisMobile.Services
                         Text = "Save",
                         BackgroundColor = Color.FromHex("#00B1E3")
                     };
+                    saveButton.Clicked += OnSaveButtonClicked;
                     stack.Children.Add(saveButton);
 
-                    var mainLayout = new ScrollView
+                    var mainLayout = new Microsoft.Maui.Controls.ScrollView
                     {
                         HeightRequest = DeviceDisplay.MainDisplayInfo.Height * 0.3,
                         Content = stack,
                         VerticalScrollBarVisibility = ScrollBarVisibility.Never,
-                        Margin = new Thickness(0, 0, 0, 300)
+                        Margin = new Thickness(0, 0, 0, 0)
 
                     };
 
@@ -178,9 +202,9 @@ namespace BorisMobile.Services
                 bodyStack.Children.Add(tabScrollView);
                 bodyStack.Children.Add(contentLayout);
 
-                mainstack.Children.Add(bodyStack);
+                mainStack.Children.Add(bodyStack);
 
-                DynamicPage.Content = mainstack;
+                DynamicPage.Content = mainStack;
 
                 return DynamicPage;
             }
@@ -193,17 +217,273 @@ namespace BorisMobile.Services
         }
 
 
+        private async void OnSaveButtonClicked(object sender, EventArgs e)
+        {
+            // Validate form
+            if (!FormValidationExtensions.ValidateForm(_formConfig))
+            {
+                await App.Current.MainPage.DisplayAlert("Validation Error", "Please fill in all mandatory fields.", "OK");
+                //HighlightMandatoryFields();
+                return;
+            }
+            else
+            {
+                //mandatory fields validation passed
+                //proceed to save
+                //// Serialize to XML
+                string xmlData = FormValidationExtensions.SerializeToXml(_formConfig);
+
+                // Save to database
+                await SaveFormToDatabase(xmlData);
+
+                ////add header data before sending to server
+                ////< Header User = "6664" Customer = "7722" Audit = "15484" Location = "11712" WorkOrder = "4525" DateOfAudit = "2025-02-07T11:42:49" DateTimeStarted = "2025-02-07T11:42:49" DateTimeReleased = "2025-02-11T22:34:51" ReleaseStatus = "5" Platform = "Android" />
+                //var finalXMLString = AddHeaderToXml(xmlData);
+
+
+                ////start bg service to upload datat to server
+                var uploader = new BackgroundUploader();
+                _ = uploader.StartSync(); // Start upload in background (fire & forget)
+
+                //SyncService syncDataHandler = new SyncService();
+                //var result = await syncDataHandler.UploadDataToServer(finalXMLString, inProgress.IdGuid);
+                //await App.Current.MainPage.Navigation.PopAsync();
+                //if(result == 1)
+                //{
+                    //successfully saved
+                    await App.Current.MainPage.Navigation.PopAsync();
+               // }
+            }
+        }
+
+        
+
+        //private void CollectFormData()
+        //{
+        //    //_currentFormData.Pages.Clear();
+
+        //    foreach (var page in _formConfig.SubDocumentModel.Pages)
+        //    {
+        //        var pageData = new PageData { Name = page.Name };
+
+        //        foreach (var section in page.Sections)
+        //        {
+        //            var sectionData = new SectionData
+        //            {
+        //                Name = section.Description,
+        //                IsRepeatable = section.IsRepeatable
+        //            };
+
+        //            // Collect elements from the section
+        //            foreach (var element in section.Elements)
+        //            {
+        //                var elementData = new ElementData
+        //                {
+        //                    Name = element.Text,
+        //                    Type = element.Type,
+        //                    IsMandatory = element.IsMandatory,
+        //                    Value = GetElementValue(element)
+        //                };
+        //                sectionData.Elements.Add(elementData);
+        //            }
+
+        //            pageData.Sections.Add(sectionData);
+        //        }
+
+        //        _currentFormData.Pages.Add(pageData);
+        //    }
+        //}
+
+        //private string GetElementValue(ElementModel element)
+        //{
+        //    // Retrieve value based on control type
+        //    switch (element.Type)
+        //    {
+        //        case "Combo":
+        //            //var comboPicker = FindControl(element.UniqueName) as ComboBox;
+        //            var comboPicker = FindControlInHierarchy(element,element.UniqueName) as ComboBox;
+        //            return comboPicker?.SelectedItem?.ToString();
+
+        //        //case "TextBox":
+        //        //    var textBox = FindControl<TextBox>(element.UniqueName);
+        //        //    return textBox?.Text;
+
+        //        //case "Date":
+        //        //    var datePicker = FindControl<Controls.DatePicker>(element.UniqueName);
+        //        //    return datePicker?.Date.ToString();
+
+        //        //case "Photo":
+        //        //    var imageSelector = FindControl<ImageSelector>(element.UniqueName);
+        //        //    return imageSelector?.ImagePath;
+
+        //        // Add more cases as needed
+        //        default:
+        //            return string.Empty;
+        //    }
+        //}
+
+        //private View FindControlInHierarchy(Element element, string automationId)
+        //{
+        //    if (element == null) return null;
+
+        //    if (element is View view && view.AutomationId == automationId)
+        //        return view;
+
+        //    if (element is Layout<View> layout)
+        //    {
+        //        foreach (var child in layout.Children)
+        //        {
+        //            var result = FindControlInHierarchy(child, automationId);
+        //            if (result != null)
+        //                return result;
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
+        //private IView FindControl(string uniqueName) 
+        //{
+        //    // Implement a method to find controls by their unique name
+        //    // This might involve searching through your layout hierarchies
+        //    // You'll need to add a Tag or Name property to your controls
+
+        //    // Find the element inside the StackLayout
+        //    var element = _mainStack.Children.FirstOrDefault(c => c.AutomationId == uniqueName);
+        //    View  c = element as ComboBox;
+        //    return element; // Placeholder
+        //}
+
+
+
+        //private void HighlightMandatoryFields()
+        //{
+        //    foreach (var page in _currentFormData.Pages)
+        //    {
+        //        foreach (var section in page.Sections)
+        //        {
+        //            foreach (var element in section.Elements)
+        //            {
+        //                if (element.IsMandatory && string.IsNullOrWhiteSpace(element.Value))
+        //                {
+        //                    //HighlightMandatoryControl(element);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void HighlightMandatoryControl(ElementData element)
+        //{
+        //    // Find the corresponding control and set its border or background to red
+        //    //var control = FindControl(element.Name);
+        //    //if (control != null)
+        //    //{
+        //    //    // Implement visual indication for mandatory fields
+        //    //    // This might involve setting a red border or changing background color
+        //    //}
+        //}
+
+        private async Task SaveFormToDatabase(string xmlData)
+        {
+            try
+            {
+                // Use your preferred database access method
+                inProgress.XmlResults = xmlData;
+                InProgressDataHandler handler = new InProgressDataHandler();
+                await handler.UpdateAuditInProgress(inProgress);
+
+                //save attachments if any exists
+                await SaveAttachments();
+
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Save Error", $"Failed to save form: {ex.Message}", "OK");
+            }
+        }
+
+        private async Task SaveAttachments()
+        {
+            foreach (var item in _formAttachments)
+            {
+                string key = item.Key;
+                string[] imageFiles = item.Value.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                // Loop through each image filename for this key
+                foreach (var imageFile in imageFiles)
+                {
+                    var trimmedFileName = imageFile.Trim(); // Remove any whitespace
+                    if (!string.IsNullOrEmpty(trimmedFileName))
+                    {
+                        try
+                        {
+                            await InsertImageToDatabase(key, trimmedFileName, inProgress.IdGuid);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error inserting image {trimmedFileName} for key {key}: {ex.Message}");
+                            // Handle error as needed
+                        }
+                    }
+                }
+            }
+        }
+        private async Task InsertImageToDatabase(string key, string imageFileName,Guid guid)
+        {
+            await jobFormHandler.InsertImageForForm(key,imageFileName,guid); 
+        }
+        //// Method to load existing form data
+        //private async Task LoadExistingFormData(string formId)
+        //{
+        //    var existingEntry = await _databaseService.GetAuditInProgressByIdAsync(formId);
+        //    if (existingEntry != null)
+        //    {
+        //        _currentFormData = FormValidationExtensions.DeserializeFromXml(existingEntry.XmlData);
+        //        PopulateFormWithExistingData();
+        //    }
+        //}
+
+        //private void PopulateFormWithExistingData()
+        //{
+        //    foreach (var page in _currentFormData.Pages)
+        //    {
+        //        foreach (var section in page.Sections)
+        //        {
+        //            foreach (var element in section.Elements)
+        //            {
+        //                SetControlValue(element);
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void SetControlValue(ElementData elementData)
+        //{
+        //    // Similar to GetElementValue, but sets the value instead of retrieving
+        //    switch (elementData.Type)
+        //    {
+        //        case "Combo":
+        //            var comboPicker = FindControl(elementData.Name) as ComboBox;
+        //            if (comboPicker != null)
+        //                elementData.Value = comboPicker.SelectedItem.ToString();
+        //            break;
+
+        //            // Add similar cases for other control types
+        //    }
+        //}
+
         private async Task<View> CreateSectionLayout(SectionModel section)
         {
-            var sectionMainStack = new StackLayout();
+            var sectionMainStack = new Microsoft.Maui.Controls.StackLayout();
 
             //if ( !string.IsNullOrEmpty(section.Description) && !section.Description.Equals(" "))
             //{
 
-                var headerStack = new HorizontalStackLayout
-                {
-                    Spacing = 10
-                };
+            var headerStack = new HorizontalStackLayout
+            {
+                Spacing = 10
+            };
 
             if (!string.IsNullOrEmpty(section.Description) && !section.Description.Equals(" "))
             {
@@ -226,42 +506,42 @@ namespace BorisMobile.Services
                     FontAttributes = FontAttributes.Bold
                 });
             }
-                
-                if (section.IsRepeatable)
+
+            if (section.IsRepeatable)
+            {
+                var addButton = new Image
                 {
-                    var addButton = new Image
-                    {
-                        Source = "add",
-                        Margin = new Thickness(5, 8, 0, 0),
-                        BackgroundColor = Colors.Transparent
-                    };
+                    Source = "add",
+                    Margin = new Thickness(5, 8, 0, 0),
+                    BackgroundColor = Colors.Transparent
+                };
 
-                    headerStack.Children.Add(addButton);
-                    var addGesture = new TapGestureRecognizer();
-                    addGesture.Tapped += async (s, e) => await AddRepeatableSection(section, sectionMainStack);
-                    headerStack.GestureRecognizers.Add(addGesture);
+                headerStack.Children.Add(addButton);
+                var addGesture = new TapGestureRecognizer();
+                addGesture.Tapped += async (s, e) => await AddRepeatableSection(section, sectionMainStack);
+                headerStack.GestureRecognizers.Add(addGesture);
 
-                    //addButton.Clicked += async (s, e) => await AddRepeatableSection(section, sectionMainStack);
-                    //headerStack.Children.Add(addButton);
-                }
-                sectionMainStack.Children.Add(headerStack);
+                //addButton.Clicked += async (s, e) => await AddRepeatableSection(section, sectionMainStack);
+                //headerStack.Children.Add(addButton);
+            }
+            sectionMainStack.Children.Add(headerStack);
             //}
 
-            var repeatableSectionLayout = new StackLayout();
+            var repeatableSectionLayout = new Microsoft.Maui.Controls.StackLayout();
 
             // Add the initial section content
-            var initialContent = await CreateSectionContent(section, repeatableSectionLayout,false);
+            var initialContent = await CreateSectionContent(section, repeatableSectionLayout, false,null);
             repeatableSectionLayout.Children.Add(initialContent);
 
             sectionMainStack.Children.Add(repeatableSectionLayout);
             return sectionMainStack;
         }
 
-        private async Task<View> CreateSectionContent(SectionModel section, StackLayout container, bool isRepeating)
+        private async Task<View> CreateSectionContent(SectionModel section, Microsoft.Maui.Controls.StackLayout container, bool isRepeating,RepeatableInstance newInstance)
         {
             try
             {
-                var contentStack = new StackLayout
+                var contentStack = new Microsoft.Maui.Controls.StackLayout
                 {
                     Spacing = 5
                 };
@@ -304,87 +584,45 @@ namespace BorisMobile.Services
                         };
                         headerStack.Children.Add(deleteButton);
                         var deleteGesture = new TapGestureRecognizer();
-                        deleteGesture.Tapped += (s, e) => DeleteRepeatableSection(contentStack, container);
+                        deleteGesture.Tapped += (s, e) => DeleteRepeatableSection(contentStack, container, newInstance, section);
                         headerStack.GestureRecognizers.Add(deleteGesture);
                     }
 
                     //deleteButton.Clicked += (s, e) => DeleteRepeatableSection(contentStack, container);
                     //contentStack.Children.Add(deleteButton);
                 }
+                else
+                {
+                    // this is not repeatable section. want to render it as normal element only once
+                }
                 contentStack.Children.Add(headerStack);
 
 
-                // Create a horizontal container for media elements
-            //    var currentMediaGrid = new Grid
-            //    {
-            //        ColumnDefinitions =
-            //{
-            //    new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
-            //    new ColumnDefinition(new GridLength(1, GridUnitType.Star))
-            //},
-            //        ColumnSpacing = 10
-            //    };
-
-            //    int mediaCount = 0;
-            //    bool hasMediaElements = false;
-
-                // Render section elements
-                foreach (var element in section.Elements)
+                
+                if (newInstance != null)
                 {
-                    if (!(bool)section.ReportOnly)
+                    // Render section elements
+                    foreach (var element in newInstance.Elements)
                     {
-                    var control = await CreateControl(element);
-                        contentStack.Children.Add(control);
+                        if (!(bool)section.ReportOnly)
+                        {
+                            var control = await CreateControl(element);
+                            contentStack.Children.Add(control);
 
-                        //if (control != null)
-                        //{
-                        //    if (element.Type == "Photo" || element.Type == "Video")
-                        //    {
-                        //        hasMediaElements = true;
-                        //        // Add to the grid
-                        //        Grid.SetColumn(control, mediaCount % 2);
-                        //        if (mediaCount % 2 == 0 && mediaCount > 0)
-                        //        {
-                        //            // Add the current grid and create a new one
-                        //            contentStack.Children.Add(currentMediaGrid);
-                        //            currentMediaGrid = new Grid
-                        //            {
-                        //                ColumnDefinitions =
-                        //    {
-                        //        new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
-                        //        new ColumnDefinition(new GridLength(1, GridUnitType.Star))
-                        //    },
-                        //                ColumnSpacing = 10,
-                        //                Margin = new Thickness(0, 10, 0, 0)
-                        //            };
-                        //        }
-                        //        currentMediaGrid.Children.Add(control);
-                        //        mediaCount++;
-                        //    }
-                        //    else
-                        //    {
-                        //        // If we have pending media elements, add the grid first
-                        //        if (hasMediaElements && mediaCount > 0)
-                        //        {
-                        //            contentStack.Children.Add(currentMediaGrid);
-                        //            currentMediaGrid = new Grid
-                        //            {
-                        //                ColumnDefinitions =
-                        //    {
-                        //        new ColumnDefinition(new GridLength(1, GridUnitType.Star)),
-                        //        new ColumnDefinition(new GridLength(1, GridUnitType.Star))
-                        //    },
-                        //                ColumnSpacing = 10
-                        //            };
-                        //            mediaCount = 0;
-                        //            hasMediaElements = false;
-                        //        }
-                        //        // Add non-media elements directly to the stack
-                        //        contentStack.Children.Add(control);
-                        //    }
+                        }
+                    }
+                }
+                else
+                {
+                    // Render section elements
+                    foreach (var element in section.Elements)
+                    {
+                        if (!(bool)section.ReportOnly)
+                        {
+                            var control = await CreateControl(element);
+                            contentStack.Children.Add(control);
 
-                        //    //contentStack.Children.Add(control);
-                        //}
+                        }
                     }
                 }
                 // Add any remaining media elements in the grid
@@ -400,19 +638,62 @@ namespace BorisMobile.Services
                 return null;
             }
         }
-        private async Task AddRepeatableSection(SectionModel section, StackLayout parentStack)
+        private async Task AddRepeatableSection(SectionModel section, Microsoft.Maui.Controls.StackLayout parentStack)
         {
-            var container = parentStack.Children.LastOrDefault() as StackLayout;
+            var newInstance = new RepeatableInstance
+            {
+                Score = section.RepeatableInstances.Count,
+                Elements = section.Elements.Select(e => new ElementModel
+                {
+                    UniqueName = e.UniqueName,
+                    Type = e.Type,
+                    Text = e.Text,
+                    Value = null,  // New instance starts with empty values
+                    AllowCreateNew = e.AllowCreateNew,
+                    DefaultValue = e.DefaultValue,
+                    ListId = e.ListId,
+                    MaxLength = e.MaxLength,
+                    MinValue = e.MinValue,
+                    MaxValue = e.MaxValue,
+                    IsMandatory = e.IsMandatory,
+                    Lines = e.Lines,
+                    PenWidth = e.PenWidth,
+                    ArrangeHorizontally = e.ArrangeHorizontally,
+                    UseListItemImages = e.UseListItemImages,
+                    ReportOnly = e.ReportOnly,
+                    Condition0 = e.Condition0,
+                    Condition1 = e.Condition1,
+                    TextCol0 = e.TextCol0,
+                    EntityType0 = e.EntityType0,
+                    EntityType1 = e.EntityType1,
+                    OutputField = e.OutputField,
+                    Calculation = e.Calculation,
+                    ResultType = e.ResultType,
+                    CurrencySymbol = e.CurrencySymbol,
+                    ExternalSystemField = e.ExternalSystemField,
+                    GPSUse = e.GPSUse,
+                    NetworkUse = e.NetworkUse,
+                    MinuteIncrement = e.MinuteIncrement,
+                    CollectResultsAnyway = e.CollectResultsAnyway
+                }).ToList()
+            };
+            // Add to our model
+            section.RepeatableInstances.Add(newInstance);
+
+            var container = parentStack.Children.LastOrDefault() as Microsoft.Maui.Controls.StackLayout;
             if (container != null)
             {
-                var newContent = await CreateSectionContent(section, container,true);
+                var newContent = await CreateSectionContent(section, container, true, newInstance);
                 container.Children.Add(newContent);
                 UpdateDeleteButtonVisibility(container);
             }
         }
 
-        private void DeleteRepeatableSection(View sectionContent, StackLayout container)
+        private void DeleteRepeatableSection(View sectionContent, Microsoft.Maui.Controls.StackLayout container,RepeatableInstance instance,SectionModel section)
         {
+            // Remove from the model
+            section.RepeatableInstances.Remove(instance);
+
             if (container.Children.Count > 1)  // Ensure at least one section remains
             {
                 container.Children.Remove(sectionContent);
@@ -420,14 +701,14 @@ namespace BorisMobile.Services
             }
         }
 
-        private void UpdateDeleteButtonVisibility(StackLayout container)
+        private void UpdateDeleteButtonVisibility(Microsoft.Maui.Controls.StackLayout container)
         {
             // Hide delete buttons if only one section remains
             bool shouldShowDelete = container.Children.Count > 1;
 
             foreach (var child in container.Children)
             {
-                if (child is StackLayout contentStack)
+                if (child is Microsoft.Maui.Controls.StackLayout contentStack)
                 {
                     var deleteButton = contentStack.Children.FirstOrDefault() as ImageButton;
                     if (deleteButton != null)
@@ -441,37 +722,175 @@ namespace BorisMobile.Services
         {
             //if (element.Condition0==null || !element.Condition0.Equals("resultValueX;dummy;equals;dummy"))
             //{
-                if (element.Condition0 == null || element.Condition0.Equals(""))
-                {
-                    
-                return await MainThread.InvokeOnMainThreadAsync(async () => element.Type switch
-                {
-                    "Combo" => await CreateComboBox(element),
-                    "TextBox" => await CreateTextBox(element),
-                    "Integer" => await CreateIntegerEntry(element),
-                    "Photo" => await CreatePhotoUpload(element),
-                    "StaticText" => await CreateStaticLabel(element),
-                    "Video" => await CreateVideoUpload(element),
-                    "Date" => await CreateDateField(element),
-                    "Signature" => await CreateSignatureField(element),
-                    "MultiChoice" => await CreateMultiChoice(element),
-                    "OutputField" => await CreateOutputField(element),
-                    "ActionButtons" => await CreateActionButtons(element),
-                    "Score" => await CreateScore(element),
-                    "GPSEarliest" => await CreateGPSEarliest(element),
-                    "Time" => await CreateTime(element),
-                    "GenericAttachments" => await CreateGenericAttachments(element),
-                    //"ExternalSystemField" => await CreateExternalSystemField(element
-                    
-                    _ => null
-                });
+            if (element.Condition0 == null || element.Condition0.Equals(""))
+            {
+                var control = await CreateControlForBoth(element);
+                //control.IsVisible = true;
+                
+                return control;
             }
             else
             {
+                //resultValue;dummy;equals;dummy
+                if (!element.Condition0.Equals("resultValueX;dummy;equals;dummy") || !element.Condition0.Equals("resultValue;dummy;equals;dummy"))
+                {
+                    var control = await CreateControlForBoth(element);
+                    //element.IsVisible = false;
+                    control.IsVisible = false;
+                    return control;
+                }
                 return null;
             }
         }
+        //private Dictionary<string, ElementModel> _elements = new();
+        
+        //private ConditionEvaluator _conditionEvaluator;
+        private async Task<View> CreateControlForBoth(ElementModel element)
+        {
+            var control = await MainThread.InvokeOnMainThreadAsync(async () => element.Type switch
+            {
+                "Combo" => await CreateComboBox(element),
+                "TextBox" => await CreateTextBox(element),
+                "Integer" => await CreateIntegerEntry(element),
+                "Photo" => await CreatePhotoUpload(element),
+                "StaticText" => await CreateStaticLabel(element),
+                "Video" => await CreateVideoUpload(element),
+                "Date" => await CreateDateField(element),
+                "Signature" => await CreateSignatureField(element),
+                "MultiChoice" => await CreateMultiChoice(element),
+                "OutputField" => await CreateOutputField(element),
+                "ActionButtons" => await CreateActionButtons(element),
+                "Score" => await CreateScore(element),
+                "GPSEarliest" => await CreateGPSEarliest(element),
+                "GPSLatest" => await CreateGPSLatest(element),
+                "Time" => await CreateTime(element),
+                "GenericAttachments" => await CreateGenericAttachments(element),
+                //"ExternalSystemField" => await CreateExternalSystemField(element
 
+                _ => null
+            });
+
+            if (control != null)
+            {
+                control.AutomationId = element.UniqueName;
+                //control.SetBinding(View.IsVisibleProperty, new Binding(nameof(ElementModel.IsVisible), source: element));
+                BindControlToElement(control, element);
+
+                _controls[element.UniqueName] = control;
+            }
+            return control;
+        }
+
+        private void BindControlToElement(View control, ElementModel element)
+        {
+            
+            switch (control)
+            {
+                case ComboBox combo:
+                    combo.SelectedIndexChanged += (s, e) =>
+                    {
+                        if (e.SelectedItem is GenericLists)
+                        {
+                            var item = e.SelectedItem as GenericLists;
+                            element.UpdateValue(item.Id.ToString());
+                            UpdateElementsVisibility(combo.AutomationId, item.Id.ToString());
+                        }
+                    };
+                    break;
+
+                case TextBox textBox:
+                    textBox.TextChanged += (s, e) =>
+                    {
+                        try
+                        {
+                            element.UpdateValue(textBox.EnteredValue);
+                            UpdateElementsVisibility(textBox.AutomationId, textBox.EnteredValue);
+                        }
+                        catch(Exception ex) {
+                            Console.WriteLine("Exception :" + ex); 
+                        }
+                    };
+                    break;
+
+                case Controls.Location location:
+                    location.TextChanged += (s, e) =>
+                    {
+                        element.UpdateValue(location.EnteredValue);
+                        UpdateElementsVisibility(location.AutomationId, location.EnteredValue);
+
+                    };
+                    break;
+
+                case Controls.DatePicker datePicker:
+                    datePicker.DateSelected += (s, e) =>
+                    {
+                        element.UpdateValue(e.NewDate.ToString("yyyy-MM-dd"));
+                        UpdateElementsVisibility(datePicker.AutomationId, e.NewDate.ToString("yyyy-MM-dd"));
+                    };
+                    break;
+
+                case Controls.TimeSelector timePicker:
+                    timePicker.Time += (s, time) =>
+                    {
+                        element.UpdateValue(time);
+                        UpdateElementsVisibility(timePicker.AutomationId, time);
+
+                    };
+                    break;
+
+                case ImageSelector imageSelector:
+                    imageSelector.ImageSelected += (s, path) =>
+                    {
+                        if (_formAttachments.TryGetValue(imageSelector.AutomationId, out var existingImagePaths))
+                        {
+                            if (!string.IsNullOrEmpty(existingImagePaths))
+                            {
+                                _formAttachments[imageSelector.AutomationId] = $"{existingImagePaths},{path}";
+                            }
+                            //_formAttachments[imageSelector.AutomationId] = path;
+                        }
+                        else
+                        {
+                            _formAttachments[imageSelector.AutomationId] = path;
+                        }
+
+                        element.UpdateValue("1");
+                        UpdateElementsVisibility(imageSelector.AutomationId, path);
+                    };
+                    break;
+                case GPSLocation gpsLocation:
+                    gpsLocation.LocationChanged += (s, location) =>
+                    {
+                        element.UpdateValue(location);
+                        UpdateElementsVisibility(gpsLocation.AutomationId, location);
+                    };
+                    break;
+            }
+        }
+
+        void UpdateElementsVisibility(string automationId,string value)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var dependentControls = _formConfig.SubDocumentModel.Pages
+                        .SelectMany(p => p.Sections)
+                        .SelectMany(s => s.Elements)
+                        .Where(e => !string.IsNullOrEmpty(e.Condition0) &&
+                                   e.Condition0.Contains($";{automationId}"));
+
+                    foreach (var dependent in dependentControls)
+                    {
+                        if (_controls.TryGetValue(dependent.UniqueName, out var dependentControl))
+                        {
+                            dependentControl.IsVisible = !string.IsNullOrEmpty(value);
+                        }
+                    }
+                }
+            });
+            
+        }
         private async Task<View> CreateComboBox(ElementModel element)
         {
             var picker = new ComboBox
@@ -531,6 +950,7 @@ namespace BorisMobile.Services
 
         private async Task<View> CreateVideoUpload(ElementModel element)
         {
+            await HandleImagePermission();
             return new VideoSelector
             {
                 Title = element.Text,
@@ -541,7 +961,7 @@ namespace BorisMobile.Services
 
         private async Task<View> CreateSignatureField(ElementModel element)
         {
-            var stack = new StackLayout();
+            var stack = new Microsoft.Maui.Controls.StackLayout();
 
             var title = new Label
             {
@@ -549,7 +969,7 @@ namespace BorisMobile.Services
                 TextColor = Colors.Black
             };
             stack.Children.Add(title);
-            var sign =  new DrawingView
+            var sign = new DrawingView
             {
                 //Lines = new ObservableCollection<IDrawingLine>(),
                 LineColor = Colors.Black,
@@ -575,7 +995,7 @@ namespace BorisMobile.Services
 
             };
         }
-        private async Task<View> CreateExternalSystemField (ElementModel element)
+        private async Task<View> CreateExternalSystemField(ElementModel element)
         {
             return new MultiChoiceSelector
             {
@@ -595,7 +1015,7 @@ namespace BorisMobile.Services
         {
             if (element.Text.Equals("Date"))
             {
-                var stack = new StackLayout();
+                var stack = new Microsoft.Maui.Controls.StackLayout();
 
                 var titleLabel = new Label
                 {
@@ -603,7 +1023,7 @@ namespace BorisMobile.Services
                     TextColor = Colors.Black,
                 };
                 stack.Children.Add(titleLabel);
-                    
+
                 var dateLabel = new Label
                 {
                     Text = DateTime.Now.ToString("dd/MM/yyyy"),
@@ -613,10 +1033,10 @@ namespace BorisMobile.Services
                 stack.Children.Add(dateLabel);
                 return stack;
             }
-            
+
             else
             {
-                var stack = new StackLayout();
+                var stack = new Microsoft.Maui.Controls.StackLayout();
 
                 var titleLabel = new Label
                 {
@@ -624,24 +1044,24 @@ namespace BorisMobile.Services
                     TextColor = Colors.Black,
                 };
                 stack.Children.Add(titleLabel);
-                if(element.OutputField !=null && !element.OutputField.Equals("-1"))
+                if (element.OutputField != null && !element.OutputField.Equals("-1"))
                 {
-                    
+
                     var result = await jobFormHandler.GetOutputFielddata(element.OutputField, workOrder.workOrder.LocationId, workOrder.workOrder.CustomerId, workOrder.workOrder.UserId);
 
                     var dateLabel = new Label
                     {
-                        
+
                         Text = result, // TODO bind with list ID in the element get the name 
                         TextColor = Colors.Black,
 
                     };
                     stack.Children.Add(dateLabel);
                 }
-                
+
                 return stack;
             }
-            
+
         }
 
         private async Task<View> CreateActionButtons(ElementModel element)
@@ -667,9 +1087,40 @@ namespace BorisMobile.Services
 
         }
 
+        private async Task<View> CreateGPSLatest(ElementModel element)
+        {
+            await HandleGPSPermission();
+            var control = new BorisMobile.Controls.GPSLocation()
+            {
+                Title = element.Text.ToUpper(),
+                IsMandatory = element.IsMandatory,
+            };
+            //var stack = new Microsoft.Maui.Controls.StackLayout();
+            //stack.Orientation = StackOrientation.Horizontal;
+            //var titleLabel = new Label
+            //{
+            //    Text = "GPS",
+            //    TextColor = Colors.Black,
+            //    HorizontalOptions = LayoutOptions.Start,
+            //};
+            //stack.Children.Add(titleLabel);
+
+            //var responseLabel = new Label
+            //{
+            //    Text = "Location Recorded",
+            //    FontAttributes = FontAttributes.Bold,
+            //    TextColor = Colors.Black,
+            //    HorizontalOptions = LayoutOptions.Start,
+            //};
+            //stack.Children.Add(responseLabel);
+            //return stack;
+            return control;
+        }
+
         private async Task<View> CreateGPSEarliest(ElementModel element)
         {
-            var stack = new StackLayout();
+            await HandleGPSPermission();
+            var stack = new Microsoft.Maui.Controls.StackLayout();
 
             var titleLabel = new Label
             {
@@ -719,9 +1170,9 @@ namespace BorisMobile.Services
         private async Task<View> CreateGenericAttachments(ElementModel element)
         {
             DocumentsService documentsService = new DocumentsService(workOrder);
-            List<Attachments>  list = await documentsService.GetDocumentsList();
+            List<Attachments> list = await documentsService.GetDocumentsList();
 
-            var stack = new StackLayout();
+            var stack = new Microsoft.Maui.Controls.StackLayout();
             foreach (Attachments attachment in list)
             {
                 var button = new Button
@@ -738,7 +1189,7 @@ namespace BorisMobile.Services
 
         private async Task OpenFile(Attachments attachments)
         {
-            string filePath = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(Helper.Constants.APP_NAME), attachments.FileName.ToLower());
+            string filePath = Path.Combine(FilesHelper.GetAttachmentDirectoryMAUI(), attachments.FileName.ToLower());
 
             if (File.Exists(filePath))
             {
@@ -751,7 +1202,7 @@ namespace BorisMobile.Services
             {
                 await App.Current.MainPage.DisplayAlert("Error", "File not found!", "OK");
             }
-        
+
         }
 
         private async Task<View> CreateDateField(ElementModel element)
@@ -766,17 +1217,19 @@ namespace BorisMobile.Services
 
         private async Task<View> CreatePhotoUpload(ElementModel element)
         {
+            await HandleImagePermission();
             return new ImageSelector
             {
                 Title = element.Text,
                 IsMandatory = element.IsMandatory,
+                IsVisible = true,
                 //Command = new Command(() => TakePhoto(element.UniqueName))
             };
         }
 
         private async Task<View> CreateStaticLabel(ElementModel element)
         {
-            if (!element.Text.Equals("\n")) { 
+            if (!element.Text.Equals("\n")) {
                 return new Label
                 {
                     Text = element.Text,
@@ -784,7 +1237,7 @@ namespace BorisMobile.Services
                     //IsMandatory = element.IsMandatory,
                 };
             }
-            return  null;
+            return null;
         }
 
         private void TakePhoto(string uniqueName)
@@ -792,18 +1245,18 @@ namespace BorisMobile.Services
             // Implement photo capture logic
         }
 
-        private async Task<Page> CreateSinglePage(FormConfigModel formConfig) {
+        private async Task<Microsoft.Maui.Controls.Page> CreateSinglePage(FormConfigModel formConfig) {
 
             try
             {
                 var DynamicPage = new ContentPage { };
 
-                var mainstack = new StackLayout
+                var mainstack = new Microsoft.Maui.Controls.StackLayout
                 {
                     Padding = 10
                 };
 
-                var bodyStack = new StackLayout
+                var bodyStack = new Microsoft.Maui.Controls.StackLayout
                 {
                     Margin = new Thickness(10, 15, 10, 0),
                     VerticalOptions = LayoutOptions.FillAndExpand
@@ -815,7 +1268,7 @@ namespace BorisMobile.Services
                 // Dynamic data for sections
 
                 // Content layout to display the currently selected section's content
-                var contentLayout = new StackLayout { Margin = new Thickness(0,0,0,100) };
+                var contentLayout = new Microsoft.Maui.Controls.StackLayout { Margin = new Thickness(0, 0, 0, 100) };
 
                 // Loop through sections to create UI
                 foreach (var page in formConfig.SubDocumentModel.Pages)
@@ -823,7 +1276,7 @@ namespace BorisMobile.Services
 
                     // Content for the section
 
-                    var stack = new StackLayout { Margin = new Thickness(0, 10, 0, 0) };
+                    var stack = new Microsoft.Maui.Controls.StackLayout { Margin = new Thickness(0, 10, 0, 0) };
 
                     foreach (var section in page.Sections)
                     {
@@ -845,9 +1298,10 @@ namespace BorisMobile.Services
                         Text = "Save",
                         BackgroundColor = Color.FromHex("#00B1E3")
                     };
+                    saveButton.Clicked += OnSaveButtonClicked;
                     stack.Children.Add(saveButton);
 
-                    var mainLayout = new ScrollView
+                    var mainLayout = new Microsoft.Maui.Controls.ScrollView
                     {
                         HeightRequest = DeviceDisplay.MainDisplayInfo.Height * 0.3,
                         Content = stack,
@@ -877,5 +1331,34 @@ namespace BorisMobile.Services
             }
         }
 
+    #region helper methods
+    async Task HandleGPSPermission()
+        {
+            bool isLocationGranted = await PermissionHelper.CheckAndRequestPermission<Permissions.LocationWhenInUse>();
+
+            //await PermissionHelper.CheckAndRequestPermission<Permissions.Camera>();
+            //await PermissionHelper.CheckAndRequestPermission<Permissions.StorageRead>();
+
+            if (!isLocationGranted)
+            {
+                //await App.Current.MainPage.DisplayAlert("Permission Denied",
+                    //"GPS functionality will not work without location access.", "OK");
+            }
+        }
+
+        async Task HandleImagePermission()
+        {
+            //bool isLocationGranted = await PermissionHelper.CheckAndRequestPermission<Permissions.LocationWhenInUse>();
+
+            await PermissionHelper.CheckAndRequestPermission<Permissions.Camera>();
+            await PermissionHelper.CheckAndRequestPermission<Permissions.StorageRead>();
+
+            //if (!isLocationGranted)
+            //{
+            //    //await App.Current.MainPage.DisplayAlert("Permission Denied",
+            //    //"GPS functionality will not work without location access.", "OK");
+            //}
+        }
+        #endregion
     }
 }

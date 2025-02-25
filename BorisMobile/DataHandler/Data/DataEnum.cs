@@ -42,5 +42,7 @@ namespace BorisMobile.DataHandler.Data
             SAVED = 2,
             UPLOADED = 3
         }
+
+        
     }
 }

@@ -16,11 +16,19 @@ namespace BorisMobile.ViewModels
 
         List<Item> itemList = new();
 
+        [ObservableProperty]
+        private bool isLoading;
         public HomePageViewModel() {
-            parseData = new ParseXML();
+            IsLoading = true;
 
-            IsSyncVisible = false;
-            Init();
+            Task.Delay(new TimeSpan(0, 0, 1)).ContinueWith(o => {
+                parseData = new ParseXML();
+
+                IsSyncVisible = false;
+                Init();
+                //SaveFormDataCommand = new Command(SaveFormData);
+            });
+            
         }
 
         [RelayCommand]
@@ -50,7 +58,29 @@ namespace BorisMobile.ViewModels
             itemL.Remove(ru);
             itemL.Remove(sr);
             
-            menuItems = new ObservableCollection<Item>(itemL);
+            MenuItems = new ObservableCollection<Item>(itemL);
+
+            //PromptForSecurityPermission();
+            IsLoading = false;
+        }
+
+        public async void PromptForSecurityPermission()
+        {
+            var isChecked = Preferences.Get("SecurityPermissionAsked", 0);
+            if (isChecked == 0)
+            {
+                //not been asked
+                Preferences.Set("SecurityPermissionAsked", 1);
+                var res = await App.Current.MainPage.DisplayAlert("Enable Biometrics", "Do you want to allow Boris app to use Biometrics for login purpose?", "Yes", "No");
+                if (res)
+                {
+                    Preferences.Set("BioMetricsAllowed", 1);
+                }
+                else
+                {
+                    Preferences.Set("BioMetricsAllowed", 0);
+                }
+            }
         }
 
         [RelayCommand]

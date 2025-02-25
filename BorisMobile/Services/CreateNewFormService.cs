@@ -2,6 +2,7 @@
 using BorisMobile.DataHandler.Data;
 using BorisMobile.Models;
 
+
 namespace BorisMobile.Services
 {
     public class CreateNewFormService
@@ -15,6 +16,11 @@ namespace BorisMobile.Services
         public async Task<List<TemplateDocument>> GetCreateFormListData(WorkOrderList workOrder)
         {
             return await handler.GetData(workOrder);
+        }
+
+        public async Task<AuditsInProgress> InsertNewAuditInProgress(WorkOrderList workOrder)
+        {
+            return await handler.GetInsertCommandForNewAudit(workOrder);
         }
     }
 }

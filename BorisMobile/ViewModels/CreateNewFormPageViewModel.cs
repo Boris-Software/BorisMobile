@@ -1,6 +1,7 @@
 ﻿using BorisMobile.DataHandler.Data;
 using BorisMobile.Models;
 using BorisMobile.Services;
+using BorisMobile.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -51,8 +52,16 @@ namespace BorisMobile.ViewModels
         [RelayCommand]
         public async void FormClick(TemplateDocument doc)
         {
+            var res = await service.InsertNewAuditInProgress(WorkOrder);
+
             JobOptionsPageViewModel jobOptionsPageViewModel = new JobOptionsPageViewModel();
-            jobOptionsPageViewModel.HandleJob(doc.InnerXml.ToString(), WorkOrder);
+            jobOptionsPageViewModel.HandleJob(doc.InnerXml.ToString(), WorkOrder, res);
+        }
+        [RelayCommand]
+        public async void MoreIconClicked()
+        {
+            await App.Current.MainPage.Navigation.PushAsync(new AboutPage(new AboutPageViewModel()));
+
         }
     }
   

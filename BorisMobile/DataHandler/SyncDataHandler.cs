@@ -1,15 +1,19 @@
-﻿using BorisMobile.Models;
+﻿using BorisMobile.DataHandler.Data;
+using BorisMobile.Helper;
+using BorisMobile.Models;
 using BorisMobile.Repository;
 using BorisMobile.Utilities;
 using BorisMobile.XML;
+using System;
 using System.Collections.ObjectModel;
 using System.Xml;
+using static BorisMobile.DataHandler.Data.DataEnum;
 using SqlCeCommand = Microsoft.Data.Sqlite.SqliteCommand;
 using SqlCeDataReader = Microsoft.Data.Sqlite.SqliteDataReader;
 
 namespace BorisMobile.DataHandler
 {
-    public class SyncDataHandler
+    public class SyncDataHandler : CommonDataHandler
     {
         CommonDataHandler commonDataHandler;
 
@@ -18,6 +22,205 @@ namespace BorisMobile.DataHandler
             commonDataHandler = new CommonDataHandler();
 
         }
+        //public void UpdateAttachmentUploadStatus(int attachmentId,int statusId)
+        //{
+        //    try
+        //    {
+        //        using (var updateCommand = GetCommandObject("Update Attachments SET Status = " + statusId + " Where Id = " + attachmentId)) 
+        //        {
+        //            updateCommand.Prepare();
+        //            updateCommand.ExecuteNonQuery();
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        public void UpdateAttachmentUploadStatus(int attachmentId, int statusId)
+        {
+            try
+            {
+                string query = "Update Attachments SET Status = " + statusId + " Where Id = " + attachmentId;
+                using (SqlCeCommand command = new SqlCeCommand(query, DBHelper.DatabaseConnection))
+                {
+                    object result = command.ExecuteScalar();
+                    //connection.Open();
+                    //using (var updateCommand = new SqlCeCommand("Update Attachments SET Status = @Status Where Id = @Id", connection))
+                    //{
+                    //    updateCommand.Parameters.AddWithValue("@Status", statusId);
+                    //    updateCommand.Parameters.AddWithValue("@Id", attachmentId);
+                    //    updateCommand.ExecuteNonQuery();
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public SqlCeCommand GetAttachmentsAwaitingUploadCommand(Guid resultGuid)
+        {
+            SqlCeCommand command = GetCommandObject(
+                            @"SELECT Id, UniqueName, AttachmentData, Repeat, FileName, SubFormIdGuid, IsCopiedFromWorkOrder, PageRepeatListItemId
+                            FROM Attachments
+                            WHERE IdGuid = @IdGuid
+                            and Status = @Status
+                            ORDER BY Id");
+            AddGuidParam(command, "@IdGuid", resultGuid);
+            AddIntParam(command, "@Status", (int)DataEnum.AttachmentStatusEnum.SAVED);
+
+            command.Prepare();
+            return command;
+        }
+
+        public bool UpdateAttachmentUploadStatus(int rowId, AttachmentStatusEnum newStatus)
+        {
+            using (SqlCeCommand command = GetUpdateStatusCommandForAttachment(rowId, newStatus))
+            {
+                if (command != null)
+                {
+                    int rowsUpdated = command.ExecuteNonQuery();
+                    return (rowsUpdated == 1);
+                }
+            }
+            return false;
+        }
+
+        public SqlCeCommand GetUpdateStatusCommandForAttachment(int rowId, AttachmentStatusEnum newStatus)
+        {
+            SqlCeCommand command = GetCommandObject(
+                        @"UPDATE Attachments SET Status = @Status WHERE Id = @Id");
+           
+            AddIntParam(command, "@Id", rowId);
+            AddIntParam(command, "@Status", (int)newStatus);
+
+            command.Prepare();
+            return command;
+        }
+
+        public async Task<bool> UpdateAuditInProgressStatus(Guid rowId, ResultStatusEnum newStatus)
+        {
+            SqlCeCommand command = GetCommandObject(
+                        @"UPDATE AuditsInProgress SET StatusId = @Status WHERE IdGuid = @Id");
+
+            AddGuidParam(command, "@Id", rowId);
+            AddIntParam(command, "@Status", (int)newStatus);
+
+            command.Prepare();
+
+            using (SqlCeCommand commandToExecute = command)
+            {
+                if (commandToExecute != null)
+                {
+                    int rowsUpdated = commandToExecute.ExecuteNonQuery();
+                    return (rowsUpdated == 1);
+                }
+            }
+            return false;
+            
+        }
+
+        public async Task<List<Attachments>> GetAuditsInProgressAttachments(Guid resultGuid)
+        {
+            SqlCeCommand command = GetCommandObject(
+                            @"SELECT Id,IdGuid, UniqueName, AttachmentData, Repeat, FileName, SubFormIdGuid, IsCopiedFromWorkOrder, PageRepeatListItemId
+                            FROM Attachments
+                            WHERE IdGuid = @IdGuid
+                            and Status = @Status
+                            ORDER BY Id");
+            AddGuidParam(command, "@IdGuid", resultGuid);
+            AddIntParam(command, "@Status", (int)DataEnum.AttachmentStatusEnum.SAVED);
+
+            command.Prepare();
+
+            List<Attachments> list = new List<Attachments>();
+            using (SqlCeCommand sqlAudits = command)
+            {
+                using (SqlCeDataReader attachs = sqlAudits.ExecuteReader())
+                {
+                    while (attachs.Read() == true)
+                    {
+                        Attachments attachment = new Attachments();
+                        attachment.IdGuid = GetGuidFromReader(attachs["IdGuid"]);
+                        attachment.Id = attachs["Id"] != DBNull.Value ? GetIntFromReader(attachs["Id"]) : 0;
+                        attachment.UniqueName = attachs["UniqueName"] != DBNull.Value ? (string)attachs["UniqueName"] : "";
+                        attachment.FileName = attachs["FileName"] != DBNull.Value ? (string)attachs["FileName"] : "";
+                        attachment.SubFormIdGuid =  GetGuidFromReader(attachs["SubFormIdGuid"]);
+                        attachment.IsCopiedFromWorkOrder = attachs["IsCopiedFromWorkOrder"] != DBNull.Value ? GetIntFromReader(attachs["IsCopiedFromWorkOrder"]) : 0;
+                        
+                        list.Add(attachment);
+                    }
+                }
+            }
+
+            return list;
+        }
+
+
+        //public SqlCeCommand GetAttachmentsAwaitingUploadCommand(Guid resultGuid)
+        //{
+        //    SqlCeCommand command = GetCommandObject(
+        //                    @"SELECT Id, UniqueName, AttachmentData, Repeat, FileName, SubFormIdGuid, IsCopiedFromWorkOrder, PageRepeatListItemId
+        //                    FROM Attachments
+        //                    WHERE IdGuid = @IdGuid
+        //                    and Status = @Status
+        //                    ORDER BY Id");
+        //    AddGuidParam(command, "@IdGuid", resultGuid);
+        //    AddIntParam(command, "@Status",(int)DataEnum.AttachmentStatusEnum.SAVED);
+
+        //    command.Prepare();
+        //    return command;
+        //}
+
+        public async Task<List<AuditsInProgress>> GetPendingAuditInProgress()
+        {
+            List<AuditsInProgress> list = new List<AuditsInProgress>();
+            try
+            {
+                SqlCeCommand command = GetCommandObject(
+                                @"SELECT IdGuid, UserId, CustomerId, AuditId, XmlResults, StatusId, LocationId, DateOfAudit,DateTimeStarted,WorkOrderId,LastSaveTime
+                            FROM AuditsInProgress
+                            WHERE StatusId = @Status");
+                AddIntParam(command, "@Status", (int)DataEnum.ResultStatusEnum.IN_PROGRESS);
+
+                command.Prepare();
+
+                using (SqlCeCommand sqlAudits = command)
+                {
+                    using (SqlCeDataReader audits = sqlAudits.ExecuteReader())
+                    {
+                        while (audits.Read() == true)
+                        {
+                            AuditsInProgress auditsInProgress = new AuditsInProgress();
+                            auditsInProgress.IdGuid = GetGuidFromReader(audits["IdGuid"]);
+                            auditsInProgress.UserId = audits["UserId"] != DBNull.Value ? GetIntFromReader(audits["UserId"]) : 0;
+                            auditsInProgress.CustomerId = audits["CustomerId"] != DBNull.Value ? GetIntFromReader(audits["CustomerId"]) : 0;
+                            auditsInProgress.AuditId = audits["AuditId"] != DBNull.Value ? GetIntFromReader(audits["AuditId"]) : 0;
+                            auditsInProgress.XmlResults = audits["XmlResults"] != DBNull.Value ? (string)audits["XmlResults"] : "";
+                            auditsInProgress.StatusId = audits["StatusId"] != DBNull.Value ? GetIntFromReader(audits["StatusId"]) : 0;
+                            auditsInProgress.LocationId = audits["LocationId"] != DBNull.Value ? GetIntFromReader(audits["LocationId"]) : 0;
+                            auditsInProgress.WorkOrderId = audits["WorkOrderId"] != DBNull.Value ? GetIntFromReader(audits["WorkOrderId"]) : 0;
+                            auditsInProgress.DateOfAudit = audits["DateOfAudit"] != DBNull.Value ? DateTime.Parse((string)(audits["DateOfAudit"])) : new DateTime();
+                            auditsInProgress.DateTimeStarted = audits["DateTimeStarted"] != DBNull.Value ? DateTime.Parse((string)(audits["DateTimeStarted"])) : new DateTime();
+                            auditsInProgress.LastSaveTime = audits["LastSaveTime"] != DBNull.Value ? DateTime.Parse((string)(audits["LastSaveTime"])) : new DateTime();
+
+                            list.Add(auditsInProgress);
+                        }
+                    }
+                }
+
+                
+            }catch(Exception ex)
+            {
+                Console.WriteLine("Exception", ex.Message);
+            }
+            return list;
+        }
+
         public List<int> ListIdsForJobs(WOFilter woFilter)
         {
             List<int> listIds = new List<int>();
@@ -174,6 +377,54 @@ namespace BorisMobile.DataHandler
                 return null;
             }
         }
+//        public static AttachId GetAttachIdFromReader(object result)
+//        {
+//            if (result is AttachId)
+//                return (AttachId)result;
+//            else
+//            {
+//                AttachId attachId = -1;
+//#if WinForm
+//                if (int.TryParse(result.ToString(), out attachId))
+//#else
+//                if (Int64.TryParse(result.ToString(), out attachId))
+//#endif
+//                {
+//                    return attachId;
+//                }
+//                else
+//                {
+//                    return -1;
+//                }
+//            }
+//        }
+        public static bool GetBoolFromReader(object result)
+        {
+            if (result is bool)
+                return (bool)result;
+            else if (result is null)
+                return false;
+            else if (result.ToString() == "1")
+                return true;
+            else if (result.ToString() == "0")
+                return false;
+            return false;
+        }
+        public static int GetIntFromReader(object result)
+        {
+            if (result is Int16 || result is Int32 || result is Int64)
+                return int.Parse(result.ToString());
+            else if (result is string)
+            {
+                int res = -1;
+                int.TryParse(result.ToString(), out res);
+                return res;
+            }
+            else
+            {
+                return -1;
+            }
+        }
         public static Guid GetGuidFromReader(object result)
         {
             if (result is Guid)
@@ -268,7 +519,7 @@ namespace BorisMobile.DataHandler
 
         public async Task<int> GetUserIdForUsername(string username)
         {
-            IRepo<Models.Users> dataTransferParameterRepo = new Repo<Models.Users>(App.Database);
+            IRepo<Models.Users> dataTransferParameterRepo = new Repo<Models.Users>(DBHelper.Database);
 
             var userobjList = await dataTransferParameterRepo.Get();
             var userobj = userobjList.Where(X => X.UserName == username).FirstOrDefault();

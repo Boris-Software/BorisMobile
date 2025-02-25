@@ -5,7 +5,10 @@ public partial class TimeSelector : ContentView
 	public TimeSelector()
 	{
 		InitializeComponent();
-	}
+        //this.DateSelected += OnDateSelected;
+
+    }
+    public event EventHandler<string> Time;
 
     private string _Title;
     public string Title
@@ -16,6 +19,17 @@ public partial class TimeSelector : ContentView
         {
             _Title = value;
             titleLabel.Text = _Title;
+        }
+    }private string _timeEntered;
+    public string TimeEntered
+    {
+        get => _timeEntered;
+
+        set
+        {
+            _timeEntered = value;
+            //titleLabel.Text = _timeEntered;
+            Time?.Invoke(this, TimeEntered);
         }
     }
     private bool _isMandatory;
@@ -30,4 +44,8 @@ public partial class TimeSelector : ContentView
 
         }
     }
+    //private void OnDateSelected(object sender, Timec e)
+    //{
+    //    DateSelected?.Invoke(this, new DateSelectedEventArgs(e.OldDate, e.NewDate));
+    //}
 }

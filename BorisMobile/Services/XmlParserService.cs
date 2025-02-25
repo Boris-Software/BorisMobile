@@ -64,6 +64,7 @@ namespace BorisMobile.Services
                                 UniqueName = sectionElement.Attribute("uniquename")?.Value,
                                 IsRepeatable = sectionElement.Attribute("repeat")?.Value == "yes",
                                 AllowSectionDelete = sectionElement.Attribute("allow_section_delete")?.Value == "yes",
+                                CollectResultsAnyway = sectionElement.Attribute("collectResultsAnyway")?.Value == "yes",
                                 ReportOnly = sectionElement.Attribute("report_only")?.Value == "yes",
                                 Condition0 = sectionElement.Attribute("condition0")?.Value,
                                 Condition1 = sectionElement.Attribute("condition1")?.Value,
@@ -107,9 +108,11 @@ namespace BorisMobile.Services
                 { "ActionButtons", ParseActionButtons},
                 { "Score", ParseScore},
                 { "GPSEarliest", ParseGPSEarliest},
+                { "GPSLatest", ParseGPSLatest},
                 { "Time", ParseTime},
                 { "GenericAttachments", ParseGenericAttachments},
-                //{ "ExternalWorkOrderAttachments", ParseExternalWorkOrderAttachments},
+                { "ExternalWorkOrderAttachments", ParseExternalWorkOrderAttachments},
+                { "DrawingLocation", ParseDrawingLocation},
             };
 
             foreach (var element in sectionElement.Elements())
@@ -137,6 +140,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 
@@ -157,6 +161,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 
@@ -175,6 +180,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 
@@ -195,6 +201,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 
@@ -215,6 +222,7 @@ namespace BorisMobile.Services
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
                 TextCol0 = element.Attribute("text_col0")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
         private ElementModel ParseScore(XElement element)
@@ -237,6 +245,7 @@ namespace BorisMobile.Services
                 Calculation = element.Attribute("calculation")?.Value,
                 ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
                 CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
         private ElementModel ParseGPSEarliest(XElement element)
@@ -261,6 +270,32 @@ namespace BorisMobile.Services
                 Calculation = element.Attribute("calculation")?.Value,
                 ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
                 CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
+            };
+        }
+        private ElementModel ParseGPSLatest(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "GPSLatest",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                GPSUse = element.Attribute("lm_gps_use")?.Value == "yes",
+                NetworkUse = element.Attribute("lm_network_use")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+                TextCol0 = element.Attribute("text_col0")?.Value,
+                Calculation = element.Attribute("calculation")?.Value,
+                ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
+                CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 
@@ -289,6 +324,7 @@ namespace BorisMobile.Services
                 Calculation = element.Attribute("calculation")?.Value,
                 ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
                 CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
         private ElementModel ParseTime(XElement element)
@@ -314,6 +350,7 @@ namespace BorisMobile.Services
                 Calculation = element.Attribute("calculation")?.Value,
                 ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
                 CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 
@@ -341,6 +378,35 @@ namespace BorisMobile.Services
                 Calculation = element.Attribute("calculation")?.Value,
                 ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
                 CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
+            };
+        }
+        
+        private ElementModel ParseDrawingLocation(XElement element)
+        {
+            return new ElementModel
+            {
+                Type = "DrawingLocation",
+                Text = element.Attribute("text")?.Value,
+                ListId = element.Attribute("listid")?.Value,
+                UniqueName = element.Attribute("uniquename")?.Value,
+                ExternalSystemField = element.Attribute("externalSystemField")?.Value,
+                IsMandatory = element.Attribute("mandatory")?.Value == "yes",
+                PenWidth = Convert.ToInt32(element.Attribute("penWidth")?.Value),
+                MinuteIncrement = Convert.ToInt32(element.Attribute("minuteIncrement")?.Value),
+                OutputField = Convert.ToInt32(element.Attribute("outputField")?.Value),
+                ArrangeHorizontally = element.Attribute("arrangeHorizontally")?.Value == "yes",
+                UseListItemImages = element.Attribute("useListItemImages")?.Value == "yes",
+                GPSUse = element.Attribute("lm_gps_use")?.Value == "yes",
+                NetworkUse = element.Attribute("lm_network_use")?.Value == "yes",
+                ReportOnly = element.Attribute("report_only")?.Value == "yes",
+                Condition0 = element.Attribute("condition0")?.Value,
+                Condition1 = element.Attribute("condition1")?.Value,
+                TextCol0 = element.Attribute("text_col0")?.Value,
+                Calculation = element.Attribute("calculation")?.Value,
+                ResultType = Convert.ToInt32(element.Attribute("resultType")?.Value),
+                CurrencySymbol = element.Attribute("currencySymbol")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 
@@ -357,6 +423,7 @@ namespace BorisMobile.Services
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
                 PenWidth = string.IsNullOrEmpty(element.Attribute("penWidth")?.Value.ToString()) ? 0 : Convert.ToInt32(element.Attribute("penWidth")?.Value.ToString()) ,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
         private ElementModel ParseIntegerBox(XElement element)
@@ -373,6 +440,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
 
             };
         }
@@ -389,6 +457,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
 
         }
@@ -405,6 +474,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
 
         }
@@ -420,6 +490,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 
@@ -433,6 +504,7 @@ namespace BorisMobile.Services
                 ReportOnly = element.Attribute("report_only")?.Value == "yes",
                 Condition0 = element.Attribute("condition0")?.Value,
                 Condition1 = element.Attribute("condition1")?.Value,
+                CollectResultsAnyway = element.Attribute("collectResultsAnyway")?.Value == "yes",
             };
         }
 

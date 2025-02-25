@@ -16,7 +16,7 @@
         StrokeShape="RoundRectangle 8"
         Background="White">
             <Grid ColumnDefinitions="*">
-                <DatePicker x:Name="datepicker" Grid.Column="0" />
+                <DatePicker x:Name="datepicker" Grid.Column="0" DateSelected="OnDateSelected" />
             </Grid>
         </Border>
     </StackLayout>

@@ -5,7 +5,9 @@ public partial class DatePicker : ContentView
 	public DatePicker()
 	{
 		InitializeComponent();
-	}
+        this.DateSelected += OnDateSelected;
+    }
+    public event EventHandler<DateChangedEventArgs> DateSelected;
     private string _Title;
     public string Title
     {
@@ -28,5 +30,10 @@ public partial class DatePicker : ContentView
             mandatory.IsVisible = value;
 
         }
+    }
+
+    private void OnDateSelected(object sender, DateChangedEventArgs e)
+    {
+        DateSelected?.Invoke(this, new DateChangedEventArgs(e.OldDate, e.NewDate));
     }
 }
